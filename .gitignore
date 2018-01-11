@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/Backup
+/packages
+/StarFisher.Console/bin/
+/StarFisher.Console/obj/
+/StarFisher.Console/StarFisher.Console.csproj.user
+/StarFisher.Domain/bin/
+/StarFisher.Domain/obj/
+/StarFisher.Domain/StarFisher.Domain.csproj.user
+/StarFisher.Office/bin/
+/StarFisher.Office/obj/
+/StarFisher.Office/StarFisher.Office.csproj.user

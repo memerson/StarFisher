@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED89AC9C-73A8-450A-9520-44E0E7D74839}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StarFisher.Domain</RootNamespace>
+    <AssemblyName>StarFisher.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LinqToExcel, Version=1.11.0.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\LinqToExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Interfaces, Version=1.13.52.2, Culture=neutral, PublicKeyToken=0669cf0452175907, processorArchitecture=MSIL">
+      <HintPath>..\packages\LinqToExcel.1.11.0\lib\Remotion.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AggregateRoot.cs" />
+    <Compile Include="Common\Entity.cs" />
+    <Compile Include="Common\Repository.cs" />
+    <Compile Include="Common\ValueObject.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\Nomination.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\NominationList.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\NominationListRepository.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Persistence\NominationDto.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Persistence\NominationListDto.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\ValueObjects\EmployeeType.cs" />
+    <Compile Include="QuarterlyAwards\PerformanceAwardWinnerListAggregate\PerformanceAwardWinnerList.cs" />
+    <Compile Include="Utilities\PersonNameComparer.cs" />
+    <Compile Include="Utilities\PrettyPrintEnumerableExtension.cs" />
+    <Compile Include="ValueObjects\CompanyValue.cs" />
+    <Compile Include="ValueObjects\DirectoryPath.cs" />
+    <Compile Include="ValueObjects\EmailAddress.cs" />
+    <Compile Include="ValueObjects\FilePath.cs" />
+    <Compile Include="ValueObjects\NominationWriteUp.cs" />
+    <Compile Include="ValueObjects\NominationWriteUpSummary.cs" />
+    <Compile Include="ValueObjects\NomineeVotingIdentifier.cs" />
+    <Compile Include="ValueObjects\OfficeLocation.cs" />
+    <Compile Include="ValueObjects\PersonName.cs" />
+    <Compile Include="ValueObjects\Quarter.cs" />
+    <Compile Include="ValueObjects\Year.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
