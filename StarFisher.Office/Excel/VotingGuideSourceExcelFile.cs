@@ -1,28 +1,23 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal class VotingGuideSourceExcelFile : BaseExcelFile
+    internal abstract class VotingGuideSourceExcelFile : BaseExcelFile
     {
-        public VotingGuideSourceExcelFile(NominationList nominationList, EmployeeType employeeType)
+        protected VotingGuideSourceExcelFile(IEnumerable<Nomination> nominations)
             : base((com, worksheet) => BuildWorksheet(com,
-                nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
-                employeeType ?? throw new ArgumentNullException(nameof(employeeType)),
+                nominations ?? throw new ArgumentNullException(nameof(nominations)),
                 worksheet))
         { }
 
-        private static void BuildWorksheet(ComObjectManager com, NominationList nominationList, EmployeeType employeeType, Worksheet worksheet)
+        private static void BuildWorksheet(ComObjectManager com, IEnumerable<Nomination> nominations, Worksheet worksheet)
         {
             var cells = com.Get(() => worksheet.Cells);
-            var nominations = nominationList.Nominations
-                .Where(n => n.NomineeEmployeeType == employeeType)
-                .ToList();
 
             cells.NumberFormat = "@"; // Format all cells as text.
 
@@ -35,11 +30,9 @@ namespace StarFisher.Office.Excel
             SetCellValue(cells, 1, 7, @"Performance");
             SetCellValue(cells, 1, 8, @"WRITEUP");
 
-            for (var i = 0; i < nominations.Count; ++i)
+            var rowNumber = 2;
+            foreach(var nomination in nominations)
             {
-                var rowNumber = i + 2;
-                var nomination = nominations[i];
-
                 SetCellValue(cells, rowNumber, 1, nomination.Id);
                 SetCellValue(cells, rowNumber, 2, nomination.VotingIdentifier.ToString());
                 SetCellValue(cells, rowNumber, 3, GetCompanyValue(nomination, CompanyValue.LearningCulture));
@@ -48,6 +41,8 @@ namespace StarFisher.Office.Excel
                 SetCellValue(cells, rowNumber, 6, GetCompanyValue(nomination, CompanyValue.IndividualIntegrity));
                 SetCellValue(cells, rowNumber, 7, GetCompanyValue(nomination, CompanyValue.Performance));
                 SetCellValue(cells, rowNumber, 8, nomination.WriteUp.ToString());
+
+                ++rowNumber;
             }
         }
     }

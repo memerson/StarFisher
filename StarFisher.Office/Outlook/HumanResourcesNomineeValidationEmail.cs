@@ -88,7 +88,7 @@ namespace StarFisher.Office.Outlook
             foreach (var group in nominationGroups)
             {
                 var nomineeName = group.Key.NomineeName.FullNameLastNameFirst;
-                var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.Value;
+                var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.SurveyName;
 
                 var nomineeTableRow = HtmlNode.CreateNode("<tr>");
                 nomineeTable.AppendChild(nomineeTableRow);

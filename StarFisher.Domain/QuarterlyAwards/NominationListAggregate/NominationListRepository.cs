@@ -6,7 +6,6 @@ using LinqToExcel;
 using Newtonsoft.Json;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
@@ -98,7 +97,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
             var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
             var nomineeName = PersonName.Create(row[12]);
-            var nomineeEmployeeType = EmployeeType.Create(row[13]);
+            var awardType = AwardType.Create(row[13]);
             var nomineeOfficeLocation = OfficeLocation.Create(row[15]);
             var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
             var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
@@ -111,7 +110,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus, hasIndividualIntegrity, hasPerformance);
 
             var nomination = new Nomination(rowNumber, NomineeVotingIdentifier.Unknown, nomineeName, nominatorName,
-                nomineeEmployeeType, nomineeOfficeLocation,
+                awardType, nomineeOfficeLocation,
                 companyValues, writeUp, writeUpSummary,
                 EmailAddress.Create(nomineeName.FirstName, nomineeName.LastName));
 

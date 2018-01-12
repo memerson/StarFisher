@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using StarFisher.Console.Commands;
 using StarFisher.Console.Commands.Common;
+using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
 using StarFisher.Office.Word;
-using StarFisher.Office.Word.MailMergeTemplates;
 
 namespace StarFisher.Console
 {
@@ -25,6 +25,28 @@ namespace StarFisher.Console
             var emailFactory = new EmailFactory(configuration);
             var nominationList = nominationListRepository.LoadSurveyExport(filePath, Quarter.Fourth, Year.Create(2017));
             StarFisherContext.Current.SetContextNominationList(nominationList);
+
+            var winners = new AwardWinnerList(Quarter.Fourth, Year.Create(2017));
+            var winnerName = PersonName.Create("Jane Doe");
+            winners.AddStarValuesWinner(winnerName, OfficeLocation.EchoBrentwood,
+                new[] {CompanyValue.CustomerFocus, CompanyValue.Innovation},
+                new[]
+                {
+                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens."),
+                        NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens.")
+                }, EmailAddress.Create("jonh.doe@healthstream.com"));
+            winners.AddStarValuesWinner(winnerName, OfficeLocation.EchoBrentwood,
+                new[] { CompanyValue.CustomerFocus, CompanyValue.Innovation },
+                new[]
+                {
+                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens."),
+                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens.")
+                }, EmailAddress.Create("jonh.doe@healthstream.com"));
+
+            mailMergeFactory.GetStarValuesWinnersMemoMailMerge(winners).Execute();
+            //var outFilePath = @"C:\Users\memerson\Desktop\EIA\2018\Q1\out.xlsx";
+            //using (var excelFile = excelFileFactory.GetStarValuesWinnersMemoSourceExcelFile(winners))
+            //    excelFile.Save(FilePath.Create(outFilePath, false));
 
             PrintSplash();
 

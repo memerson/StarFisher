@@ -4,19 +4,18 @@ using System.Linq;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence;
 using StarFisher.Domain.ValueObjects;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public class Nomination : Entity
     {
-        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, PersonName nomineeName, PersonName nominatorName, EmployeeType nomineeEmployeeType, OfficeLocation nomineeOfficeLocation, IEnumerable<CompanyValue> companyValues, NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary, EmailAddress nomineeEmailAddress)
+        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, PersonName nomineeName, PersonName nominatorName, AwardType nomineeAwardType, OfficeLocation nomineeOfficeLocation, IEnumerable<CompanyValue> companyValues, NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary, EmailAddress nomineeEmailAddress)
             : base(id)
         {
             VotingIdentifier = votingIdentifier;
             NominatorName = nominatorName ?? throw new ArgumentNullException(nameof(nominatorName));
             NomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
-            NomineeEmployeeType = nomineeEmployeeType ?? throw new ArgumentNullException(nameof(nomineeEmployeeType));
+            AwardType = nomineeAwardType ?? throw new ArgumentNullException(nameof(nomineeAwardType));
             NomineeOfficeLocation = nomineeOfficeLocation ??
                                     throw new ArgumentNullException(nameof(nomineeOfficeLocation));
             CompanyValues = companyValues?.ToList() ?? new List<CompanyValue>();
@@ -31,7 +30,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 
         public PersonName NomineeName { get; }
 
-        public EmployeeType NomineeEmployeeType { get; }
+        public AwardType AwardType { get; }
 
         public OfficeLocation NomineeOfficeLocation { get; }
 

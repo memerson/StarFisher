@@ -43,8 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel\AwardsLunchInviteeListExcelFile.cs" />
     <Compile Include="Excel\BaseExcelFile.cs" />
+    <Compile Include="Excel\CertificateSourceExcelFile.cs" />
     <Compile Include="Excel\IExcelFile.cs" />
+    <Compile Include="Excel\NominationNotificationEmailSourceExcelFile.cs" />
+    <Compile Include="Excel\StarValuesCertificateSourceExcelFile.cs" />
+    <Compile Include="Excel\StarRisingCertificateSourceExcelFile.cs" />
+    <Compile Include="Excel\StarRisingNominationNotificationEmailSourceExcelFile.cs" />
+    <Compile Include="Excel\StarRisingVotingGuideSourceExcelFile.cs" />
+    <Compile Include="Excel\StarRisingVotingKeyExcelFile.cs" />
+    <Compile Include="Excel\StarValuesNominationNotificationEmailSourceExcelFile.cs" />
+    <Compile Include="Excel\StarValuesVotingKeyExcelFile.cs" />
+    <Compile Include="Excel\StarValuesVotingGuideSourceExcelFile.cs" />
+    <Compile Include="Excel\StarValuesWinnersMemoSourceExcelFile.cs" />
     <Compile Include="Excel\VotingGuideSourceExcelFile.cs" />
     <Compile Include="Excel\ExcelFileFactory.cs" />
     <Compile Include="Excel\VotingKeyExcelFile.cs" />
@@ -56,7 +68,8 @@
     <Compile Include="Utilities\ComObjectManager.cs" />
     <Compile Include="Word\IMailMerge.cs" />
     <Compile Include="Word\MailMergeBase.cs" />
-    <Compile Include="Word\MailMergeTemplates\MailMergeFactory.cs" />
+    <Compile Include="Word\MailMergeFactory.cs" />
+    <Compile Include="Word\StarValuesWinnersMemoMailMerge.cs" />
     <Compile Include="Word\StarValuesVotingGuideMailMerge.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -124,6 +137,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesVotingGuideMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesWinnersMemoMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

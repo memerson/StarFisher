@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.Utilities;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
     public class NominationList : AggregateRoot
     {
-        private readonly List<Nomination> _nominations;
-
         internal NominationList(Quarter quarter, Year year, List<Nomination> nominations)
-            : base(year.Value * 10 + quarter.NumericValue)
+            : base(CreateKey(quarter, year))
         {
             Quarter = quarter;
             Year = year;
-            _nominations = nominations ?? throw new ArgumentNullException(nameof(nominations));
+            Nominations = nominations ?? throw new ArgumentNullException(nameof(nominations));
 
-            SetNomineeIdentifiers(_nominations);
+            SetNomineeIdentifiers(Nominations);
             IsDirty = true; // From setting the nominee identifiers
         }
 
@@ -29,7 +26,18 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public Year Year { get; }
 
-        public IReadOnlyCollection<Nomination> Nominations => _nominations;
+        public IReadOnlyCollection<Nomination> Nominations { get; }
+
+        public IReadOnlyCollection<Nomination> StarRisingNominees => GetNominationsByAwardType(AwardType.StarRising);
+
+        public IReadOnlyCollection<Nomination> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues);
+
+        public IReadOnlyCollection<Nomination> StarValuesNominees => GetNominationsByAwardType(AwardType.StarValues);
+
+        private List<Nomination> GetNominationsByAwardType(AwardType awardType)
+        {
+            return Nominations.Where(n => n.AwardType == awardType).ToList();
+        }
 
         private static void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)
         {
@@ -43,6 +51,16 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 foreach(var nominee in group)
                         nominee.SetVotingIdentifier(votingIdentifier);
             }
+        }
+
+        private static int CreateKey(Quarter quarter, Year year)
+        {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
+
+            return year.Value * 10 + quarter.NumericValue;
         }
     }
 }

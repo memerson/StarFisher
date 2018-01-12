@@ -4,6 +4,6 @@ namespace StarFisher.Office.Word
 {
     public interface IMailMerge
     {
-        void Execute(NominationList nominationList);
+        void Execute();
     }
 }

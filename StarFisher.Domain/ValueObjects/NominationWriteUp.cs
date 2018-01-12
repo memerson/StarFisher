@@ -12,7 +12,7 @@ namespace StarFisher.Domain.ValueObjects
             ContainsNomineeName = containsNomineeName;
         }
 
-        internal static NominationWriteUp Create(PersonName nomineeName, string nominationWriteUpText)
+        public static NominationWriteUp Create(PersonName nomineeName, string nominationWriteUpText)
         {
             if(nomineeName == null)
                 throw new ArgumentNullException(nameof(nomineeName));

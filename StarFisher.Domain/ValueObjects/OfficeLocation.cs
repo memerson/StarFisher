@@ -6,15 +6,15 @@ namespace StarFisher.Domain.ValueObjects
 {
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
-        public static readonly OfficeLocation Columbia = new OfficeLocation(@"Columbia MD (formerly Laurel)");
-        public static readonly OfficeLocation EchoBoulder = new OfficeLocation(@"Echo - Boulder");
-        public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Echo - Brentwood");
-        public static readonly OfficeLocation EchoSanDiego = new OfficeLocation(@"Echo - San Diego");
-        public static readonly OfficeLocation Hccs = new OfficeLocation(@"HCCS - Jericho NY");
-        public static readonly OfficeLocation HighlandRidge = new OfficeLocation(@"Nashville - Highland Ridge (Marriott Dr.)");
-        public static readonly OfficeLocation Morrisey = new OfficeLocation(@"Morrisey - Chicago");
-        public static readonly OfficeLocation NashvilleCorporate = new OfficeLocation(@"Nashville - Corporate (Downtown + Brentwood Sales)");
-        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote - Home Office and HEI");
+        public static readonly OfficeLocation Columbia = new OfficeLocation(@"Columbia MD (formerly Laurel)", @"Columbia");
+        public static readonly OfficeLocation EchoBoulder = new OfficeLocation(@"Echo - Boulder", @"Boulder");
+        public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Echo - Brentwood", @"Brentwood");
+        public static readonly OfficeLocation EchoSanDiego = new OfficeLocation(@"Echo - San Diego", @"San Diego");
+        public static readonly OfficeLocation Hccs = new OfficeLocation(@"HCCS - Jericho NY", @"Jericho");
+        public static readonly OfficeLocation HighlandRidge = new OfficeLocation(@"Nashville - Highland Ridge (Marriott Dr.)", @"Highland Ridge");
+        public static readonly OfficeLocation Morrisey = new OfficeLocation(@"Morrisey - Chicago", @"Chicago");
+        public static readonly OfficeLocation NashvilleCorporate = new OfficeLocation(@"Nashville - Corporate (Downtown + Brentwood Sales)", @"Nashville Downtown");
+        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote - Home Office and HEI", @"Remote");
 
         private static readonly List<OfficeLocation> ValidOfficeLocations = new List<OfficeLocation>
         {
@@ -29,34 +29,36 @@ namespace StarFisher.Domain.ValueObjects
             Remote
         };
 
-        public static readonly OfficeLocation Invalid = new OfficeLocation(@"INVALID");
+        public static readonly OfficeLocation Invalid = new OfficeLocation(@"INVALID", @"INVALID");
 
-        private OfficeLocation(string value)
+        private OfficeLocation(string surveyName, string conciseName)
         {
-            Value = value;
+            SurveyName = surveyName;
+            ConciseName = conciseName;
         }
 
-        public string Value { get; }
+        public string SurveyName { get; }
 
-        internal static OfficeLocation Create(string officeLocationText)
+        public string ConciseName { get; }
+
+        internal static OfficeLocation Create(string officeLocationSurveyName)
         {
-            var officeLocation = new OfficeLocation(officeLocationText);
-            return ValidOfficeLocations.All(ol => ol != officeLocation) ? Invalid : officeLocation;
+            return ValidOfficeLocations.FirstOrDefault(ol => ol.SurveyName == officeLocationSurveyName) ?? Invalid;
         }
 
         protected override bool EqualsCore(OfficeLocation other)
         {
-            return string.Equals(Value, other.Value);
+            return string.Equals(SurveyName, other.SurveyName);
         }
 
         protected override int GetHashCodeCore()
         {
-            return Value.GetHashCode();
+            return SurveyName.GetHashCode();
         }
 
         public override string ToString()
         {
-            return Value;
+            return SurveyName;
         }
     }
 }

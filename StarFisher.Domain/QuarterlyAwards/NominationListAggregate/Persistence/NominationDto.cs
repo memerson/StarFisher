@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
@@ -21,7 +20,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
             NomineeName = nomination.NomineeName.ToString();
             NominatorName = nomination.NominatorName.RawNameText;
             IsNominatorAnonymous = nomination.NominatorName.IsAnonymous;
-            NomineeEmployeeType = nomination.NomineeEmployeeType.ToString();
+            AwardType = nomination.AwardType.ToString();
             NomineeOfficeLocation = nomination.NomineeOfficeLocation.ToString();
             CompanyValues = nomination.CompanyValues.Select(cv => cv.ToString()).ToList();
             WriteUp = nomination.WriteUp.ToString();
@@ -39,7 +38,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         public bool IsNominatorAnonymous { get; set; }
 
-        public string NomineeEmployeeType { get; set; }
+        public string AwardType { get; set; }
 
         public string NomineeOfficeLocation { get; set; }
 
@@ -62,7 +61,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
                 NomineeVotingIdentifier.Create(NominationIds),
                 nomineeName,
                 PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),
-                EmployeeType.Create(NomineeEmployeeType),
+                ValueObjects.AwardType.Create(AwardType),
                 OfficeLocation.Create(NomineeOfficeLocation),
                 companyValues,
                 NominationWriteUp.Create(nomineeName, WriteUp),

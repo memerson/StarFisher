@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using StarFisher.Console.Commands.Common;
-using StarFisher.Office.Word.MailMergeTemplates;
+using StarFisher.Office.Word;
 
 namespace StarFisher.Console.Commands
 {
@@ -30,8 +30,8 @@ namespace StarFisher.Console.Commands
             System.Console.WriteLine();
 
             var nominationList = StarFisherContext.Current.NominationList;
-            var mailMerge = _mailMergeFactory.GetStarValuesVotingGuideMailMerge();
-            mailMerge.Execute(nominationList);
+            var mailMerge = _mailMergeFactory.GetStarValuesVotingGuideMailMerge(nominationList);
+            mailMerge.Execute();
             return CommandResult.Success;
         }
     }
