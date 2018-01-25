@@ -7,9 +7,9 @@ using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal abstract class NominationNotificationEmailSourceExcelFile : BaseExcelFile
+    internal abstract class NominationNotificationEmailSourceExcelFileBase : ExcelFileBase
     {
-        protected NominationNotificationEmailSourceExcelFile(Quarter quarter, IEnumerable<Nomination> nominations)
+        protected NominationNotificationEmailSourceExcelFileBase(Quarter quarter, IEnumerable<Nomination> nominations)
             : base((com, worksheet) => BuildWorksheet(com,
                 quarter ?? throw new ArgumentNullException(nameof(quarter)),
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),
@@ -21,7 +21,7 @@ namespace StarFisher.Office.Excel
             var cells = com.Get(() => worksheet.Cells);
 
             cells.NumberFormat = "@"; // Format all cells as text.
-
+            // TODO: Should include year
             SetCellValue(cells, 1, 1, @"Quarter");
             SetCellValue(cells, 1, 2, @"Submitted by");
             SetCellValue(cells, 1, 3, @"NOMINEE'S NAME");

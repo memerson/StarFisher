@@ -11,7 +11,10 @@ namespace StarFisher.Office.Utilities
         public TComObject Get<TComObject>(Func<TComObject> getter)
         {
             var comObject = getter();
-            _comObjects.Push(comObject);
+
+            if (comObject != null)
+                _comObjects.Push(comObject);
+
             return comObject;
         }
 

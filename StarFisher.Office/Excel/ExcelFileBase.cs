@@ -9,12 +9,12 @@ using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
 
 namespace StarFisher.Office.Excel
 {
-    internal abstract class BaseExcelFile : IExcelFile
+    internal abstract class ExcelFileBase : IExcelFile
     {
         private readonly Workbook _workbook;
         private bool _isDisposed;
 
-        protected BaseExcelFile(Action<ComObjectManager, Worksheet> buildWorksheet)
+        protected ExcelFileBase(Action<ComObjectManager, Worksheet> buildWorksheet)
         {
             if (buildWorksheet == null)
                 throw new ArgumentNullException(nameof(buildWorksheet));

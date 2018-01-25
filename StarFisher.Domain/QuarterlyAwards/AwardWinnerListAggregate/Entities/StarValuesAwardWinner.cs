@@ -5,23 +5,18 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
 {
-    public class StarValuesAwardWinner : AwardWinner
+    public class StarValuesAwardWinner : AwardWinnerBase
     {
-        private static readonly AwardAmount StarValuesAwardAmount = AwardAmount.Create(350);
-
-        internal StarValuesAwardWinner(int id, PersonName name, OfficeLocation officeLocation, IEnumerable<CompanyValue> companyValues, IEnumerable<NominationWriteUp> nominationWriteUps, EmailAddress emailAddress)
-            : base(id, AwardType.StarValues, name, officeLocation, StarValuesAwardAmount)
+        internal StarValuesAwardWinner(int id, Person person, IEnumerable<CompanyValue> companyValues, IEnumerable<NominationWriteUp> nominationWriteUps)
+            : base(id, person, AwardType.StarValues, AwardAmount.StarValues)
         {
             CompanyValues = companyValues?.ToList() ?? throw new ArgumentNullException(nameof(companyValues));
             NominationWriteUps = nominationWriteUps?.ToList() ??
                                  throw new ArgumentNullException(nameof(nominationWriteUps));
-            EmailAddress = emailAddress ?? throw new ArgumentNullException(nameof(emailAddress));
         }
 
         public IReadOnlyCollection<CompanyValue> CompanyValues { get; }
 
         public IReadOnlyCollection<NominationWriteUp> NominationWriteUps { get; }
-
-        public EmailAddress EmailAddress { get; }
     }
 }

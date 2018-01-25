@@ -2,12 +2,10 @@
 
 namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
 {
-    public class StarRisingAwardWinner : AwardWinner
+    public class StarRisingAwardWinner : AwardWinnerBase
     {
-        private static readonly AwardAmount StarRisingAwardAmount = AwardAmount.Create(100);
-
-        internal StarRisingAwardWinner(int id, PersonName name, OfficeLocation officeLocation)
-            : base(id, AwardType.StarRising, name, officeLocation, StarRisingAwardAmount)
+        internal StarRisingAwardWinner(int id, Person person)
+            : base(id, person, AwardType.StarRising, AwardAmount.StarRising)
         { }
     }
 }

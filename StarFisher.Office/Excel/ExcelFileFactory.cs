@@ -1,5 +1,6 @@
 ﻿using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Office.Excel
 {
@@ -13,11 +14,15 @@ namespace StarFisher.Office.Excel
 
         IExcelFile GetStarValuesWinnersMemoSourceExcelFile(AwardWinnerList awardWinnerList);
 
+        IExcelFile GetStarValuesCertificateSourceExcelFile(AwardWinnerList awardWinnerList, params OfficeLocation[] officeLocations);
+
         IExcelFile GetStarRisingVotingGuideSourceExcelFile(NominationList nominationList);
 
         IExcelFile GetStarRisingVotingKeyExcelFile(NominationList nominationList);
 
         IExcelFile GetStarRisingNominationNotificationEmailSourceExcelFile(NominationList nominationList);
+
+        IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList);
     }
 
     public class ExcelFileFactory : IExcelFileFactory
@@ -42,6 +47,11 @@ namespace StarFisher.Office.Excel
             return new StarValuesWinnersMemoSourceExcelFile(awardWinnerList);
         }
 
+        public IExcelFile GetStarValuesCertificateSourceExcelFile(AwardWinnerList awardWinnerList, params OfficeLocation[] officeLocations)
+        {
+            return new StarValuesCertificateSourceExcelFile(awardWinnerList, officeLocations);
+        }
+
         public IExcelFile GetStarRisingVotingGuideSourceExcelFile(NominationList nominationList)
         {
             return new StarRisingVotingGuideSourceExcelFile(nominationList);
@@ -55,6 +65,11 @@ namespace StarFisher.Office.Excel
         public IExcelFile GetStarRisingNominationNotificationEmailSourceExcelFile(NominationList nominationList)
         {
             return new StarRisingNominationNotificationEmailSourceExcelFile(nominationList);
+        }
+
+        public IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList)
+        {
+            return new AwardsLunchInviteeListExcelFile(nominationList, awardWinnerList);
         }
     }
 }

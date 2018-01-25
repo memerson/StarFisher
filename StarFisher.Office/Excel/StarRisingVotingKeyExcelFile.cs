@@ -2,7 +2,7 @@
 
 namespace StarFisher.Office.Excel
 {
-    internal class StarRisingVotingKeyExcelFile : VotingKeyExcelFile
+    internal class StarRisingVotingKeyExcelFile : VotingKeyExcelFileBase
     {
         public StarRisingVotingKeyExcelFile(NominationList nominationList) 
             : base(nominationList?.StarRisingNominees) { }

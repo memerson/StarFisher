@@ -28,15 +28,40 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public IReadOnlyCollection<Nomination> Nominations { get; }
 
-        public IReadOnlyCollection<Nomination> StarRisingNominees => GetNominationsByAwardType(AwardType.StarRising);
+        public IReadOnlyCollection<Nomination> StarRisingNominees => GetNominationsByAwardType(AwardType.StarRising).ToList();
 
-        public IReadOnlyCollection<Nomination> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues);
+        public IReadOnlyCollection<Person> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues)
+            .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
+                        n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
+                        n.NomineeOfficeLocation == OfficeLocation.EchoBrentwood)
+            .Select(n => n.GetNominee())
+            .Distinct()
+            .ToList();
 
-        public IReadOnlyCollection<Nomination> StarValuesNominees => GetNominationsByAwardType(AwardType.StarValues);
+        public IReadOnlyCollection<Nomination> StarValuesNominees => GetNominationsByAwardType(AwardType.StarValues).ToList();
 
-        private List<Nomination> GetNominationsByAwardType(AwardType awardType)
+        public void UpdateNomineeName(PersonName oldNomineeName, PersonName newNomineeName, bool deriveEmailAddress)
         {
-            return Nominations.Where(n => n.AwardType == awardType).ToList();
+            if(oldNomineeName == null)
+                throw new ArgumentNullException(nameof(oldNomineeName));
+            if (newNomineeName == null)
+                throw new ArgumentNullException(nameof(newNomineeName));
+
+            if (oldNomineeName == newNomineeName)
+                return;
+
+            var nominations = Nominations.Where(n => n.NomineeName == oldNomineeName);
+
+            foreach (var nomination in nominations)
+            {
+                nomination.UpdateNomineeName(newNomineeName, deriveEmailAddress);
+                IsDirty = true;
+            }
+        }
+
+        private IEnumerable<Nomination> GetNominationsByAwardType(AwardType awardType)
+        {
+            return Nominations.Where(n => n.AwardType == awardType);
         }
 
         private static void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)

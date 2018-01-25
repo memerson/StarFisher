@@ -61,7 +61,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
                 NomineeVotingIdentifier.Create(NominationIds),
                 nomineeName,
                 PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),
-                ValueObjects.AwardType.Create(AwardType),
+                Domain.ValueObjects.AwardType.Create(AwardType),
                 OfficeLocation.Create(NomineeOfficeLocation),
                 companyValues,
                 NominationWriteUp.Create(nomineeName, WriteUp),

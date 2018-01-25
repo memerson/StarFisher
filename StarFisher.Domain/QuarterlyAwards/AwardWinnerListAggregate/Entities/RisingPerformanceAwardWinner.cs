@@ -2,10 +2,10 @@
 
 namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
 {
-    public class RisingPerformanceAwardWinner : PerformanceAwardWinner
+    public class RisingPerformanceAwardWinner : PerformanceAwardWinnerBase
     {
-        public RisingPerformanceAwardWinner(int id, PersonName name, OfficeLocation officeLocation, AwardAmount awardAmount, EmailAddress emailAddress, bool isFullTime)
-            : base(id, AwardType.RisingPerformance, name, officeLocation, awardAmount, emailAddress, isFullTime)
+        public RisingPerformanceAwardWinner(int id, Person person, AwardAmount awardAmount, bool isFullTime)
+            : base(id, person, AwardType.RisingPerformance, awardAmount, isFullTime)
         { }
     }
 }

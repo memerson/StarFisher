@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
@@ -28,7 +27,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 
         public PersonName NominatorName { get; }
 
-        public PersonName NomineeName { get; }
+        public PersonName NomineeName { get; private set; }
 
         public AwardType AwardType { get; }
 
@@ -41,6 +40,20 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
         public NominationWriteUpSummary WriteUpSummary { get; }
 
         public EmailAddress NomineeEmailAddress { get; private set; }
+
+        public void UpdateNomineeName(PersonName newNomineeName, bool deriveEmailAddress)
+        {
+            NomineeName = newNomineeName ?? throw new ArgumentNullException(nameof(newNomineeName));
+
+            if (deriveEmailAddress)
+                NomineeEmailAddress = NomineeName.DerivedEmailAddress;
+        }
+
+        public Person GetNominee()
+        {
+            // TODO: Refactor
+            return Person.Create(NomineeName, NomineeOfficeLocation, NomineeEmailAddress);
+        }
 
         internal void SetVotingIdentifier(NomineeVotingIdentifier votingIdentifier)
         {

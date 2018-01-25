@@ -6,6 +6,8 @@ namespace StarFisher.Domain.ValueObjects
     {
         public static readonly EmailAddress Invalid = new EmailAddress(@"INVALID");
 
+        public static readonly EmailAddress None = new EmailAddress(string.Empty);
+
         private const string EmailAddressFromNameFormat = @"{0}.{1}@healthstream.com";
 
         private EmailAddress(string emailAddressText)

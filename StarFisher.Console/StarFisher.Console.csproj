@@ -42,6 +42,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menu\Common\Argument.cs" />
+    <Compile Include="Menu\Common\ArgumentType.cs" />
+    <Compile Include="Menu\Common\CommandOutput.cs" />
+    <Compile Include="Menu\Common\CommandResult.cs" />
+    <Compile Include="Menu\Common\CommandResultType.cs" />
+    <Compile Include="Menu\Common\ICommand.cs" />
+    <Compile Include="Menu\Common\CommandInput.cs" />
+    <Compile Include="Menu\Common\IParameter.cs" />
+    <Compile Include="Menu\Common\ParameterBase.cs" />
+    <Compile Include="Menu\Common\WorkflowBase.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\CheckGlobalAddressListCommand.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\FixNomineeNamesAndEmailAddressesWorkflow.cs" />
     <Compile Include="Commands\CreateStarValuesVotingGuideCommand.cs" />
     <Compile Include="Commands\FindInvalidNominationWriteUpsCommand.cs" />
     <Compile Include="Commands\Common\BaseCommand.cs" />
@@ -52,6 +65,8 @@
     <Compile Include="Commands\ComposeNomineeValidationEmailForHumanResourcesCommand.cs" />
     <Compile Include="Commands\LoadSurveyExportCommand.cs" />
     <Compile Include="Commands\SetWorkingDirectoryCommand.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeNameParameter.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeNameToChangeParameter.cs" />
     <Compile Include="StarFisherContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,5 +96,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

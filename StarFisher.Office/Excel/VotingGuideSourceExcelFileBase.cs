@@ -7,9 +7,9 @@ using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal abstract class VotingGuideSourceExcelFile : BaseExcelFile
+    internal abstract class VotingGuideSourceExcelFileBase : ExcelFileBase
     {
-        protected VotingGuideSourceExcelFile(IEnumerable<Nomination> nominations)
+        protected VotingGuideSourceExcelFileBase(IEnumerable<Nomination> nominations)
             : base((com, worksheet) => BuildWorksheet(com,
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),
                 worksheet))

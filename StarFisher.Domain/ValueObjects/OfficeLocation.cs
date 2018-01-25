@@ -60,5 +60,7 @@ namespace StarFisher.Domain.ValueObjects
         {
             return SurveyName;
         }
+
+        public static implicit operator string(OfficeLocation officeLocation) => officeLocation?.ToString();
     }
 }

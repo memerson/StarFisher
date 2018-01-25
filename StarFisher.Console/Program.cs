@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using StarFisher.Console.Commands;
 using StarFisher.Console.Commands.Common;
+using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.Utilities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
+using StarFisher.Office.Outlook.AddressBook;
 using StarFisher.Office.Word;
 
 namespace StarFisher.Console
@@ -26,44 +30,83 @@ namespace StarFisher.Console
             var nominationList = nominationListRepository.LoadSurveyExport(filePath, Quarter.Fourth, Year.Create(2017));
             StarFisherContext.Current.SetContextNominationList(nominationList);
 
-            var winners = new AwardWinnerList(Quarter.Fourth, Year.Create(2017));
-            var winnerName = PersonName.Create("Jane Doe");
-            winners.AddStarValuesWinner(winnerName, OfficeLocation.EchoBrentwood,
-                new[] {CompanyValue.CustomerFocus, CompanyValue.Innovation},
-                new[]
-                {
-                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens."),
-                        NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens.")
-                }, EmailAddress.Create("jonh.doe@healthstream.com"));
-            winners.AddStarValuesWinner(winnerName, OfficeLocation.EchoBrentwood,
-                new[] { CompanyValue.CustomerFocus, CompanyValue.Innovation },
-                new[]
-                {
-                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens."),
-                    NominationWriteUp.Create(winnerName, "Lorem ipsum dolor sit amet, ex mea nibh populo, mei doming eligendi sententiae no. An eam vitae ceteros constituam, at vim essent iudicabit intellegam. Ad assum aperiri nec, ex oportere adolescens has. Vim eu mazim utinam viderer. Modo justo at his, cum aperiam fuisset an, ex falli animal eos. Utinam legere ei ius, melius signiferumque qui te, ad quidam eripuit his. Vim nulla tritani accusam an, vel ut aliquam minimum eleifend. Saepe habemus necessitatibus his at, pri probo dignissim et. Sea sint nominavi consulatu eu, eam periculis dignissim in. Ad pro inani volumus adolescens.")
-                }, EmailAddress.Create("jonh.doe@healthstream.com"));
-
-            mailMergeFactory.GetStarValuesWinnersMemoMailMerge(winners).Execute();
-            //var outFilePath = @"C:\Users\memerson\Desktop\EIA\2018\Q1\out.xlsx";
-            //using (var excelFile = excelFileFactory.GetStarValuesWinnersMemoSourceExcelFile(winners))
-            //    excelFile.Save(FilePath.Create(outFilePath, false));
-
             PrintSplash();
 
-            var commands = new List<ICommand>
+            var awardWinnerList = new AwardWinnerList(Quarter.Fourth, Year.Create(2017));
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Makayla Johnson"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformanceFullTimeFirstPlace,
+                true);
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Kay Fortner "),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformanceFullTimeSecondPlace,
+                true);
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Jan Spaeth"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformanceFullTimeThirdPlace,
+                true);
+
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Angela Mayer"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformancePartTimeFirstPlace,
+                false);
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Lamesha Wells"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformancePartTimeSecondPlace,
+                false);
+            awardWinnerList.AddStarPerformanceAwardWinner(
+                Person.Create(PersonName.Create("John Boggan"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.StarPerformancePartTimeThirdPlace,
+                false);
+
+            awardWinnerList.AddRisingPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Cesilia Carlos"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.RisingPerformanceFullTime,
+                true);
+            awardWinnerList.AddRisingPerformanceAwardWinner(
+                Person.Create(PersonName.Create("Bernadine Upson"),
+                    OfficeLocation.HighlandRidge,
+                    EmailAddress.None),
+                AwardAmount.RisingPerformancePartTime,
+                false);
+
+            var starValuesWinnerNames = new List<PersonName>
             {
-                new LoadSurveyExportCommand(nominationListRepository),
-                new ListNomineeNamesCommand(),
-                new FindInvalidNominationWriteUpsCommand(),
-                new ComposeNomineeValidationEmailForHumanResourcesCommand(emailFactory),
-                new CreateStarValuesVotingGuideCommand(mailMergeFactory),
-                new ExitCommand()
+                PersonName.Create("Alexandru Rusu"),
+                PersonName.Create("Carol Selawski"),
+                PersonName.Create("Deanna Buhl"),
+                PersonName.Create("Gregory Savage"),
+                PersonName.Create("Kristine Dizon"),
+                PersonName.Create("Matt Emerson"),
+                PersonName.Create("Van Irwin")
             };
 
-            for (;;)
+            foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
             {
-                if (!HandleCommand(commands))
-                    return;
+                var nominations = nominationList.Nominations
+                    .Where(n => n.NomineeName == starValuesWinnerName)
+                    .ToList();
+
+                // TODO: Handle same name different office
+
+                var person = nominations.Select(n => n.GetNominee()).First();
+                var writeUps = nominations.Select(n => n.WriteUp).ToList();
+                var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
+                awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
             }
         }
 
@@ -112,4 +155,4 @@ namespace StarFisher.Console
             System.Console.WriteLine();
         }
     }
-}    
+}

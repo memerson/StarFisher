@@ -7,6 +7,8 @@ namespace StarFisher.Domain.ValueObjects
     {
         private PersonName(string nameText, bool isAnonymous)
         {
+            // TODO: Account for invalid names.
+
             RawNameText = nameText ?? string.Empty;
             IsAnonymous = isAnonymous;
             FullName = string.Empty;
@@ -28,12 +30,14 @@ namespace StarFisher.Domain.ValueObjects
                     LastName = nameParts[1];
                     FullName = $@"{FirstName} {LastName}";
                     FullNameLastNameFirst = $@"{LastName}, {FirstName}";
-                    DerivedEmailAddress = EmailAddress.Create(nameParts[0], nameParts[1]);
+                    DerivedEmailAddress = EmailAddress.Create(FirstName, LastName);
                     break;
                 case 3:
+                    FirstName = nameParts[0];
+                    LastName = nameParts[2];
                     FullName = $@"{FirstName} {nameParts[1]} {LastName}";
                     FullNameLastNameFirst = $@"{LastName}, {FirstName} {nameParts[1]}";
-                    DerivedEmailAddress = EmailAddress.Create(nameParts[0], LastName);
+                    DerivedEmailAddress = EmailAddress.Create(FirstName, LastName);
                     break;
             }
         }
@@ -60,6 +64,18 @@ namespace StarFisher.Domain.ValueObjects
         internal static PersonName CreateForNominator(string nameText, bool isAnonymous)
         {
             return new PersonName(nameText, isAnonymous);
+        }
+
+        public static bool IsValid(string nameText)
+        {
+            if (string.IsNullOrWhiteSpace(nameText))
+                return false;
+
+            var nameParts = nameText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            if (nameParts.Length < 2 || nameParts.Length > 3)
+                return false;
+
+            return true;
         }
 
         protected override bool EqualsCore(PersonName other)

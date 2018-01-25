@@ -7,7 +7,7 @@ using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal class AwardsLunchInviteeListExcelFile : BaseExcelFile
+    internal class AwardsLunchInviteeListExcelFile : ExcelFileBase
     {
         public AwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList)
             : base((com, worksheet) => BuildWorksheet(com,
@@ -20,16 +20,11 @@ namespace StarFisher.Office.Excel
         {
             var cells = com.Get(() => workSheet.Cells);
 
-            var attendees = nominationList.AwardsLuncheonInvitees
-                .Select(n => new
-                {
-                    Name = n.NomineeName,
-                    OfficeLocation = n.NomineeOfficeLocation,
-                    EmailAddress = n.NomineeEmailAddress
-                })
-                .Union(awardWinnerList.PerformanceAwardWinners
-                    .Select(w => new { w.Name, w.OfficeLocation, w.EmailAddress }))
-                .OrderBy(i => new { i.OfficeLocation, i.Name })
+            var attendees = nominationList
+                .AwardsLuncheonInvitees
+                .Concat(awardWinnerList.PerformanceAwardWinners.Select(w => w.Person))
+                .OrderBy(i => i.OfficeLocation.ToString())
+                .ThenBy(i => i.Name.FullName)
                 .ToList();
 
             cells.NumberFormat = "@"; // Format all cells as text.
@@ -44,7 +39,7 @@ namespace StarFisher.Office.Excel
                 var attendee = attendees[i];
 
                 SetCellValue(cells, rowNumber, 1, attendee.Name.FullName);
-                SetCellValue(cells, rowNumber, 2, attendee.OfficeLocation);
+                SetCellValue(cells, rowNumber, 2, attendee.OfficeLocation.ToString());
                 SetCellValue(cells, rowNumber, 3, attendee.EmailAddress.ToString());
             }
         }

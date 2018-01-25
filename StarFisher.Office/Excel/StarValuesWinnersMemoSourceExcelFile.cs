@@ -10,7 +10,7 @@ using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal class StarValuesWinnersMemoSourceExcelFile : BaseExcelFile
+    internal class StarValuesWinnersMemoSourceExcelFile : ExcelFileBase
     {
         public StarValuesWinnersMemoSourceExcelFile(AwardWinnerList awardWinnerList)
             : base((com, worksheet) => BuildWorksheet(com,

@@ -3,7 +3,7 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Office.Excel
 {
-    internal class StarRisingNominationNotificationEmailSourceExcelFile : NominationNotificationEmailSourceExcelFile
+    internal class StarRisingNominationNotificationEmailSourceExcelFile : NominationNotificationEmailSourceExcelFileBase
     {
         public StarRisingNominationNotificationEmailSourceExcelFile(NominationList nominationList)
             : base(nominationList?.Quarter, nominationList?.StarRisingNominees)
