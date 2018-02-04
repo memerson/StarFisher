@@ -1,4 +1,5 @@
-﻿using StarFisher.Domain.Common;
+﻿using System.Text.RegularExpressions;
+using StarFisher.Domain.Common;
 
 namespace StarFisher.Domain.ValueObjects
 {
@@ -9,6 +10,9 @@ namespace StarFisher.Domain.ValueObjects
         public static readonly EmailAddress None = new EmailAddress(string.Empty);
 
         private const string EmailAddressFromNameFormat = @"{0}.{1}@healthstream.com";
+
+        private static readonly Regex ValidationRegex = new Regex(@"^\w+([-+.']\w+)*@healthstream\.com$",
+            RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         private EmailAddress(string emailAddressText)
         {
@@ -28,7 +32,14 @@ namespace StarFisher.Domain.ValueObjects
             return new EmailAddress(string.Format(EmailAddressFromNameFormat, firstName, lastName));
         }
 
+        public static bool GetIsValid(string emailAddressText)
+        {
+            return !string.IsNullOrWhiteSpace(emailAddressText) && ValidationRegex.IsMatch(emailAddressText);
+        }
+
         public string Value { get; }
+
+        public bool IsValid => GetIsValid(Value);
 
         protected override bool EqualsCore(EmailAddress other)
         {

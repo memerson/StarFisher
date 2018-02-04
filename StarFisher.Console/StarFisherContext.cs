@@ -4,7 +4,25 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console
 {
-    public class StarFisherContext
+    public interface IWorkingDirectoryContext
+    {
+        DirectoryPath WorkingDirectoryPath { get; }
+
+        bool HasWorkingDirectoryPathSet { get; }
+    }
+
+    public interface IStarFisherContext : IWorkingDirectoryContext
+    {
+        void SetContextNominationList(NominationList nominationList);
+
+        void SetWorkingDirectoryPath(DirectoryPath directoryPath);
+
+        NominationList NominationList { get; }
+
+        bool HasNominationListLoaded { get; }
+    }
+
+    public class StarFisherContext : IStarFisherContext
     {
         public static readonly StarFisherContext Current = new StarFisherContext();
 

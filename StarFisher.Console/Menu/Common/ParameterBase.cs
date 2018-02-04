@@ -1,5 +1,6 @@
 ﻿
 using System;
+using StarFisher.Console.Utilities;
 
 namespace StarFisher.Console.Menu.Common
 {
@@ -18,20 +19,27 @@ namespace StarFisher.Console.Menu.Common
 
         protected static void Write(string text) => System.Console.Write(text);
 
+        protected static void WriteRed(string text)
+        {
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+                Write(text);
+        }
+
         protected static void WriteLine(string text) => System.Console.WriteLine(text);
 
         protected static void WriteLine() => System.Console.WriteLine();
 
-        protected static void WriteLineRed(string message)
+        protected static void WriteLineRed(string text)
         {
-            System.Console.ForegroundColor = ConsoleColor.Red;
-            WriteLine(message);
-            System.Console.ResetColor();
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+                WriteLine(text);
         }
 
         protected static void WaitForKeyPress() => System.Console.ReadKey();
 
         protected static string ReadLine() => System.Console.ReadLine()?.Trim();
+
+        protected static string ReadInput() => ReadLine().Replace("'", string.Empty);
 
         protected static void ClearLastLine()
         {
@@ -40,10 +48,10 @@ namespace StarFisher.Console.Menu.Common
             System.Console.SetCursorPosition(0, System.Console.CursorTop - 1);
         }
 
-        protected static void PrintInvalidArgumentMessage(string message)
+        protected static void PrintInvalidArgumentMessage(string text)
         {
             WriteLine();
-            WriteLineRed(message);
+            WriteLineRed(text);
         }
     }
 }

@@ -8,51 +8,51 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public class Nomination : Entity
     {
-        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, PersonName nomineeName, PersonName nominatorName, AwardType nomineeAwardType, OfficeLocation nomineeOfficeLocation, IEnumerable<CompanyValue> companyValues, NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary, EmailAddress nomineeEmailAddress)
+        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, Person nominee, AwardType nomineeAwardType, PersonName nominatorName, IEnumerable<CompanyValue> companyValues, NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary)
             : base(id)
         {
             VotingIdentifier = votingIdentifier;
-            NominatorName = nominatorName ?? throw new ArgumentNullException(nameof(nominatorName));
-            NomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
+            Nominee = nominee ?? throw new ArgumentNullException(nameof(nominee));
             AwardType = nomineeAwardType ?? throw new ArgumentNullException(nameof(nomineeAwardType));
-            NomineeOfficeLocation = nomineeOfficeLocation ??
-                                    throw new ArgumentNullException(nameof(nomineeOfficeLocation));
+            NominatorName = nominatorName ?? throw new ArgumentNullException(nameof(nominatorName));
             CompanyValues = companyValues?.ToList() ?? new List<CompanyValue>();
             WriteUp = writeUp;
             WriteUpSummary = writeUpSummary;
-            NomineeEmailAddress = nomineeEmailAddress ?? throw new ArgumentNullException(nameof(nomineeEmailAddress));
         }
 
         public NomineeVotingIdentifier VotingIdentifier { get; private set; }
 
-        public PersonName NominatorName { get; }
+        internal Person Nominee { get; private set; }
 
-        public PersonName NomineeName { get; private set; }
+        public PersonName NomineeName => Nominee.Name;
+
+        public OfficeLocation NomineeOfficeLocation => Nominee.OfficeLocation;
+
+        public EmailAddress NomineeEmailAddress => Nominee.EmailAddress;
 
         public AwardType AwardType { get; }
 
-        public OfficeLocation NomineeOfficeLocation { get; }
+        public PersonName NominatorName { get; }
 
         public IReadOnlyCollection<CompanyValue> CompanyValues { get; }
 
-        public NominationWriteUp WriteUp { get; }
+        public NominationWriteUp WriteUp { get; private set; }
 
         public NominationWriteUpSummary WriteUpSummary { get; }
 
-        public EmailAddress NomineeEmailAddress { get; private set; }
-
-        public void UpdateNomineeName(PersonName newNomineeName, bool deriveEmailAddress)
+        internal void UpdateNomineeName(PersonName newNomineeName)
         {
-            NomineeName = newNomineeName ?? throw new ArgumentNullException(nameof(newNomineeName));
-
-            if (deriveEmailAddress)
-                NomineeEmailAddress = NomineeName.DerivedEmailAddress;
+            Nominee = Nominee.UpdateName(newNomineeName);
         }
 
-        public Person GetNominee()
+        internal void UpdateNomineeEmailAddress(EmailAddress newEmailAddress)
         {
-            // TODO: Refactor
-            return Person.Create(NomineeName, NomineeOfficeLocation, NomineeEmailAddress);
+            Nominee = Nominee.UpdateEmailAddress(newEmailAddress);
+        }
+
+        internal void UpdateWriteUp(NominationWriteUp newWriteUp)
+        {
+            WriteUp = newWriteUp;
         }
 
         internal void SetVotingIdentifier(NomineeVotingIdentifier votingIdentifier)

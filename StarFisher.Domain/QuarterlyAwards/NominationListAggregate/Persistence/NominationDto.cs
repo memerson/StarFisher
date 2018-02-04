@@ -18,14 +18,14 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
             Id = nomination.Id;
             NominationIds = nomination.VotingIdentifier.NominationIds.ToList();
             NomineeName = nomination.NomineeName.ToString();
+            NomineeOfficeLocation = nomination.NomineeOfficeLocation.ToString();
+            NomineeEmailAddress = nomination.NomineeEmailAddress.ToString();
+            AwardType = nomination.AwardType.ToString();
             NominatorName = nomination.NominatorName.RawNameText;
             IsNominatorAnonymous = nomination.NominatorName.IsAnonymous;
-            AwardType = nomination.AwardType.ToString();
-            NomineeOfficeLocation = nomination.NomineeOfficeLocation.ToString();
             CompanyValues = nomination.CompanyValues.Select(cv => cv.ToString()).ToList();
             WriteUp = nomination.WriteUp.ToString();
             WriteUpSummary = nomination.WriteUpSummary.ToString();
-            NomineeEmailAddress = nomination.NomineeEmailAddress.ToString();
         }
 
         public int Id { get; set; }
@@ -34,13 +34,15 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         public string NomineeName { get; set; }
 
-        public string NominatorName { get; set; }
+        public string NomineeOfficeLocation { get; set; }
 
-        public bool IsNominatorAnonymous { get; set; }
+        public string NomineeEmailAddress { get; set; }
 
         public string AwardType { get; set; }
 
-        public string NomineeOfficeLocation { get; set; }
+        public string NominatorName { get; set; }
+
+        public bool IsNominatorAnonymous { get; set; }
 
         public List<string> CompanyValues { get; set; }
 
@@ -48,25 +50,23 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         public string WriteUpSummary { get; set; }
 
-        public string NomineeEmailAddress { get; set; }
-
         internal Nomination ToNomination()
         {
-            var nomineeName = PersonName.Create(NomineeName);
+            var nominee = Person.Create(PersonName.Create(NomineeName), OfficeLocation.Create(NomineeOfficeLocation),
+                EmailAddress.Create(NomineeEmailAddress));
+
             var companyValues = (CompanyValues ?? Enumerable.Empty<string>())
                 .Select(CompanyValue.Create)
                 .ToList();
 
             return new Nomination(Id,
                 NomineeVotingIdentifier.Create(NominationIds),
-                nomineeName,
-                PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),
+                nominee,
                 Domain.ValueObjects.AwardType.Create(AwardType),
-                OfficeLocation.Create(NomineeOfficeLocation),
+                PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),
                 companyValues,
-                NominationWriteUp.Create(nomineeName, WriteUp),
-                NominationWriteUpSummary.Create(WriteUpSummary),
-                EmailAddress.Create(NomineeEmailAddress));
+                NominationWriteUp.Create(nominee.Name, WriteUp),
+                NominationWriteUpSummary.Create(WriteUpSummary));
         }
     }
 }

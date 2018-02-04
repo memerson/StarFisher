@@ -109,10 +109,10 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
             var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus, hasIndividualIntegrity, hasPerformance);
 
-            var nomination = new Nomination(rowNumber, NomineeVotingIdentifier.Unknown, nomineeName, nominatorName,
-                awardType, nomineeOfficeLocation,
-                companyValues, writeUp, writeUpSummary,
-                EmailAddress.Create(nomineeName.FirstName, nomineeName.LastName));
+            var nominee = Person.Create(nomineeName, nomineeOfficeLocation, nomineeName.DerivedEmailAddress);
+
+            var nomination = new Nomination(rowNumber, NomineeVotingIdentifier.Unknown, nominee, awardType,
+                nominatorName, companyValues, writeUp, writeUpSummary);
 
             return nomination;
         }

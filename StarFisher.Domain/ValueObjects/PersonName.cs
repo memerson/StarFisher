@@ -54,6 +54,8 @@ namespace StarFisher.Domain.ValueObjects
 
         public string FullNameLastNameFirst { get; }
 
+        public bool IsValid => GetIsValid(RawNameText);
+
         public EmailAddress DerivedEmailAddress { get; }
 
         public static PersonName Create(string nameText)
@@ -66,16 +68,13 @@ namespace StarFisher.Domain.ValueObjects
             return new PersonName(nameText, isAnonymous);
         }
 
-        public static bool IsValid(string nameText)
+        public static bool GetIsValid(string nameText)
         {
             if (string.IsNullOrWhiteSpace(nameText))
                 return false;
 
             var nameParts = nameText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (nameParts.Length < 2 || nameParts.Length > 3)
-                return false;
-
-            return true;
+            return nameParts.Length >= 2 && nameParts.Length <= 3;
         }
 
         protected override bool EqualsCore(PersonName other)

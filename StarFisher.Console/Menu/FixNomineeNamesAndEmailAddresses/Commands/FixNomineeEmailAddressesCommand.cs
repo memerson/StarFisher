@@ -7,9 +7,9 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 {
-    public class FixNomineeNamesCommand : CommandBase<FixNomineeNamesCommand.Input, CommandOutput.None>
+    public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None>
     {
-        public FixNomineeNamesCommand() : base(@"Fix incorrect nominee names") { }
+        public FixNomineeEmailAddressesCommand() : base(@"Fix incorrect nominee email addresses") { }
 
         protected override CommandResult<CommandOutput.None> RunCore(Input input)
         {
@@ -17,21 +17,20 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
                 throw new ArgumentNullException(nameof(input));
 
             var nominationList = input.NominationList;
-            var unrecognizedNomineeNames = input.UnrecognizedNomineeNames;
+            var unrecognizedEmailAddresses = input.UnrecognizedEmailAddresses;
 
             for (; ; )
             {
-                var nomineeParameter =
-                    new NomineeToChangeNameParameter(nominationList.Nominees, unrecognizedNomineeNames);
+                var nomineeParameter = new NomineeToChangeEmailAddressParameter(nominationList.Nominees, unrecognizedEmailAddresses);
 
                 if (!TryGetArgumentValue(nomineeParameter, out Person nomineeToChange))
                     break;
 
-                var newNomineeNameParameter = new NewNomineeNameParameter(nomineeToChange);
-                if (!TryGetArgumentValue(newNomineeNameParameter, out PersonName newNomineeName))
+                var newNomineeNameParameter = new NewNomineeEmailAddressParameter(nomineeToChange);
+                if (!TryGetArgumentValue(newNomineeNameParameter, out EmailAddress newEmailAddress))
                     continue;
 
-                nominationList.UpdateNomineeName(nomineeToChange, newNomineeName);
+                nominationList.UpdateNomineeEmailAddress(nomineeToChange, newEmailAddress);
             }
 
             return CommandOutput.None.Success;
@@ -60,15 +59,15 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 
         public class Input : CommandInput
         {
-            public Input(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
+            public Input(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses)
             {
                 NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
-                UnrecognizedNomineeNames = unrecognizedNomineeNames ?? throw new ArgumentNullException(nameof(unrecognizedNomineeNames));
+                UnrecognizedEmailAddresses = unrecognizedEmailAddresses ?? throw new ArgumentNullException(nameof(unrecognizedEmailAddresses));
             }
 
             public NominationList NominationList { get; }
 
-            public IReadOnlyCollection<PersonName> UnrecognizedNomineeNames { get; }
+            public IReadOnlyCollection<EmailAddress> UnrecognizedEmailAddresses { get; }
         }
     }
 }

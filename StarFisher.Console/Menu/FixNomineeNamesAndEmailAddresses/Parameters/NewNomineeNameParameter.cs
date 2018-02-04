@@ -6,20 +6,20 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 {
     public class NewNomineeNameParameter : ParameterBase<PersonName>
     {
-        private readonly PersonName _oldNomineeName;
+        private readonly Person _nominee;
 
-        public NewNomineeNameParameter(PersonName oldNomineeName)
+        public NewNomineeNameParameter(Person nominee)
         {
-            _oldNomineeName = oldNomineeName ?? throw new ArgumentNullException(nameof(oldNomineeName));
+            _nominee = nominee ?? throw new ArgumentNullException(nameof(nominee));
         }
 
         public override Argument<PersonName> GetArgument()
         {
             WriteLine();
-            WriteLine($@"Enter the new name for the nominee currently named {_oldNomineeName.FullName}.");
+            WriteLine($@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.");
             Write(@"> ");
 
-            var input = ReadLine();
+            var input = ReadInput();
 
             if (string.IsNullOrWhiteSpace(input))
                 return Argument<PersonName>.Invalid;
@@ -27,7 +27,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
             if (string.Equals(@"done", input, StringComparison.InvariantCultureIgnoreCase))
                 return Argument<PersonName>.Abort;
 
-            return PersonName.IsValid(input)
+            return PersonName.GetIsValid(input)
                 ? Argument<PersonName>.Valid(PersonName.Create(input))
                 : Argument<PersonName>.Invalid;
         }

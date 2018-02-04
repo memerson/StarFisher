@@ -20,11 +20,21 @@ namespace StarFisher.Domain.ValueObjects
                 emailAddress ?? throw new ArgumentNullException(nameof(emailAddress)));
         }
 
-        public PersonName Name { get; }
+        public PersonName Name { get; private set; }
 
         public OfficeLocation OfficeLocation { get; }
 
         public EmailAddress EmailAddress { get; }
+
+        public Person UpdateName(PersonName newName)
+        {
+            return Create(newName, OfficeLocation, newName?.DerivedEmailAddress);
+        }
+
+        public Person UpdateEmailAddress(EmailAddress newEmailAddress)
+        {
+            return Create(Name, OfficeLocation, newEmailAddress);
+        }
 
         protected override bool EqualsCore(Person other)
         {

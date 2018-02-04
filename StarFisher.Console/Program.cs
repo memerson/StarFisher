@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using StarFisher.Console.Commands;
-using StarFisher.Console.Commands.Common;
-using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands;
+﻿using System;
+using System.Collections.Generic;
+using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.Exit;
+using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
+using StarFisher.Console.Menu.FixNomineeWriteUps;
+using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.Utilities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
@@ -28,6 +29,7 @@ namespace StarFisher.Console
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
             var emailFactory = new EmailFactory(configuration);
             var nominationList = nominationListRepository.LoadSurveyExport(filePath, Quarter.Fourth, Year.Create(2017));
+            var globalAddressList = new GlobalAddressList();
             StarFisherContext.Current.SetContextNominationList(nominationList);
 
             PrintSplash();
@@ -95,49 +97,59 @@ namespace StarFisher.Console
                 PersonName.Create("Van Irwin")
             };
 
-            foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
+            //foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
+            //{
+            //    var nominations = nominationList.Nominations
+            //        .Where(n => n.NomineeName == starValuesWinnerName)
+            //        .ToList();
+
+            //    // TODO: Handle same name different office
+
+            //    var person = nominations.Select(n => n.Nominee).First();
+            //    var writeUps = nominations.Select(n => n.WriteUp).ToList();
+            //    var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
+            //    awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
+            //}
+
+            var menuItems = new List<MenuItem>
             {
-                var nominations = nominationList.Nominations
-                    .Where(n => n.NomineeName == starValuesWinnerName)
-                    .ToList();
+                new FixNomineeNamesAndEmailAddressesMenuItemCommand().GetMenuItem(new FixNomineeNamesAndEmailAddressesMenuItemCommand.Input(globalAddressList, nominationList)),
+                new FixNomineeWriteUpsMenuItemCommand().GetMenuItem(new FixNomineeWriteUpsMenuItemCommand.Input(nominationList)),
+                new ExitCommand().GetMenuItem(CommandInput.None.Instance)
+            };
 
-                // TODO: Handle same name different office
-
-                var person = nominations.Select(n => n.GetNominee()).First();
-                var writeUps = nominations.Select(n => n.WriteUp).ToList();
-                var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-                awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
-            }
+            var topLevelMenu = new TopLevelMenuCommand().GetMenuItem(new TopLevelMenuCommand.Input(menuItems));
+            topLevelMenu.Run();
         }
 
-        private static bool HandleCommand(IEnumerable<ICommand> commands)
-        {
-            var commandText = System.Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(commandText))
-                return true;
+        //private static bool HandleCommand(IEnumerable<ICommand> commands)
+        //{
+        //    var commandText = System.Console.ReadLine();
+        //    if (string.IsNullOrWhiteSpace(commandText))
+        //        return true;
 
-            foreach (var command in commands)
-            {
-                var result = command.TryExecute(commandText);
+        //    foreach (var command in commands)
+        //    {
+        //        var result = command.TryExecute(commandText);
 
-                if (!result.ExecutionAttempted)
-                    continue;
+        //        if (!result.ExecutionAttempted)
+        //            continue;
 
-                if (command is ExitCommand)
-                    return false;
+        //        if (command is ExitCommand)
+        //            return false;
 
-                if (result.ExecutionFailed)
-                {
-                    System.Console.WriteLine(result.ErrorText ?? "Something strange happened.");
-                    break;
-                }
+        //        if (result.ExecutionFailed)
+        //        {
+        //            System.Console.WriteLine(result.ErrorText ?? "Something strange happened.");
+        //            break;
+        //        }
 
-                if (result.ExecutionSucceeded)
-                    break;
-            }
+        //        if (result.ExecutionSucceeded)
+        //            break;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         private static void PrintSplash()
         {
