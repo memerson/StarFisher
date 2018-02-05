@@ -22,7 +22,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 
         public NomineeVotingIdentifier VotingIdentifier { get; private set; }
 
-        internal Person Nominee { get; private set; }
+        public Person Nominee { get; private set; }
 
         public PersonName NomineeName => Nominee.Name;
 

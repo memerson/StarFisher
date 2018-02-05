@@ -27,8 +27,12 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         public NominationList ToNominationList()
         {
+            var nominations = (Nominations ?? Enumerable.Empty<NominationDto>())
+                .Select(n => n.ToNomination())
+                .ToList();
+
             return new NominationList(Domain.ValueObjects.Quarter.Create(Quarter),
-                Domain.ValueObjects.Year.Create(Year), Nominations.Select(n => n.ToNomination()).ToList());
+                Domain.ValueObjects.Year.Create(Year), nominations);
         }
     }
 }

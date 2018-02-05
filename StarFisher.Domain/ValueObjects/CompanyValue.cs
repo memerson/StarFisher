@@ -28,7 +28,7 @@ namespace StarFisher.Domain.ValueObjects
             Value = value;
         }
 
-        public static CompanyValue Create(string companyValueText)
+        internal static CompanyValue Create(string companyValueText)
         {
             var companyValue = ValidCompanyValues.FirstOrDefault(cv => cv.ToString() == companyValueText);
             return companyValue ?? Invalid;

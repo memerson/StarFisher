@@ -26,7 +26,7 @@ namespace StarFisher.Domain.ValueObjects
             NumericValue = numericValue;
         }
 
-        public static Quarter Create(int numericValue)
+        internal static Quarter Create(int numericValue)
         {
             var quarter = ValidQuarters.FirstOrDefault(q => q.NumericValue == numericValue);
             return quarter ?? Invalid;

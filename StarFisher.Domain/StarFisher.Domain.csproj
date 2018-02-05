@@ -60,11 +60,14 @@
     <Compile Include="Common\Repository.cs" />
     <Compile Include="Common\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\AwardWinnerListRepository.cs" />
     <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\PerformanceAwardWinnerBase.cs" />
     <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\RisingPerformanceAwardWinner.cs" />
     <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\StarPerformanceAwardWinner.cs" />
     <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\StarRisingAwardWinner.cs" />
     <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\StarValuesAwardWinner.cs" />
+    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Perisistence\AwardWinnerDto.cs" />
+    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Perisistence\AwardWinnerListDto.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\Nomination.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\NominationList.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\NominationListRepository.cs" />

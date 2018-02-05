@@ -55,6 +55,7 @@
     <Compile Include="Menu\Common\IParameter.cs" />
     <Compile Include="Menu\Common\MenuItemCommandBase.cs" />
     <Compile Include="Menu\Common\ParameterBase.cs" />
+    <Compile Include="Menu\Common\UnitOfWork.cs" />
     <Compile Include="Menu\Common\WorkflowBase.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />

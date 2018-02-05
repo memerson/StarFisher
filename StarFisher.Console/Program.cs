@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
@@ -97,19 +97,19 @@ namespace StarFisher.Console
                 PersonName.Create("Van Irwin")
             };
 
-            //foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
-            //{
-            //    var nominations = nominationList.Nominations
-            //        .Where(n => n.NomineeName == starValuesWinnerName)
-            //        .ToList();
+            foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
+            {
+                var nominations = nominationList.Nominations
+                    .Where(n => n.NomineeName == starValuesWinnerName)
+                    .ToList();
 
-            //    // TODO: Handle same name different office
+                // TODO: Handle same name different office
 
-            //    var person = nominations.Select(n => n.Nominee).First();
-            //    var writeUps = nominations.Select(n => n.WriteUp).ToList();
-            //    var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-            //    awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
-            //}
+                var person = nominations.Select(n => n.Nominee).First();
+                var writeUps = nominations.Select(n => n.WriteUp).ToList();
+                var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
+                awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
+            }
 
             var menuItems = new List<MenuItem>
             {
@@ -122,35 +122,6 @@ namespace StarFisher.Console
             topLevelMenu.Run();
         }
 
-        //private static bool HandleCommand(IEnumerable<ICommand> commands)
-        //{
-        //    var commandText = System.Console.ReadLine();
-        //    if (string.IsNullOrWhiteSpace(commandText))
-        //        return true;
-
-        //    foreach (var command in commands)
-        //    {
-        //        var result = command.TryExecute(commandText);
-
-        //        if (!result.ExecutionAttempted)
-        //            continue;
-
-        //        if (command is ExitCommand)
-        //            return false;
-
-        //        if (result.ExecutionFailed)
-        //        {
-        //            System.Console.WriteLine(result.ErrorText ?? "Something strange happened.");
-        //            break;
-        //        }
-
-        //        if (result.ExecutionSucceeded)
-        //            break;
-        //    }
-
-        //    return true;
-        //}
-
         private static void PrintSplash()
         {
             System.Console.WriteLine();
@@ -159,10 +130,12 @@ namespace StarFisher.Console
             System.Console.WriteLine(@"      ,OOO,");
             System.Console.WriteLine(@"'oooooOOOOOooooo'     _________ __              ___________.__       .__");
             System.Console.WriteLine(@"  `OOOOOOOOOOO`      /   _____//  |______ ______\_   _____/|__| _____|  |__   ___________  ");
-            System.Console.WriteLine(@"    `OOOOOOO`        \_____  \\   __\__  \\_  __ \    __)  |  |/  ___/  |  \_/ __ \_  __ \");
-            System.Console.WriteLine(@"    OOOO'OOOO        /        \|  |  / __ \|  | \/     \   |  |\___ \|   Y  \  ___/|  | \/");
+            System.Console.WriteLine(@"    `OOOOOOO`        \_____  \\   __\__  \\_  __ \    __)  |  |/  ___/  |  \_/ __ \_  __ \ ");
+            System.Console.WriteLine(@"    OOOO'OOOO        /        \|  |  / __ \|  | \/     \   |  |\___ \|   Y  \  ___/|  | \/ ");
             System.Console.WriteLine(@"   OOO'   'OOO      /_______  /|__| (____  /__|  \___  /   |__/____  >___|  /\___  >__|    ");
             System.Console.WriteLine(@"  O'         'O             \/           \/          \/            \/     \/     \/        ");
+            System.Console.WriteLine(@"                                                                         Nashville Edition ");
+            System.Console.WriteLine(@"                                                                         By Matt Emerson   ");
             System.Console.WriteLine();
             System.Console.WriteLine();
         }

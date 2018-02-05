@@ -26,7 +26,7 @@ namespace StarFisher.Domain.ValueObjects
             Value = value;
         }
 
-        public static AwardType Create(string awardType)
+        internal static AwardType Create(string awardType)
         {
             if (string.IsNullOrWhiteSpace(awardType))
                 return Invalid;

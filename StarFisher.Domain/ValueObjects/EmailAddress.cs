@@ -16,7 +16,7 @@ namespace StarFisher.Domain.ValueObjects
 
         private EmailAddress(string emailAddressText)
         {
-            Value = emailAddressText;
+            Value = emailAddressText ?? string.Empty;
         }
 
         public static EmailAddress Create(string emailAddressText)
