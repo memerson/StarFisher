@@ -5,7 +5,12 @@ namespace StarFisher.Domain.Common
     {
         protected AggregateRoot(int id)
             : base(id)
-        {
-        }
+        { }
+
+        internal bool IsDirty { get; private set; }
+
+        internal void SetCurrent() => IsDirty = false;
+
+        protected void MarkAsDirty() => IsDirty = true;
     }
 }

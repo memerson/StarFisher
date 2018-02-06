@@ -8,9 +8,9 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 {
     internal class AwardWinnerDto
     {
-        public AwardWinnerDto() { }
+        internal AwardWinnerDto() { }
 
-        public AwardWinnerDto(AwardWinnerBase awardWinner)
+        internal AwardWinnerDto(AwardWinnerBase awardWinner)
         {
             if (awardWinner == null)
                 throw new ArgumentNullException(nameof(awardWinner));
@@ -54,7 +54,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 
         public List<string> NominationWriteUps { get; set; }
 
-        public AwardWinnerBase ToAwardWinner()
+        internal AwardWinnerBase ToAwardWinner()
         {
             var awardType = ValueObjects.AwardType.Create(AwardType);
 

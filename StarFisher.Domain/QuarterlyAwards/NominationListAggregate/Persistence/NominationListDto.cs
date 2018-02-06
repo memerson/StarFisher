@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,9 +6,9 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 {
     internal class NominationListDto
     {
-        public NominationListDto() { }
+        internal NominationListDto() { }
 
-        public NominationListDto(NominationList nominationList)
+        internal NominationListDto(NominationList nominationList)
         {
             if(nominationList == null)
                 throw new ArgumentNullException(nameof(nominationList));
@@ -25,14 +24,14 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         public List<NominationDto> Nominations { get; set; }
 
-        public NominationList ToNominationList()
+        internal NominationList ToNominationList()
         {
             var nominations = (Nominations ?? Enumerable.Empty<NominationDto>())
                 .Select(n => n.ToNomination())
                 .ToList();
 
-            return new NominationList(Domain.ValueObjects.Quarter.Create(Quarter),
-                Domain.ValueObjects.Year.Create(Year), nominations);
+            return new NominationList(Domain.ValueObjects.Year.Create(Year),
+                Domain.ValueObjects.Quarter.Create(Quarter), nominations);
         }
     }
 }

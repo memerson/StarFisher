@@ -6,11 +6,11 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
 {
     public class MenuItemIndexParameter : ParameterBase<int>
     {
-        private readonly IReadOnlyList<MenuItem> _menuItems;
+        private readonly IReadOnlyList<IMenuItemCommand> _menuItemCommands;
 
-        public MenuItemIndexParameter(IReadOnlyList<MenuItem> menuItems)
+        public MenuItemIndexParameter(IReadOnlyList<IMenuItemCommand> menuItemCommands)
         {
-            _menuItems = menuItems ?? throw new ArgumentNullException(nameof(menuItems));
+            _menuItemCommands = menuItemCommands ?? throw new ArgumentNullException(nameof(menuItemCommands));
         }
 
         public override Argument<int> GetArgument()
@@ -19,9 +19,9 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
             System.Console.WriteLine(@"What do you want to do? Enter the number of one of these menu items:");
             System.Console.WriteLine();
 
-            for (var i = 0; i < _menuItems.Count; ++i)
+            for (var i = 0; i < _menuItemCommands.Count; ++i)
             {
-                var menuItem = _menuItems[i];
+                var menuItem = _menuItemCommands[i];
                 System.Console.WriteLine($"{i + 1} {menuItem.Title}");
             }
 
@@ -33,7 +33,7 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
 
             var index = input - 1;
 
-            if(index < 0 || index >= _menuItems.Count)
+            if(index < 0 || index >= _menuItemCommands.Count)
                 return Argument<int>.Invalid;
 
             return Argument<int>.Valid(index);

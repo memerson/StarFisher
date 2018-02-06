@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
@@ -9,7 +10,11 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 {
     public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None>
     {
-        public FixNomineeEmailAddressesCommand() : base(@"Fix incorrect nominee email addresses") { }
+        private const string CommandTitle = @"Fix incorrect nominee email addresses";
+
+        public FixNomineeEmailAddressesCommand() : base(CommandTitle) { }
+
+        public FixNomineeEmailAddressesCommand(IStarFisherContext context) : base(context, CommandTitle) { }
 
         protected override CommandResult<CommandOutput.None> RunCore(Input input)
         {

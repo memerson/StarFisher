@@ -42,6 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\AwardWinnerListContext.cs" />
+    <Compile Include="Context\NominationListContext.cs" />
+    <Compile Include="Context\QuarterlyAwardsAggregateContext.cs" />
+    <Compile Include="Context\StarFisherContext.cs" />
     <Compile Include="Menu\Common\Argument.cs" />
     <Compile Include="Menu\Common\ArgumentType.cs" />
     <Compile Include="Menu\Common\CommandBase.cs" />
@@ -51,11 +55,9 @@
     <Compile Include="Menu\Common\ICommand.cs" />
     <Compile Include="Menu\Common\CommandInput.cs" />
     <Compile Include="Menu\Common\IMenuItemCommand.cs" />
-    <Compile Include="Menu\Common\MenuItem.cs" />
     <Compile Include="Menu\Common\IParameter.cs" />
     <Compile Include="Menu\Common\MenuItemCommandBase.cs" />
     <Compile Include="Menu\Common\ParameterBase.cs" />
-    <Compile Include="Menu\Common\UnitOfWork.cs" />
     <Compile Include="Menu\Common\WorkflowBase.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
@@ -70,7 +72,6 @@
     <Compile Include="Menu\FixNomineeWriteUps\Parameters\WriteUpActionParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
-    <Compile Include="StarFisherContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StarFisherConfiguration.cs" />

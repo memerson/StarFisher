@@ -1,18 +1,36 @@
 ﻿using StarFisher.Console.Menu.Common;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.TopLevelMenu.Parameters;
 
 namespace StarFisher.Console.Menu.TopLevelMenu
 {
-    public class TopLevelMenuCommand : MenuItemCommandBase<TopLevelMenuCommand.Input>
+    public class TopLevelMenuCommand : MenuItemCommandBase
     {
-        public TopLevelMenuCommand()
-            : base(@"Print the top-level menu") { }
+        private readonly IReadOnlyList<IMenuItemCommand> _menuItemCommands;
+        private const string CommandTitle = @"Print the top-level menu";
 
-        protected override CommandResult<CommandOutput.None> RunCore(Input input)
+        public TopLevelMenuCommand(IReadOnlyList<IMenuItemCommand> menuItemCommands)
+            : base(CommandTitle)
         {
-            var parameter = new MenuItemIndexParameter(input.MenuItems);
+            _menuItemCommands = menuItemCommands ?? throw new ArgumentNullException(nameof(menuItemCommands));
+
+            if (_menuItemCommands.Count == 0)
+                throw new ArgumentException(nameof(menuItemCommands));
+        }
+
+        public override bool GetCanRun()
+        {
+            return _menuItemCommands.Any(mi => mi.GetCanRun());
+        }
+
+        public TopLevelMenuCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+
+        protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
+        {
+            var parameter = new MenuItemIndexParameter(_menuItemCommands);
 
             for (;;)
             {
@@ -24,22 +42,9 @@ namespace StarFisher.Console.Menu.TopLevelMenu
                     argument = parameter.GetArgument();
                 }
 
-                var menuItem = input.MenuItems[argument.Value];
+                var menuItem = _menuItemCommands[argument.Value];
                 menuItem.Run();
             }
-        }
-
-        public class Input : CommandInput
-        {
-            public Input(IReadOnlyList<MenuItem> menuItems)
-            {
-                MenuItems = menuItems ?? throw new ArgumentNullException(nameof(menuItems));
-
-                if (MenuItems.Count == 0)
-                    throw new ArgumentException(nameof(menuItems));
-            }
-
-            public IReadOnlyList<MenuItem> MenuItems { get; }
         }
     }
 }

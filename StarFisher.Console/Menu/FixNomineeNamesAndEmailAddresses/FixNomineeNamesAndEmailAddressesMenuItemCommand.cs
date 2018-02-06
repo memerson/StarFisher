@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
@@ -9,25 +10,42 @@ using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
 {
-    public class FixNomineeNamesAndEmailAddressesMenuItemCommand : MenuItemCommandBase<FixNomineeNamesAndEmailAddressesMenuItemCommand.Input>
+    public class FixNomineeNamesAndEmailAddressesMenuItemCommand : MenuItemCommandBase
     {
-        public FixNomineeNamesAndEmailAddressesMenuItemCommand()
-            : base(@"Fix nominee names and email addresses") { }
+        private readonly IGlobalAddressList _globalAddressList;
+        private const string CommandTitle = @"Fix nominee names and email addresses";
 
-        protected override CommandResult<CommandOutput.None> RunCore(Input input)
+        public FixNomineeNamesAndEmailAddressesMenuItemCommand(IGlobalAddressList globalAddressList) : 
+            base(CommandTitle)
         {
-            Exception exception;
+            _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
+        }
 
-            if (!FixNomineeNames(input.GlobalAddressList, input.NominationList, out exception))
+        public FixNomineeNamesAndEmailAddressesMenuItemCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) :
+            base(context, CommandTitle)
+        {
+            _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
+        }
+
+        public override bool GetCanRun()
+        {
+            return Context.IsInitialized && Context.NominationListContext.HasNominationListLoaded;
+        }
+
+        protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
+        {
+            var nominationList = Context.NominationListContext.NominationList;
+
+            if (!FixNomineeNames(_globalAddressList, nominationList, out Exception exception))
                 return CommandResult<CommandOutput.None>.Failure(exception);
 
-            if(!FixNomineeEmailAddresses(input.GlobalAddressList, input.NominationList, out exception))
+            if (!FixNomineeEmailAddresses(_globalAddressList, nominationList, out exception))
                 return CommandResult<CommandOutput.None>.Failure(exception);
 
             return CommandOutput.None.Success;
         }
 
-        private static bool FixNomineeNames(IGlobalAddressList globalAddressList, NominationList nominationList, out Exception exception)
+        private bool FixNomineeNames(IGlobalAddressList globalAddressList, NominationList nominationList, out Exception exception)
         {
             var unrecognizedNomineeNames = GetUnrecognizedNomineeNames(globalAddressList, nominationList.Nominees);
             return FixNomineeNames(nominationList, unrecognizedNomineeNames, out exception);
@@ -39,9 +57,9 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             return FixNomineeEmailAddresses(nominationList, unrecognizedEmailAddresses, out exception);
         }
 
-        private static bool FixNomineeNames(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames, out Exception exception)
+        private bool FixNomineeNames(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames, out Exception exception)
         {
-            var fixNomineeNamesCommand = new FixNomineeNamesCommand();
+            var fixNomineeNamesCommand = new FixNomineeNamesCommand(Context);
             var input = new FixNomineeNamesCommand.Input(nominationList, unrecognizedNomineeNames);
             var commandResult = fixNomineeNamesCommand.Run(input);
 
@@ -55,9 +73,9 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             return true;
         }
 
-        private static bool FixNomineeEmailAddresses(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
+        private bool FixNomineeEmailAddresses(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
         {
-            var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand();
+            var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand(Context);
             var input = new FixNomineeEmailAddressesCommand.Input(nominationList, unrecognizedEmailAddresses);
             var commandResult = fixNomineeEmailAddressesCommand.Run(input);
 
@@ -87,19 +105,6 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
                 .Distinct()
                 .Where(emailAddress => !globalAddressList.GetPersonExists(emailAddress))
                 .ToList();
-        }
-
-        public class Input : CommandInput
-        {
-            public Input(IGlobalAddressList globalAddressList, NominationList nominationList)
-            {
-                GlobalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
-                NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
-            }
-
-            public IGlobalAddressList GlobalAddressList { get; }
-
-            public NominationList NominationList { get; }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeWriteUps.Parameters;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
@@ -7,13 +8,22 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.FixNomineeWriteUps
 {
-    public class FixNomineeWriteUpsMenuItemCommand : MenuItemCommandBase<FixNomineeWriteUpsMenuItemCommand.Input>
+    public class FixNomineeWriteUpsMenuItemCommand : MenuItemCommandBase
     {
-        public FixNomineeWriteUpsMenuItemCommand() : base(@"Fix nomination write-ups") { }
+        private const string CommandTitle = @"Fix nomination write-ups";
 
-        protected override CommandResult<CommandOutput.None> RunCore(Input input)
+        public FixNomineeWriteUpsMenuItemCommand() : base(CommandTitle) { }
+
+        public FixNomineeWriteUpsMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+
+        public override bool GetCanRun()
         {
-            var nominationList = input.NominationList;
+            return Context.IsInitialized && Context.NominationListContext.HasNominationListLoaded;
+        }
+
+        protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
+        {
+            var nominationList = Context.NominationListContext.NominationList;
 
             foreach (var nomination in nominationList.Nominations)
             {
@@ -78,16 +88,6 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
 
             newWriteUp = argument.Value;
             return true;
-        }
-
-        public class Input : CommandInput
-        {
-            public Input(NominationList nominationList)
-            {
-                NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
-            }
-
-            public NominationList NominationList { get; }
         }
     }
 }

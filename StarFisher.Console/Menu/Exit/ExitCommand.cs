@@ -1,11 +1,18 @@
 ﻿using System;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 
 namespace StarFisher.Console.Menu.Exit
 {
-    public class ExitCommand : MenuItemCommandBase<CommandInput.None>
+    public class ExitCommand : MenuItemCommandBase
     {
-        public ExitCommand() : base(@"Exit") { }
+        private const string CommandTitle = @"Exit";
+
+        public ExitCommand() : base(CommandTitle) { }
+
+        public ExitCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+
+        public override bool GetCanRun() => true;
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {

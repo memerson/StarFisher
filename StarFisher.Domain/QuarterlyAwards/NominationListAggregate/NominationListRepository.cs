@@ -1,35 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
 using LinqToExcel;
-using Newtonsoft.Json;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
-    public interface INominationListRepository
+    public interface INominationListRepository : IRepository<NominationList>
     {
-        NominationList LoadSurveyExport(FilePath filePath, Quarter quarter, Year year);
-
-        void SaveProgress(NominationList nominationList);
-
-        NominationList RecoverProgress(Quarter quarter, Year year);
+        NominationList LoadSurveyExport(FilePath filePath, Year year, Quarter quarter);
     }
 
-    public class NominationListRepository : INominationListRepository
+    public class NominationListRepository : RepositoryBase<NominationList>, INominationListRepository
     {
-        private readonly DirectoryInfo _saveDirectory;
+        public NominationListRepository(DirectoryPath workingDirectoryPath)
+            : base(typeof(NominationListDto), workingDirectoryPath, "Nominations") { }
 
-        public NominationListRepository()
-        {
-            var saveDirectoryPath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), @"Saves");
-            _saveDirectory = Directory.CreateDirectory(saveDirectoryPath);
-        }
-
-        public NominationList LoadSurveyExport(FilePath filePath, Quarter quarter, Year year)
+        public NominationList LoadSurveyExport(FilePath filePath, Year year, Quarter quarter)
         {
             var excel = new ExcelQueryFactory(filePath.Value);
             excel.ReadOnly = true;
@@ -47,49 +35,30 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 nominations.Add(LoadNominationFromSurveyExport(row, rowNumber));
             }
 
-            var nominationList = new NominationList(quarter, year, nominations);
-            SaveProgress(nominationList);
+            var nominationList = new NominationList(year, quarter, nominations);
+            SaveSnapshot(nominationList);
             return nominationList;
         }
 
-        public void SaveProgress(NominationList nominationList)
+        protected override NominationList GetAggregateRootFromDto(object dto)
         {
-            var filePath = Path.Combine(_saveDirectory.FullName, nominationList.Year.ToString(),
-                nominationList.Quarter.ToString(),
-                DateTime.Now.Ticks + ".json");
-
-            Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-
-            using (var file = File.CreateText(filePath))
-            {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(file, new NominationListDto(nominationList));
-            }
+            var nominationListDto = dto as NominationListDto;
+            return nominationListDto?.ToNominationList();
         }
 
-        public NominationList RecoverProgress(Quarter quarter, Year year)
+        protected override object GetDtoFromAggregateRoot(NominationList nominationList)
         {
-            var directoryPath = Path.Combine(_saveDirectory.FullName, year.ToString(),
-                quarter.ToString());
+            return new NominationListDto(nominationList);
+        }
 
-            var directoryInfo = new DirectoryInfo(directoryPath);
+        protected override Quarter GetQuarter(NominationList nominationList)
+        {
+            return nominationList.Quarter;
+        }
 
-            if (!directoryInfo.Exists)
-                return null;
-
-            var files = directoryInfo.GetFiles();
-
-            if (files.Length == 0)
-                return null;
-
-            var mostRecentSaveFileInfo = files.OrderByDescending(f => f.FullName).First();
-
-            using (var file = mostRecentSaveFileInfo.OpenText())
-            {
-                var serializer = new JsonSerializer();
-                var nominationListDto = (NominationListDto) serializer.Deserialize(file, typeof(NominationListDto));
-                return nominationListDto.ToNominationList();
-            }
+        protected override Year GetYear(NominationList nominationList)
+        {
+            return nominationList.Year;
         }
 
         private static Nomination LoadNominationFromSurveyExport(Row row, int rowNumber)

@@ -12,23 +12,20 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
     {
         private readonly List<AwardWinnerBase> _awardWinners;
 
-        public AwardWinnerList(Quarter quarter, Year year)
-            : base(CreateKey(quarter, year))
+        public AwardWinnerList(Year year, Quarter quarter)
+            : base(CreateKey(year, quarter))
         {
             Quarter = quarter;
             Year = year;
             _awardWinners = new List<AwardWinnerBase>();
-            IsDirty = true;
+            MarkAsDirty();
         }
 
-        internal AwardWinnerList(Quarter quarter, Year year, IEnumerable<AwardWinnerBase> awardWinners)
-            : this(quarter, year)
+        internal AwardWinnerList(Year year, Quarter quarter, IEnumerable<AwardWinnerBase> awardWinners)
+            : this(year, quarter)
         {
             _awardWinners.AddRange(awardWinners ?? throw new ArgumentNullException(nameof(awardWinners)));
-            IsDirty = false;
         }
-
-        internal bool IsDirty { get; private set; }
 
         public Quarter Quarter { get; }
 
@@ -52,7 +49,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new StarValuesAwardWinner(id, person, companyValues, nominationWriteUps);
             _awardWinners.Add(winner);
-            IsDirty = true;
+            MarkAsDirty();
         }
 
         public void AddStarPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
@@ -61,7 +58,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new StarPerformanceAwardWinner(id, person, awardAmount, isFullTime);
             _awardWinners.Add(winner);
-            IsDirty = true;
+            MarkAsDirty();
         }
 
         public void AddRisingPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
@@ -70,7 +67,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new RisingPerformanceAwardWinner(id, person, awardAmount, isFullTime);
             _awardWinners.Add(winner);
-            IsDirty = true;
+            MarkAsDirty();
         }
 
         private int GetNextAwardWinnerId()
@@ -84,7 +81,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             return _awardWinners.Where(w => w is T).Cast<T>().ToList();
         }
 
-        private static int CreateKey(Quarter quarter, Year year)
+        private static int CreateKey(Year year, Quarter quarter)
         {
             if (year == null)
                 throw new ArgumentNullException(nameof(year));

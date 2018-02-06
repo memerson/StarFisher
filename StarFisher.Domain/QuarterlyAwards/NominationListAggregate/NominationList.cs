@@ -9,18 +9,15 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
     public class NominationList : AggregateRoot
     {
-        internal NominationList(Quarter quarter, Year year, List<Nomination> nominations)
-            : base(CreateKey(quarter, year))
+        internal NominationList(Year year, Quarter quarter, List<Nomination> nominations)
+            : base(CreateKey(year, quarter))
         {
             Quarter = quarter;
             Year = year;
             Nominations = nominations ?? throw new ArgumentNullException(nameof(nominations));
 
             SetNomineeIdentifiers(Nominations);
-            IsDirty = true; // From setting the nominee identifiers
         }
-
-        internal bool IsDirty { get; private set; }
 
         public Quarter Quarter { get; }
 
@@ -44,11 +41,11 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public void UpdateNomineeName(Person nominee, PersonName newNomineeName)
         {
-            if(nominee == null)
+            if (nominee == null)
                 throw new ArgumentNullException(nameof(nominee));
             if (newNomineeName == null)
                 throw new ArgumentNullException(nameof(newNomineeName));
-            if(!newNomineeName.IsValid)
+            if (!newNomineeName.IsValid)
                 throw new ArgumentException(nameof(newNomineeName));
 
             if (nominee.Name == newNomineeName)
@@ -59,7 +56,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             foreach (var nomination in nominations)
             {
                 nomination.UpdateNomineeName(newNomineeName);
-                IsDirty = true;
+                MarkAsDirty();
             }
         }
 
@@ -69,7 +66,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 throw new ArgumentNullException(nameof(nominee));
             if (newEmailAddress == null)
                 throw new ArgumentNullException(nameof(newEmailAddress));
-            if(!newEmailAddress.IsValid)
+            if (!newEmailAddress.IsValid)
                 throw new ArgumentException(nameof(newEmailAddress));
 
             if (nominee.EmailAddress == newEmailAddress)
@@ -80,7 +77,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             foreach (var nomination in nominations)
             {
                 nomination.UpdateNomineeEmailAddress(newEmailAddress);
-                IsDirty = true;
+                MarkAsDirty();
             }
         }
 
@@ -97,6 +94,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 throw new ArgumentException(nameof(nominationId));
 
             nomination.UpdateWriteUp(newWriteUp);
+            MarkAsDirty();
         }
 
         private IEnumerable<Nomination> GetNominationsByAwardType(AwardType awardType)
@@ -104,7 +102,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return Nominations.Where(n => n.AwardType == awardType);
         }
 
-        private static void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)
+        private void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)
         {
             var nominationsByNomineeName = nominations.GroupBy(n => n.NomineeName);
 
@@ -113,12 +111,18 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 var nomineeIds = group.Select(n => n.Id).ToList();
                 var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIds);
 
-                foreach(var nominee in group)
-                        nominee.SetVotingIdentifier(votingIdentifier);
+                foreach (var nomination in group)
+                {
+                    if (nomination.VotingIdentifier == votingIdentifier)
+                        continue;
+
+                    nomination.SetVotingIdentifier(votingIdentifier);
+                    MarkAsDirty();
+                }
             }
         }
 
-        private static int CreateKey(Quarter quarter, Year year)
+        private static int CreateKey(Year year, Quarter quarter)
         {
             if (year == null)
                 throw new ArgumentNullException(nameof(year));

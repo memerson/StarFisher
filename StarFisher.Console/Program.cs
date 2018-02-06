@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
@@ -23,18 +24,23 @@ namespace StarFisher.Console
                 FilePath.Create(
                     @"C:\Users\memerson\Desktop\EIA\2018\Q1\SurveyMonkeyExport\Data_All_180109\Excel\Star Awards for Quarterly Peer Recognition.xlsx",
                     true);
+
+            var workingDirectoryPath = DirectoryPath.Create(@"C:\Users\memerson\Desktop\EIA\StarFisher");
+            var year = Year.Create(2017);
+            var quarter = Quarter.Fourth;
             var configuration = new StarFisherConfiguration();
-            var nominationListRepository = new NominationListRepository();
+            var nominationListRepository = new NominationListRepository(workingDirectoryPath);
+            var awardWinnerListRepository = new AwardWinnerListRepository(workingDirectoryPath);
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
             var emailFactory = new EmailFactory(configuration);
-            var nominationList = nominationListRepository.LoadSurveyExport(filePath, Quarter.Fourth, Year.Create(2017));
             var globalAddressList = new GlobalAddressList();
-            StarFisherContext.Current.SetContextNominationList(nominationList);
+            StarFisherContext.Initialize(nominationListRepository, awardWinnerListRepository, year, quarter);
+            StarFisherContext.Current.NominationListContext.LoadSurveyExport(filePath);
 
             PrintSplash();
 
-            var awardWinnerList = new AwardWinnerList(Quarter.Fourth, Year.Create(2017));
+            var awardWinnerList = new AwardWinnerList(year, quarter);
             awardWinnerList.AddStarPerformanceAwardWinner(
                 Person.Create(PersonName.Create("Makayla Johnson"),
                     OfficeLocation.HighlandRidge,
@@ -99,7 +105,7 @@ namespace StarFisher.Console
 
             foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
             {
-                var nominations = nominationList.Nominations
+                var nominations = StarFisherContext.Current.NominationListContext.NominationList.Nominations
                     .Where(n => n.NomineeName == starValuesWinnerName)
                     .ToList();
 
@@ -111,14 +117,14 @@ namespace StarFisher.Console
                 awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
             }
 
-            var menuItems = new List<MenuItem>
+            var menuItemCommandss = new List<IMenuItemCommand>
             {
-                new FixNomineeNamesAndEmailAddressesMenuItemCommand().GetMenuItem(new FixNomineeNamesAndEmailAddressesMenuItemCommand.Input(globalAddressList, nominationList)),
-                new FixNomineeWriteUpsMenuItemCommand().GetMenuItem(new FixNomineeWriteUpsMenuItemCommand.Input(nominationList)),
-                new ExitCommand().GetMenuItem(CommandInput.None.Instance)
+                new FixNomineeNamesAndEmailAddressesMenuItemCommand(globalAddressList),
+                new FixNomineeWriteUpsMenuItemCommand(),
+                new ExitCommand()
             };
 
-            var topLevelMenu = new TopLevelMenuCommand().GetMenuItem(new TopLevelMenuCommand.Input(menuItems));
+            var topLevelMenu = new TopLevelMenuCommand(menuItemCommandss);
             topLevelMenu.Run();
         }
 

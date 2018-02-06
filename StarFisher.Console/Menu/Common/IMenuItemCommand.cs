@@ -1,9 +1,10 @@
 ﻿
 namespace StarFisher.Console.Menu.Common
 {
-    public interface IMenuItemCommand<in TInput> : ICommand<TInput, CommandOutput.None>
-        where TInput : CommandInput
+    public interface IMenuItemCommand : ICommand<CommandInput.None, CommandOutput.None>
     {
-        MenuItem GetMenuItem(TInput input);
+        bool GetCanRun();
+
+        void Run();
     }
 }

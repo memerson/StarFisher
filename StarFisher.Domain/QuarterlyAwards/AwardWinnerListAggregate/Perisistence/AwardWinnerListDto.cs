@@ -7,9 +7,9 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 {
     internal class AwardWinnerListDto
     {
-        public AwardWinnerListDto() { }
+        internal AwardWinnerListDto() { }
 
-        public AwardWinnerListDto(AwardWinnerList awardWinnerList)
+        internal AwardWinnerListDto(AwardWinnerList awardWinnerList)
         {
             if (awardWinnerList == null)
                 throw new ArgumentNullException(nameof(awardWinnerList));
@@ -25,13 +25,13 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 
         public List<AwardWinnerDto> AwardWinners { get; set; }
 
-        public AwardWinnerList ToAwardWinnerList()
+        internal AwardWinnerList ToAwardWinnerList()
         {
             var awardWinners = (AwardWinners ?? Enumerable.Empty<AwardWinnerDto>())
                 .Select(aw => aw.ToAwardWinner())
                 .ToList();
 
-            return new AwardWinnerList(ValueObjects.Quarter.Create(Quarter), ValueObjects.Year.Create(Year), awardWinners);
+            return new AwardWinnerList(ValueObjects.Year.Create(Year), ValueObjects.Quarter.Create(Quarter), awardWinners);
         }
 
         private AwardWinnerDto GetAwardWinnerDto(AwardWinnerBase awardWinner)
