@@ -11,6 +11,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
         public NewNomineeNameParameter(Person nominee)
         {
             _nominee = nominee ?? throw new ArgumentNullException(nameof(nominee));
+
+            RegisterAbortInput(@"done");
         }
 
         public override Argument<PersonName> GetArgument()
@@ -19,22 +21,24 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
             WriteLine($@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.");
             Write(@"> ");
 
-            var input = ReadInput();
-
-            if (string.IsNullOrWhiteSpace(input))
-                return Argument<PersonName>.Invalid;
-
-            if (string.Equals(@"done", input, StringComparison.InvariantCultureIgnoreCase))
-                return Argument<PersonName>.Abort;
-
-            return PersonName.GetIsValid(input)
-                ? Argument<PersonName>.Valid(PersonName.Create(input))
-                : Argument<PersonName>.Invalid;
+            return GetArgumentFromInputIfValid();
         }
 
         public override void PrintInvalidArgumentMessage()
         {
             PrintInvalidArgumentMessage(@"That's not a valid name. Valid names are like Matthew Joel Emerson or Matthew Emerson.");
+        }
+
+        protected override bool TryParseArgumentValueFromInput(string input, out PersonName argumentValue)
+        {
+            if (PersonName.GetIsValid(input))
+            {
+                argumentValue = PersonName.Create(input);
+                return true;
+            }
+
+            argumentValue = null;
+            return false;
         }
     }
 }

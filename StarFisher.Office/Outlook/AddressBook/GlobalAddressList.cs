@@ -11,6 +11,7 @@ namespace StarFisher.Office.Outlook.AddressBook
     public interface IGlobalAddressList
     {
         bool GetPersonExists(PersonName name);
+
         bool GetPersonExists(EmailAddress emailAddress);
     }
 
@@ -18,9 +19,34 @@ namespace StarFisher.Office.Outlook.AddressBook
     {
         private static readonly Dictionary<string, List<Person>> PeopleByLastName = new Dictionary<string, List<Person>>(3000);
         private static readonly Dictionary<string, List<Person>> PeopleByEmailAddress = new Dictionary<string, List<Person>>(3000);
+        private static bool _isInitialized;
 
-        static GlobalAddressList()
+        public bool GetPersonExists(PersonName name)
         {
+            if (name == null)
+                throw new ArgumentNullException(nameof(name));
+
+            Initialize();
+
+            return PeopleByLastName.TryGetValue(name.LastName, out List<Person> lastNameMatches) && 
+                lastNameMatches.Any(p => p.FirstName.StartsWith(name.FirstName));
+        }
+
+        public bool GetPersonExists(EmailAddress emailAddress)
+        {
+            if (emailAddress == null)
+                throw new ArgumentNullException(nameof(emailAddress));
+
+            Initialize();
+
+            return PeopleByEmailAddress.ContainsKey(emailAddress.Value.ToLower());
+        }
+
+        private void Initialize()
+        {
+            if (_isInitialized)
+                return;
+
             using (var com = new ComObjectManager())
             {
                 var outlook = com.Get(() => new OutlookApplication());
@@ -35,58 +61,15 @@ namespace StarFisher.Office.Outlook.AddressBook
                     .Select(ae => GetPerson(com, ae))
                     .Where(p => p != null));
 
-                foreach(var group in people.GroupBy(p => p.LastName))
+                foreach (var group in people.GroupBy(p => p.LastName))
                     PeopleByLastName.Add(group.Key, group.ToList());
 
                 foreach (var group in people.GroupBy(p => p.EmailAddress))
                     PeopleByEmailAddress.Add(group.Key, group.ToList());
             }
+
+            _isInitialized = true;
         }
-
-        public bool GetPersonExists(PersonName name)
-        {
-            if (name == null)
-                throw new ArgumentNullException(nameof(name));
-
-            return PeopleByLastName.TryGetValue(name.LastName, out List<Person> lastNameMatches) && 
-                lastNameMatches.Any(p => p.FirstName.StartsWith(name.FirstName));
-        }
-
-        public bool GetPersonExists(EmailAddress emailAddress)
-        {
-            if (emailAddress == null)
-                throw new ArgumentNullException(nameof(emailAddress));
-
-            return PeopleByEmailAddress.ContainsKey(emailAddress.Value.ToLower());
-        }
-
-        //public PersonQueryResult QueryNominee(PersonName personName, EmailAddress emailAddress)
-        //{
-        //    if(personName == null)
-        //        throw new ArgumentNullException(nameof(personName));
-        //    if (emailAddress == null)
-        //        throw new ArgumentNullException(nameof(emailAddress));
-
-        //    if(!PeopleByLastName.TryGetValue(personName.LastName, out List<Person> lastNameMatches))
-        //        return PersonQueryResult.NameNotFound;
-
-        //    var fullNameMatches = lastNameMatches
-        //        .Where(p => p.FirstName.StartsWith(personName.FirstName))
-        //        .ToList();
-
-        //    if(fullNameMatches.Count == 0)
-        //        return PersonQueryResult.NameNotFound;
-
-        //    if(fullNameMatches.Count > 1)
-        //        return PersonQueryResult.MultipleNameMatchesFound;
-
-        //    var fullNameMatch = fullNameMatches.First();
-
-        //    if (string.Equals(fullNameMatch.EmailAddress, emailAddress.Value, StringComparison.InvariantCultureIgnoreCase))
-        //        return PersonQueryResult.NameAndEmailAddressFound;
-
-        //    return PersonQueryResult.EmailAddressDoesNotMatch;
-        //}
 
         private static Person GetPerson(ComObjectManager com, AddressEntry addressEntry)
         {

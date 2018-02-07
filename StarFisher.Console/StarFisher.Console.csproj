@@ -63,6 +63,7 @@
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\FixNomineeNamesAndEmailAddressesMenuItemCommand.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\GetNomineeToChangeParameterBase.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeEmailAddressParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeNameParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeToChangeEmailAddressParameter.cs" />
@@ -70,6 +71,10 @@
     <Compile Include="Menu\FixNomineeWriteUps\FixNomineeWriteUpsMenuItemCommand.cs" />
     <Compile Include="Menu\FixNomineeWriteUps\Parameters\NewWriteUpParameter.cs" />
     <Compile Include="Menu\FixNomineeWriteUps\Parameters\WriteUpActionParameter.cs" />
+    <Compile Include="Menu\Initialize\Commands\SetWorkingDirectoryCommand.cs" />
+    <Compile Include="Menu\Initialize\InitializeApplicationMenuItemCommand.cs" />
+    <Compile Include="Menu\Initialize\Parameters\UseCurrentValueParameter.cs" />
+    <Compile Include="Menu\Initialize\Parameters\WorkingDirectoryParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
     <Compile Include="Program.cs" />

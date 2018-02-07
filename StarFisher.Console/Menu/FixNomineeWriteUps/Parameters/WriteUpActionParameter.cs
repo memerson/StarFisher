@@ -13,26 +13,23 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
         {
             _nomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
             _writeUp = writeUp ?? throw new ArgumentNullException(nameof(writeUp));
+
+            RegisterValidInput("stop", Action.Stop);
+            RegisterValidInput("edit", Action.Edit);
+            RegisterValidInput("c", Action.Continue);
         }
 
         public override Argument<Action> GetArgument()
         {
-            PrintWriteUp();
+            WriteLine();
+            WriteLineBlue($@"Nomination Write-Up for {_nomineeName.FullName}:");
+            WriteLine();
+            WriteLine(_writeUp.Value, _nomineeName.FirstName, _nomineeName.LastName);
+            WriteLine();
             WriteLine("Please enter 'edit' to edit the write-up, 'c' to continue to the next write-up, or 'stop' to stop reviewing write-ups.");
             Write(@"> ");
 
-            var input = ReadInput();
-
-            if (string.IsNullOrWhiteSpace(input))
-                return Argument<Action>.Invalid;
-
-            if (string.Equals(@"c", input, StringComparison.InvariantCultureIgnoreCase))
-                input = "Continue";
-
-            if(!Enum.TryParse(input, true, out Action action))
-                return Argument<Action>.Invalid;
-
-            return Argument<Action>.Valid(action);
+            return GetRegisteredValidInputArgument();
         }
 
         public override void PrintInvalidArgumentMessage()
@@ -40,45 +37,45 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             PrintInvalidArgumentMessage(@"That's not a valid choice.");
         }
 
-        private void PrintWriteUp()
-        {
-            WriteLine();
+        //private void PrintWriteUp()
+        //{
+        //    WriteLine();
 
-            if (!_writeUp.ContainsNomineeName)
-            {
-                WriteLine(_writeUp.Value);
-                WriteLine();
-                return;
-            }
+        //    if (!_writeUp.ContainsNomineeName)
+        //    {
+        //        WriteLine(_writeUp.Value);
+        //        WriteLine();
+        //        return;
+        //    }
 
-            var currentIndex = 0;
-            var text = _writeUp.Value;
-            var finalIndex = text.Length - 1;
+        //    var currentIndex = 0;
+        //    var text = _writeUp.Value;
+        //    var finalIndex = text.Length - 1;
 
-            while (currentIndex < text.Length)
-            {
-                var nextFirstNameIndex = IndexOf(text, _nomineeName.FirstName, currentIndex);
-                var nextLastNameIndex = IndexOf(text, _nomineeName.LastName, currentIndex);
-                var cleanSegmentEndIndex = Math.Min(nextFirstNameIndex, nextLastNameIndex);
-                var cleanSegmentLength = cleanSegmentEndIndex - currentIndex;
-                var cleanSegment = text.Substring(currentIndex, cleanSegmentLength);
+        //    while (currentIndex < text.Length)
+        //    {
+        //        var nextFirstNameIndex = IndexOf(text, _nomineeName.FirstName, currentIndex);
+        //        var nextLastNameIndex = IndexOf(text, _nomineeName.LastName, currentIndex);
+        //        var cleanSegmentEndIndex = Math.Min(nextFirstNameIndex, nextLastNameIndex);
+        //        var cleanSegmentLength = cleanSegmentEndIndex - currentIndex;
+        //        var cleanSegment = text.Substring(currentIndex, cleanSegmentLength);
 
-                Write(cleanSegment);
+        //        Write(cleanSegment);
 
-                if (cleanSegmentEndIndex >= finalIndex)
-                    return;
+        //        if (cleanSegmentEndIndex >= finalIndex)
+        //            return;
 
-                var nameSegment = cleanSegmentEndIndex == nextFirstNameIndex
-                    ? _nomineeName.FirstName
-                    : _nomineeName.LastName;
+        //        var nameSegment = cleanSegmentEndIndex == nextFirstNameIndex
+        //            ? _nomineeName.FirstName
+        //            : _nomineeName.LastName;
 
-                WriteRed(nameSegment);
+        //        WriteRed(nameSegment);
 
-                currentIndex = cleanSegmentEndIndex + nameSegment.Length;
-            }
+        //        currentIndex = cleanSegmentEndIndex + nameSegment.Length;
+        //    }
 
-            WriteLine();
-        }
+        //    WriteLine();
+        //}
 
         private static int IndexOf(string text, string value, int startIndex)
         {

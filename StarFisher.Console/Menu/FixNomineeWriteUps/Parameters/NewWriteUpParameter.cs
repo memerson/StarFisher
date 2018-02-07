@@ -10,11 +10,14 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
     {
         private readonly PersonName _nomineeName;
         private readonly NominationWriteUp _writeUp;
+        private static readonly string TempFilePath = Path.GetTempFileName();
 
         public NewWriteUpParameter(PersonName nomineeName, NominationWriteUp writeUp)
         {
             _nomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
             _writeUp = writeUp ?? throw new ArgumentNullException(nameof(writeUp));
+
+            RegisterAbortInput(@"no");
         }
 
         public override Argument<NominationWriteUp> GetArgument()
@@ -23,15 +26,12 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             WriteLine(@"I'm going to open the write-up in Notepad. Please edit it there, then SAVE and CLOSE Notepad. Come back here when you're finished.");
             Write(@"Ready? (enter 'no' to back out or 'yes' to continue) > ");
 
-            var input = ReadInput();
+            if (GetIsAbortInput(out Argument<NominationWriteUp> abortArgument))
+                return abortArgument;
 
-            if (string.Equals(@"no", input, StringComparison.InvariantCultureIgnoreCase))
-                return Argument<NominationWriteUp>.Abort;
+            File.WriteAllText(TempFilePath, _writeUp.Value);
 
-            var filePath = Path.GetTempFileName();
-            File.WriteAllText(filePath, _writeUp.Value);
-
-            using (var process = Process.Start("c:\\windows\\notepad.exe", $"\"{filePath}\""))
+            using (var process = Process.Start("c:\\windows\\notepad.exe", $"\"{TempFilePath}\""))
             {
                 if(process == null)
                     return Argument<NominationWriteUp>.Invalid;
@@ -41,22 +41,34 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
                 process.WaitForExit(int.MaxValue);
             }
 
-            var newNominationWriteUpText = File.ReadAllText(filePath);
-            var newWriteUp = NominationWriteUp.Create(_nomineeName, newNominationWriteUpText);
+            var writeUpText = File.ReadAllText(TempFilePath);
+            var argument = GetArgumentFromInputIfValid(writeUpText);
 
-            if (!NominationWriteUp.GetIsValid(_nomineeName, newNominationWriteUpText))
-                return Argument<NominationWriteUp>.Invalid;
+            if (argument.ArgumentType != ArgumentType.Valid)
+                return argument;
 
             WriteLine();
             WriteLine(@"Got it, thanks!");
             WriteLine();
 
-            return Argument<NominationWriteUp>.Valid(newWriteUp);
+            return argument;
         }
 
         public override void PrintInvalidArgumentMessage()
         {
             PrintInvalidArgumentMessage(@"The nomination write-up text wasn't valid. Either it included some part of the nominee's name or it didn't have any text.");
+        }
+
+        protected override bool TryParseArgumentValueFromInput(string input, out NominationWriteUp argumentValue)
+        {
+            if (NominationWriteUp.GetIsValid(_nomineeName, input))
+            {
+                argumentValue = NominationWriteUp.Create(_nomineeName, input);
+                return true;
+            }
+
+            argumentValue = null;
+            return false;
         }
     }
 }
