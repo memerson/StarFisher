@@ -15,6 +15,19 @@ namespace StarFisher.Console.Menu.Common
             IsRequired = isRequired;
         }
 
+        public Argument<T> GetValidArgument()
+        {
+            var argument = GetArgument();
+
+            while (argument.ArgumentType == ArgumentType.Invalid)
+            {
+                PrintInvalidArgumentMessage();
+                argument = GetArgument();
+            }
+
+            return argument;
+        }
+
         public abstract Argument<T> GetArgument();
 
         public abstract void PrintInvalidArgumentMessage();

@@ -34,14 +34,7 @@ namespace StarFisher.Console.Menu.TopLevelMenu
 
             for (;;)
             {
-                var argument = parameter.GetArgument();
-
-                while (argument.ArgumentType == ArgumentType.Invalid)
-                {
-                    parameter.PrintInvalidArgumentMessage();
-                    argument = parameter.GetArgument();
-                }
-
+                var argument = parameter.GetValidArgument();
                 var menuItem = _menuItemCommands[argument.Value];
                 menuItem.Run();
             }

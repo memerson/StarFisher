@@ -39,13 +39,7 @@ namespace StarFisher.Console.Menu.Initialize.Commands
                 return false;
 
             var parameter = new UseCurrentValueParameter(settingName, currentSettingValueText);
-            var argument = parameter.GetArgument();
-
-            while (argument.ArgumentType == ArgumentType.Invalid)
-            {
-                parameter.PrintInvalidArgumentMessage();
-                argument = parameter.GetArgument();
-            }
+            var argument = parameter.GetValidArgument();
 
             if (argument.ArgumentType != ArgumentType.Abort)
                 return argument.ArgumentType == ArgumentType.Valid && argument.Value;
@@ -54,15 +48,9 @@ namespace StarFisher.Console.Menu.Initialize.Commands
             return false;
         }
 
-        private CommandResult<Output> GetNewValue(IParameter<TValue> parameter)
+        private static CommandResult<Output> GetNewValue(IParameter<TValue> parameter)
         {
-            var argument = parameter.GetArgument();
-
-            while (argument.ArgumentType == ArgumentType.Invalid)
-            {
-                parameter.PrintInvalidArgumentMessage();
-                argument = parameter.GetArgument();
-            }
+            var argument = parameter.GetValidArgument();
 
             if (argument.ArgumentType == ArgumentType.Abort)
                 return CommandResult<Output>.Abort();

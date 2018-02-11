@@ -91,6 +91,8 @@
     <Compile Include="Menu\Initialize\Parameters\WorkingDirectoryParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\QuarterParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\YearParameter.cs" />
+    <Compile Include="Menu\LoadNominationsFromSurveyExport\LoadNominationsFromSurveyExportMenuItemCommand.cs" />
+    <Compile Include="Menu\LoadNominationsFromSurveyExport\Parameters\SurveyExportFilePathParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
     <Compile Include="Program.cs" />

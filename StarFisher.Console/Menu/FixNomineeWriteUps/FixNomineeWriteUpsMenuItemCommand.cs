@@ -57,27 +57,14 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
         private WriteUpActionParameter.Action GetNominationWriteUpAction(Nomination nomination)
         {
             var parameter = new WriteUpActionParameter(nomination.NomineeName, nomination.WriteUp);
-            var argument = parameter.GetArgument();
-
-            while (argument.ArgumentType == ArgumentType.Invalid)
-            {
-                parameter.PrintInvalidArgumentMessage();
-                argument = parameter.GetArgument();
-            }
-
+            var argument = parameter.GetValidArgument();
             return argument.Value;
         }
 
         private bool TryGetNewNominationWriteUp(Nomination nomination, out NominationWriteUp newWriteUp)
         {
             var parameter = new NewWriteUpParameter(nomination.NomineeName, nomination.WriteUp);
-            var argument = parameter.GetArgument();
-
-            while (argument.ArgumentType == ArgumentType.Invalid)
-            {
-                parameter.PrintInvalidArgumentMessage();
-                argument = parameter.GetArgument();
-            }
+            var argument = parameter.GetValidArgument();
 
             if (argument.ArgumentType == ArgumentType.Abort)
             {

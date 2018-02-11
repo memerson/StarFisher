@@ -28,7 +28,7 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
                 if (!menuItemCommand.GetCanRun())
                     continue;
 
-                System.Console.WriteLine($"{i + 1} {menuItemCommand.Title}");
+                System.Console.WriteLine($"{i + 1, 5}: {menuItemCommand.Title}");
             }
 
             System.Console.WriteLine();

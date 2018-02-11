@@ -2,6 +2,8 @@
 {
     public interface IParameter<T>
     {
+        Argument<T> GetValidArgument();
+
         Argument<T> GetArgument();
 
         void PrintInvalidArgumentMessage();

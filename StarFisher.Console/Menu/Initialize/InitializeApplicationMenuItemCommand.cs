@@ -31,6 +31,8 @@ namespace StarFisher.Console.Menu.Initialize
                                     throw new ArgumentNullException(nameof(configurationStorage));
         }
 
+        public override bool GetCanRun() => true;
+
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var workingDirectoryPath = GetCommandResult(new GetWorkingDirectoryCommand(Context),
@@ -161,7 +163,5 @@ namespace StarFisher.Console.Menu.Initialize
                     return commandResult.Output.Value;
             }
         }
-
-        public override bool GetCanRun() => true;
     }
 }

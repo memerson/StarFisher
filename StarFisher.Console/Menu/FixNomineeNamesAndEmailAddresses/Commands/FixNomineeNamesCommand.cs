@@ -47,13 +47,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
         private static bool TryGetArgumentValue<T>(IParameter<T> parameter, out T argumentValue)
         {
             argumentValue = default(T);
-            var argument = parameter.GetArgument();
-
-            while (argument.ArgumentType == ArgumentType.Invalid)
-            {
-                parameter.PrintInvalidArgumentMessage();
-                argument = parameter.GetArgument();
-            }
+            var argument = parameter.GetValidArgument();
 
             if (argument.ArgumentType == ArgumentType.Abort)
                 return false;

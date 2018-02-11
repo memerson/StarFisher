@@ -7,6 +7,7 @@ using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
 using StarFisher.Console.Menu.FixNomineeWriteUps;
 using StarFisher.Console.Menu.Initialize;
+using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.ValueObjects;
@@ -21,10 +22,10 @@ namespace StarFisher.Console
     {
         private static void Main(string[] args)
         {
-            var filePath =
-                FilePath.Create(
-                    @"C:\Users\memerson\Desktop\EIA\2018\Q1\SurveyMonkeyExport\Data_All_180109\Excel\Star Awards for Quarterly Peer Recognition.xlsx",
-                    true);
+            //var filePath =
+            //    FilePath.Create(
+            //        @"C:\Users\memerson\Desktop\EIA\2018\Q1\SurveyMonkeyExport\Data_All_180109\Excel\Star Awards for Quarterly Peer Recognition.xlsx",
+            //        true);
 
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
@@ -33,7 +34,6 @@ namespace StarFisher.Console
             PrintSplash();
             InitializeApplication(globalAddressList);
 
-            StarFisherContext.Current.NominationListContext.LoadSurveyExport(filePath);
             var emailFactory = new EmailFactory(StarFisherContext.Current);
 
             var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
@@ -99,25 +99,26 @@ namespace StarFisher.Console
                 PersonName.Create("Van Irwin")
             };
 
-            foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
-            {
-                var nominations = StarFisherContext.Current.NominationListContext.NominationList.Nominations
-                    .Where(n => n.NomineeName == starValuesWinnerName)
-                    .ToList();
+            //foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
+            //{
+            //    var nominations = StarFisherContext.Current.NominationListContext.NominationList.Nominations
+            //        .Where(n => n.NomineeName == starValuesWinnerName)
+            //        .ToList();
 
-                // TODO: Handle same name different office
+            //    // TODO: Handle same name different office
 
-                var person = nominations.Select(n => n.Nominee).First(); // TODO: Internalize this so we don't need to expose Nominee property.
-                var writeUps = nominations.Select(n => n.WriteUp).ToList();
-                var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-                awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
-            }
+            //    var person = nominations.Select(n => n.Nominee).First(); // TODO: Internalize this so we don't need to expose Nominee property.
+            //    var writeUps = nominations.Select(n => n.WriteUp).ToList();
+            //    var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
+            //    awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
+            //}
 
             var menuItemCommands = new List<IMenuItemCommand>
             {
-                new FixNomineeNamesAndEmailAddressesMenuItemCommand(globalAddressList),
-                new FixNomineeWriteUpsMenuItemCommand(),
-                new ExitCommand()
+                new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Current),
+                new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Current, globalAddressList),
+                new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),
+                new ExitCommand(StarFisherContext.Current)
             };
 
             var topLevelMenu = new TopLevelMenuCommand(menuItemCommands);
