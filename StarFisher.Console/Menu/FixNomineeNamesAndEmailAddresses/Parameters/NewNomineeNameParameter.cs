@@ -1,44 +1,25 @@
 ﻿using System;
-using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.Common.Parameters;
 using StarFisher.Domain.ValueObjects;
+using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 {
-    public class NewNomineeNameParameter : ParameterBase<PersonName>
+    public class NewNomineeNameParameter : PersonNameParameterBase
     {
         private readonly Person _nominee;
 
-        public NewNomineeNameParameter(Person nominee)
+        public NewNomineeNameParameter(IGlobalAddressList globalAddressList, Person nominee)
+            : base(globalAddressList)
         {
             _nominee = nominee ?? throw new ArgumentNullException(nameof(nominee));
 
             RegisterAbortInput(@"done");
         }
 
-        public override Argument<PersonName> GetArgument()
+        protected override string GetInstructionsText()
         {
-            WriteLine();
-            WriteLine($@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.");
-            Write(@"> ");
-
-            return GetArgumentFromInputIfValid();
-        }
-
-        public override void PrintInvalidArgumentMessage()
-        {
-            PrintInvalidArgumentMessage(@"That's not a valid name. Valid names are like Matthew Joel Emerson or Matthew Emerson.");
-        }
-
-        protected override bool TryParseArgumentValueFromInput(string input, out PersonName argumentValue)
-        {
-            if (PersonName.GetIsValid(input))
-            {
-                argumentValue = PersonName.Create(input);
-                return true;
-            }
-
-            argumentValue = null;
-            return false;
+            return $@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.";
         }
     }
 }

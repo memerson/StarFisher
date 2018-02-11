@@ -5,16 +5,18 @@ using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
+using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 {
     public class FixNomineeNamesCommand : CommandBase<FixNomineeNamesCommand.Input, CommandOutput.None>
     {
-        private const string CommandTitle = @"Fix incorrect nominee names";
+        private readonly IGlobalAddressList _globalAddressList;
 
-        public FixNomineeNamesCommand() : base(CommandTitle) { }
-
-        public FixNomineeNamesCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+        public FixNomineeNamesCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) : base(context)
+        {
+            _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(Input input)
         {
@@ -32,7 +34,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
                 if (!TryGetArgumentValue(nomineeParameter, out Person nomineeToChange))
                     break;
 
-                var newNomineeNameParameter = new NewNomineeNameParameter(nomineeToChange);
+                var newNomineeNameParameter = new NewNomineeNameParameter(_globalAddressList, nomineeToChange);
                 if (!TryGetArgumentValue(newNomineeNameParameter, out PersonName newNomineeName))
                     continue;
 
@@ -53,11 +55,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
                 argument = parameter.GetArgument();
             }
 
-            if (argument.ArgumentType == ArgumentType.Abort ||
-                argument.ArgumentType == ArgumentType.NoValue)
-            {
+            if (argument.ArgumentType == ArgumentType.Abort)
                 return false;
-            }
 
             argumentValue = argument.Value;
             return true;

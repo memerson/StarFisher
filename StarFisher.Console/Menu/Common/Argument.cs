@@ -6,8 +6,6 @@
 
         public static readonly Argument<T> Abort = new Argument<T>(ArgumentType.Abort, default(T));
 
-        public static readonly Argument<T> NoValue = new Argument<T>(ArgumentType.NoValue, default(T));
-
         private Argument(ArgumentType argumentType, T value)
         {
             Value = value;

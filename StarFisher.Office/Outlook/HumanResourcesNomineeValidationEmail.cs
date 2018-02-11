@@ -56,8 +56,8 @@ namespace StarFisher.Office.Outlook
         private static void BuildEmail(MailItem mailItem, IEmailConfiguration emailConfiguration,
             NominationList nominationList)
         {
-            mailItem.To = string.Join(";", emailConfiguration.HumanResourcesEmailAddresses);
-            mailItem.CC = string.Join(";", emailConfiguration.EiaChairPersonEmailAddresses);
+            mailItem.To = string.Join(";", emailConfiguration.HrPeople.Select(p => p.EmailAddress));
+            mailItem.CC = string.Join(";", emailConfiguration.EiaChairPerson.EmailAddress);
 
             mailItem.Subject = $"Need: {nominationList.Quarter} Star Awards and Rising Star Awards nominee eligibility check";
 
@@ -65,8 +65,8 @@ namespace StarFisher.Office.Outlook
                 .GroupBy(n => new {n.NomineeName, n.NomineeOfficeLocation})
                 .OrderBy(g => g.Key.NomineeName.FullNameLastNameFirst);
 
-            var hrFirstNames = emailConfiguration.HumanResourcesPersonNames
-                .Select(n => n.FirstName)
+            var hrFirstNames = emailConfiguration.HrPeople
+                .Select(n => n.Name.FirstName)
                 .PrettyPrint();
 
             var document = new HtmlDocument();

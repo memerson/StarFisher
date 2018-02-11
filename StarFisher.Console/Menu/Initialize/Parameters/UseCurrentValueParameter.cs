@@ -20,14 +20,15 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
             RegisterValidInput(@"yes", true);
             RegisterValidInput(@"no", false);
+            RegisterAbortInput(@"stop");
         }
 
         public override Argument<bool> GetArgument()
         {
             WriteLine();
             WriteLine($@"Your current value for {_settingName} is {_currentSettingValue}");
-            WriteLine(@"Would you like to keep that?");
-            Write(@"(yes or no) > ");
+            WriteLine(@"Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.");
+            Write(@"> ");
 
             return GetRegisteredValidInputArgument();
         }

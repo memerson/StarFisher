@@ -37,10 +37,10 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             var nominationList = Context.NominationListContext.NominationList;
 
             if (!FixNomineeNames(_globalAddressList, nominationList, out Exception exception))
-                return CommandResult<CommandOutput.None>.Failure(exception);
+                return CommandOutput.None.Failure(exception);
 
             if (!FixNomineeEmailAddresses(_globalAddressList, nominationList, out exception))
-                return CommandResult<CommandOutput.None>.Failure(exception);
+                return CommandOutput.None.Failure(exception);
 
             return CommandOutput.None.Success;
         }
@@ -59,7 +59,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
 
         private bool FixNomineeNames(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames, out Exception exception)
         {
-            var fixNomineeNamesCommand = new FixNomineeNamesCommand(Context);
+            var fixNomineeNamesCommand = new FixNomineeNamesCommand(Context, _globalAddressList);
             var input = new FixNomineeNamesCommand.Input(nominationList, unrecognizedNomineeNames);
             var commandResult = fixNomineeNamesCommand.Run(input);
 
@@ -75,7 +75,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
 
         private bool FixNomineeEmailAddresses(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
         {
-            var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand(Context);
+            var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand(Context, _globalAddressList);
             var input = new FixNomineeEmailAddressesCommand.Input(nominationList, unrecognizedEmailAddresses);
             var commandResult = fixNomineeEmailAddressesCommand.Run(input);
 

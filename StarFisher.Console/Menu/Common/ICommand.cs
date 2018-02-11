@@ -4,8 +4,6 @@
         where TInput: CommandInput
         where TOutput: CommandOutput
     {
-        string Title { get; }
-
         CommandResult<TOutput> Run(TInput input);
     }
 }

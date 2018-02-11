@@ -27,6 +27,13 @@ namespace StarFisher.Domain.ValueObjects
             try
             {
                 var directoryInfo = new DirectoryInfo(directoryPath);
+
+                if (directoryInfo.Exists)
+                    return true;
+
+                directoryInfo.Create();
+                directoryInfo.Delete();
+
                 return true;
             }
             catch

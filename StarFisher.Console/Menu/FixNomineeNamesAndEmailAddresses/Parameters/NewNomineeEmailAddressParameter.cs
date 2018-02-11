@@ -1,44 +1,25 @@
 ﻿using System;
-using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.Common.Parameters;
 using StarFisher.Domain.ValueObjects;
+using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 {
-    public class NewNomineeEmailAddressParameter : ParameterBase<EmailAddress>
+    public class NewNomineeEmailAddressParameter : EmailAddressParameterBase
     {
         private readonly Person _nominee;
 
-        public NewNomineeEmailAddressParameter(Person nominee)
+        public NewNomineeEmailAddressParameter(IGlobalAddressList globalAddressList, Person nominee)
+            : base(globalAddressList, nominee?.Name)
         {
             _nominee = nominee ?? throw new ArgumentNullException(nameof(nominee));
 
             RegisterAbortInput(@"done");
         }
 
-        public override Argument<EmailAddress> GetArgument()
+        protected override string GetInstructionsText()
         {
-            WriteLine();
-            WriteLine($@"Enter the email address for the nominee named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.");
-            Write(@"> ");
-
-            return GetArgumentFromInputIfValid();
-        }
-
-        public override void PrintInvalidArgumentMessage()
-        {
-            PrintInvalidArgumentMessage(@"That's not a valid HealthStream email address. Valid email addresses are like matthew.emerson@healthstream.com.");
-        }
-
-        protected override bool TryParseArgumentValueFromInput(string input, out EmailAddress argumentValue)
-        {
-            if (EmailAddress.GetIsValid(input))
-            {
-                argumentValue = EmailAddress.Create(input);
-                return true;
-            }
-
-            argumentValue = null;
-            return false;
+            return $@"Enter the email address for the nominee named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.";
         }
     }
 }

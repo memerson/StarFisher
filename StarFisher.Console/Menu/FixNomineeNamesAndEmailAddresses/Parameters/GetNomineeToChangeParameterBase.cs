@@ -21,7 +21,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
             if (AllNominees.Count == 0)
             {
                 WriteLine("There are no nominees.");
-                return Argument<Person>.NoValue;
+                return Argument<Person>.Abort;
             }
 
             SolicitInput();

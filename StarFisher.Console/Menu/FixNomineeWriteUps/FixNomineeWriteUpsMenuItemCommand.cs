@@ -79,8 +79,7 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
                 argument = parameter.GetArgument();
             }
 
-            if (argument.ArgumentType == ArgumentType.Abort ||
-                argument.ArgumentType == ArgumentType.NoValue)
+            if (argument.ArgumentType == ArgumentType.Abort)
             {
                 newWriteUp = null;
                 return false;

@@ -6,9 +6,17 @@ namespace StarFisher.Console.Menu.Common
 {
     public abstract class MenuItemCommandBase : CommandBase<CommandInput.None, CommandOutput.None>, IMenuItemCommand
     {
-        protected MenuItemCommandBase(IStarFisherContext context, string title) : base(context, title) { }
+        protected MenuItemCommandBase(IStarFisherContext context, string title) : base(context)
+        {
+            if (string.IsNullOrEmpty(title))
+                throw new ArgumentException(nameof(title));
 
-        protected MenuItemCommandBase(string title) : base(title) { }
+            Title = title;
+        }
+
+        protected MenuItemCommandBase(string title) : this(null, title) { }
+
+        public string Title { get; }
 
         public void Run()
         {

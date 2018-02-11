@@ -16,7 +16,7 @@ namespace StarFisher.Domain.ValueObjects
         public static readonly OfficeLocation NashvilleCorporate = new OfficeLocation(@"Nashville - Corporate (Downtown + Brentwood Sales)", @"Nashville Downtown");
         public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote - Home Office and HEI", @"Remote");
 
-        private static readonly List<OfficeLocation> ValidOfficeLocations = new List<OfficeLocation>
+        private static readonly List<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
             Columbia,
             EchoBoulder,
@@ -30,6 +30,7 @@ namespace StarFisher.Domain.ValueObjects
         };
 
         public static readonly OfficeLocation Invalid = new OfficeLocation(@"INVALID", @"INVALID");
+        public static readonly OfficeLocation EiaTeamMember = new OfficeLocation(@"EIA Team Member", @"EIA Team Member");
 
         private OfficeLocation(string surveyName, string conciseName)
         {
@@ -43,7 +44,7 @@ namespace StarFisher.Domain.ValueObjects
 
         internal static OfficeLocation Create(string officeLocationSurveyName)
         {
-            return ValidOfficeLocations.FirstOrDefault(ol => ol.SurveyName == officeLocationSurveyName) ?? Invalid;
+            return ValidEmployeeOfficeLocations.FirstOrDefault(ol => ol.SurveyName == officeLocationSurveyName) ?? Invalid;
         }
 
         protected override bool EqualsCore(OfficeLocation other)

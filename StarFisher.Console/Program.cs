@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
 using StarFisher.Console.Menu.FixNomineeWriteUps;
+using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
@@ -25,22 +26,17 @@ namespace StarFisher.Console
                     @"C:\Users\memerson\Desktop\EIA\2018\Q1\SurveyMonkeyExport\Data_All_180109\Excel\Star Awards for Quarterly Peer Recognition.xlsx",
                     true);
 
-            var workingDirectoryPath = DirectoryPath.Create(@"C:\Users\memerson\Desktop\EIA\StarFisher");
-            var year = Year.Create(2017);
-            var quarter = Quarter.Fourth;
-            var configuration = new StarFisherConfiguration();
-            var nominationListRepository = new NominationListRepository(workingDirectoryPath);
-            var awardWinnerListRepository = new AwardWinnerListRepository(workingDirectoryPath);
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
-            var emailFactory = new EmailFactory(configuration);
             var globalAddressList = new GlobalAddressList();
-            StarFisherContext.Initialize(nominationListRepository, awardWinnerListRepository, year, quarter);
-            StarFisherContext.Current.NominationListContext.LoadSurveyExport(filePath);
 
             PrintSplash();
+            InitializeApplication(globalAddressList);
 
-            var awardWinnerList = new AwardWinnerList(year, quarter);
+            StarFisherContext.Current.NominationListContext.LoadSurveyExport(filePath);
+            var emailFactory = new EmailFactory(StarFisherContext.Current);
+
+            var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
             awardWinnerList.AddStarPerformanceAwardWinner(
                 Person.Create(PersonName.Create("Makayla Johnson"),
                     OfficeLocation.HighlandRidge,
@@ -111,21 +107,55 @@ namespace StarFisher.Console
 
                 // TODO: Handle same name different office
 
-                var person = nominations.Select(n => n.Nominee).First();
+                var person = nominations.Select(n => n.Nominee).First(); // TODO: Internalize this so we don't need to expose Nominee property.
                 var writeUps = nominations.Select(n => n.WriteUp).ToList();
                 var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
                 awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
             }
 
-            var menuItemCommandss = new List<IMenuItemCommand>
+            var menuItemCommands = new List<IMenuItemCommand>
             {
                 new FixNomineeNamesAndEmailAddressesMenuItemCommand(globalAddressList),
                 new FixNomineeWriteUpsMenuItemCommand(),
                 new ExitCommand()
             };
 
-            var topLevelMenu = new TopLevelMenuCommand(menuItemCommandss);
+            var topLevelMenu = new TopLevelMenuCommand(menuItemCommands);
             topLevelMenu.Run();
+        }
+
+        private static void InitializeApplication(IGlobalAddressList globalAddressList)
+        {
+            var configurationStorage = new ConfigurationStorage();
+
+            if (!TryInitializeContextFromSavedConfiguration(configurationStorage))
+            {
+                do
+                {
+                    System.Console.WriteLine();
+                    System.Console.WriteLine(@"You must complete StarFisher's initial set-up to continue.");
+                    System.Console.WriteLine();
+
+                    var initializationCommand = new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage);
+                    initializationCommand.Run();
+                } while (!StarFisherContext.Current.IsInitialized);
+            }
+        }
+
+        private static bool TryInitializeContextFromSavedConfiguration(ConfigurationStorage configurationStorage)
+        {
+            var initialized = configurationStorage.InitializeFromConfiguration(out Exception exception);
+
+            if (!initialized && exception != null)
+            {
+                System.Console.WriteLine();
+                System.Console.WriteLine(
+                    @"Failed to load saved configuration. You will need to re-run the initialization workflow.");
+                System.Console.WriteLine(exception.ToString());
+                System.Console.WriteLine();
+            }
+
+            return initialized;
         }
 
         private static void PrintSplash()

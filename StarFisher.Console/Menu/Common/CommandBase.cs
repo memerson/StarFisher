@@ -7,19 +7,13 @@ namespace StarFisher.Console.Menu.Common
         where TInput : CommandInput
         where TOutput : CommandOutput
     {
-        protected CommandBase(IStarFisherContext context, string title)
+        protected CommandBase(IStarFisherContext context)
         {
-            if (string.IsNullOrEmpty(title))
-                throw new ArgumentException(nameof(title));
-
-            Title = title;
             Context = context ?? StarFisherContext.Current;
         }
 
-        protected CommandBase(string title)
-            : this(null, title) { }
-
-        public string Title { get; }
+        protected CommandBase()
+            : this(null) { }
 
         public CommandResult<TOutput> Run(TInput input)
         {
@@ -30,11 +24,14 @@ namespace StarFisher.Console.Menu.Common
                 if (commandResult.ResultType != CommandResultType.Success)
                     return commandResult;
 
-                if (Context.NominationListContext.HasNominationListLoaded)
-                    Context.NominationListContext.SaveSnapshot();
+                if (Context.IsInitialized)
+                {
+                    if (Context.NominationListContext.HasNominationListLoaded)
+                        Context.NominationListContext.SaveSnapshot();
 
-                if(Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
-                    Context.AwardWinnerListContext.SaveSnapshot();
+                    if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                        Context.AwardWinnerListContext.SaveSnapshot();
+                }
 
                 return commandResult;
             }

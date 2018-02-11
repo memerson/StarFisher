@@ -41,7 +41,7 @@ namespace StarFisher.Console.Context
             get
             {
                 if (!IsInitialized)
-                    throw new InvalidOperationException("NominationListContext not yet initialized.");
+                    throw new InvalidOperationException(@"NominationListContext not yet initialized");
 
                 return _current;
             }

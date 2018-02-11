@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Office.Outlook
 {
     public interface IEmailConfiguration
     {
-        IReadOnlyCollection<EmailAddress> HumanResourcesEmailAddresses { get; }
+        Person EiaChairPerson { get; }
 
-        IReadOnlyCollection<PersonName> HumanResourcesPersonNames { get; }
+        IReadOnlyList<Person> HrPeople { get; }
 
-        IReadOnlyCollection<EmailAddress> EiaChairPersonEmailAddresses { get; }
+        IReadOnlyList<Person> LuncheonPlannerPeople { get; }
 
-        IReadOnlyCollection<PersonName> EiaChairPersonNames { get; }
+        Person CertificatePrinterPerson { get; }
     }
 }
