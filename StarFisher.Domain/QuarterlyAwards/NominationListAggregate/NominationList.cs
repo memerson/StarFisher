@@ -9,21 +9,23 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
     public class NominationList : AggregateRoot
     {
+        private readonly List<Nomination> _nominations;
+
         internal NominationList(Year year, Quarter quarter, List<Nomination> nominations)
             : base(CreateKey(year, quarter))
         {
             Quarter = quarter;
             Year = year;
-            Nominations = nominations ?? throw new ArgumentNullException(nameof(nominations));
+            _nominations = nominations ?? throw new ArgumentNullException(nameof(nominations));
 
-            SetNomineeIdentifiers(Nominations);
+            SetNomineeIdentifiers();
         }
 
         public Quarter Quarter { get; }
 
         public Year Year { get; }
 
-        public IReadOnlyCollection<Nomination> Nominations { get; }
+        public IReadOnlyList<Nomination> Nominations => _nominations;
 
         public IReadOnlyCollection<Person> Nominees => Nominations.Select(n => n.Nominee).Distinct().ToList();
 
@@ -52,10 +54,17 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 return;
 
             var nominations = Nominations.Where(n => n.Nominee == nominee);
+            var updatedNominee = false;
 
             foreach (var nomination in nominations)
             {
                 nomination.UpdateNomineeName(newNomineeName);
+                updatedNominee = true;
+            }
+
+            if (updatedNominee)
+            {
+                SetNomineeIdentifiers();
                 MarkAsDirty($@"Updated nominee name from {nominee.Name.FullName} to {newNomineeName.FullName}");
             }
         }
@@ -97,17 +106,39 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             MarkAsDirty($@"Updated a nomination write-up for {nomination.NomineeName}");
         }
 
+        public void DisqualifyNominee(Person nominee)
+        {
+            if (nominee == null)
+                throw new ArgumentNullException(nameof(nominee));
+
+            _nominations.RemoveAll(n => n.Nominee == nominee);
+            SetNomineeIdentifiers();
+            MarkAsDirty($@"Disqualified nominee {nominee.Name.FullName}");
+        }
+
+        public void RemoveNomination(int nominationId)
+        {
+            var nomination = Nominations.FirstOrDefault(n => n.Id == nominationId);
+
+            if (nomination == null)
+                throw new ArgumentException(nameof(nominationId));
+
+            _nominations.Remove(nomination);
+            SetNomineeIdentifiers();
+            MarkAsDirty($@"Removed {nomination.NominatorName.RawNameText}'s nomination for {nomination.NomineeName.FullName}");
+        }
+
         private IEnumerable<Nomination> GetNominationsByAwardType(AwardType awardType)
         {
             return Nominations.Where(n => n.AwardType == awardType);
         }
 
-        private void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)
+        private void SetNomineeIdentifiers()
         {
-            var nominationsByNomineeName = nominations.GroupBy(n => n.NomineeName);
+            var nominationsByNominee = Nominations.GroupBy(n => n.Nominee);
             var updatedVotingIdentifiers = false;
 
-            foreach (var group in nominationsByNomineeName)
+            foreach (var group in nominationsByNominee)
             {
                 var nomineeIds = group.Select(n => n.Id).ToList();
                 var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIds);

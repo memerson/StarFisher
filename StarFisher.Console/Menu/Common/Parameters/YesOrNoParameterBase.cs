@@ -7,7 +7,6 @@ namespace StarFisher.Console.Menu.Common.Parameters
         {
             RegisterValidInput(@"yes", true);
             RegisterValidInput(@"no", false);
-            RegisterAbortInput(@"stop");
         }
 
         public override Argument<bool> GetArgument()

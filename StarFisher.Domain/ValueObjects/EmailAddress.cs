@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using StarFisher.Domain.Common;
 
 namespace StarFisher.Domain.ValueObjects
@@ -43,12 +44,12 @@ namespace StarFisher.Domain.ValueObjects
 
         protected override bool EqualsCore(EmailAddress other)
         {
-            return string.Equals(Value, other.Value);
+            return string.Equals(Value, other.Value, StringComparison.InvariantCultureIgnoreCase);
         }
 
         protected override int GetHashCodeCore()
         {
-            return Value.GetHashCode();
+            return Value.ToLower().GetHashCode();
         }
 
         public override string ToString()

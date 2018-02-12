@@ -17,6 +17,8 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
             _settingName = settingName;
             _currentSettingValue = currentSettingValue;
+
+            RegisterAbortInput(@"stop");
         }
 
         protected override string GetInstructionsText()

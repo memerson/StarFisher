@@ -64,6 +64,7 @@
     <Compile Include="Menu\Common\MenuItemCommandBase.cs" />
     <Compile Include="Menu\Common\ParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\EmailAddressParameterBase.cs" />
+    <Compile Include="Menu\Common\Parameters\ListItemSelectionParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\PersonNameParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\YesOrNoParameterBase.cs" />
     <Compile Include="Menu\Common\WorkflowBase.cs" />
@@ -71,7 +72,7 @@
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\FixNomineeNamesAndEmailAddressesMenuItemCommand.cs" />
-    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeToChangeParameterBase.cs" />
+    <Compile Include="Menu\Common\Parameters\NomineeParameterBase.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeEmailAddressParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeNameParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeToChangeEmailAddressParameter.cs" />
@@ -97,6 +98,12 @@
     <Compile Include="Menu\LoadNominationsFromSnapshot\Parameters\SnapshotParameter.cs" />
     <Compile Include="Menu\LoadNominationsFromSurveyExport\LoadNominationsFromSurveyExportMenuItemCommand.cs" />
     <Compile Include="Menu\LoadNominationsFromSurveyExport\Parameters\SurveyExportFilePathParameter.cs" />
+    <Compile Include="Menu\DisqualifyNominees\Parameters\NomineeToDisqualifyParameter.cs" />
+    <Compile Include="Menu\DisqualifyNominees\Parameters\DisqualifyAnotherNomineeParameter.cs" />
+    <Compile Include="Menu\DisqualifyNominees\DisqualifyNomineesMenuItemCommand.cs" />
+    <Compile Include="Menu\RemoveNominations\RemoveNominationMenuItemCommand.cs" />
+    <Compile Include="Menu\RemoveNominations\Parameters\NominationToRemoveParameter.cs" />
+    <Compile Include="Menu\RemoveNominations\Parameters\RemoveAnotherNominationParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
     <Compile Include="Program.cs" />

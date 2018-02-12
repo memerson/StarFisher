@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.DisqualifyNominees;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
 using StarFisher.Console.Menu.FixNomineeWriteUps;
 using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
+using StarFisher.Console.Menu.RemoveNominations;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.ValueObjects;
@@ -115,6 +117,8 @@ namespace StarFisher.Console
                 new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Current),
                 new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Current, globalAddressList),
                 new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),
+                new DisqualifyNomineesMenuItemCommand(StarFisherContext.Current),
+                new RemoveNominationMenuItemCommand(StarFisherContext.Current),
                 new ExitCommand(StarFisherContext.Current)
             };
 
