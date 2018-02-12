@@ -7,6 +7,7 @@ using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
 using StarFisher.Console.Menu.FixNomineeWriteUps;
 using StarFisher.Console.Menu.Initialize;
+using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
@@ -22,11 +23,6 @@ namespace StarFisher.Console
     {
         private static void Main(string[] args)
         {
-            //var filePath =
-            //    FilePath.Create(
-            //        @"C:\Users\memerson\Desktop\EIA\2018\Q1\SurveyMonkeyExport\Data_All_180109\Excel\Star Awards for Quarterly Peer Recognition.xlsx",
-            //        true);
-
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
             var globalAddressList = new GlobalAddressList();
@@ -115,6 +111,7 @@ namespace StarFisher.Console
 
             var menuItemCommands = new List<IMenuItemCommand>
             {
+                new LoadNominationsFromSnapshotMenuItemCommand(StarFisherContext.Current),
                 new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Current),
                 new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Current, globalAddressList),
                 new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),

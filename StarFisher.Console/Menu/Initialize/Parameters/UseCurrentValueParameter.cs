@@ -1,9 +1,9 @@
 ﻿using System;
-using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.Common.Parameters;
 
 namespace StarFisher.Console.Menu.Initialize.Parameters
 {
-    public class UseCurrentValueParameter : ParameterBase<bool>
+    public class UseCurrentValueParameter : YesOrNoParameterBase
     {
         private readonly string _settingName;
         private readonly string _currentSettingValue;
@@ -17,25 +17,11 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
             _settingName = settingName;
             _currentSettingValue = currentSettingValue;
-
-            RegisterValidInput(@"yes", true);
-            RegisterValidInput(@"no", false);
-            RegisterAbortInput(@"stop");
         }
 
-        public override Argument<bool> GetArgument()
+        protected override string GetInstructionsText()
         {
-            WriteLine();
-            WriteLine($@"Your current value for {_settingName} is {_currentSettingValue}");
-            WriteLine(@"Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.");
-            Write(@"> ");
-
-            return GetRegisteredValidInputArgument();
-        }
-
-        public override void PrintInvalidArgumentMessage()
-        {
-            PrintInvalidArgumentMessage(@"That's not a valid option.");
+            return $@"Your current value for {_settingName} is {_currentSettingValue}. Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.";
         }
     }
 }

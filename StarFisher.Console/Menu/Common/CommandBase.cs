@@ -43,6 +43,18 @@ namespace StarFisher.Console.Menu.Common
 
         protected IStarFisherContext Context { get; }
 
+        protected static bool TryGetArgumentValue<T>(IParameter<T> parameter, out T argumentValue)
+        {
+            argumentValue = default(T);
+            var argument = parameter.GetValidArgument();
+
+            if (argument.ArgumentType == ArgumentType.Abort)
+                return false;
+
+            argumentValue = argument.Value;
+            return true;
+        }
+
         protected abstract CommandResult<TOutput> RunCore(TInput input);
     }
 }

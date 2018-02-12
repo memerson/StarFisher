@@ -14,9 +14,9 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             _nomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
             _writeUp = writeUp ?? throw new ArgumentNullException(nameof(writeUp));
 
-            RegisterValidInput("stop", Action.Stop);
-            RegisterValidInput("edit", Action.Edit);
-            RegisterValidInput("c", Action.Continue);
+            RegisterAbortInput(@"stop");
+            RegisterValidInput(@"edit", Action.Edit);
+            RegisterValidInput(@"c", Action.Continue);
         }
 
         public override Argument<Action> GetArgument()
@@ -34,58 +34,11 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
 
         public override void PrintInvalidArgumentMessage()
         {
-            PrintInvalidArgumentMessage(@"That's not a valid choice.");
-        }
-
-        //private void PrintWriteUp()
-        //{
-        //    WriteLine();
-
-        //    if (!_writeUp.ContainsNomineeName)
-        //    {
-        //        WriteLine(_writeUp.Value);
-        //        WriteLine();
-        //        return;
-        //    }
-
-        //    var currentIndex = 0;
-        //    var text = _writeUp.Value;
-        //    var finalIndex = text.Length - 1;
-
-        //    while (currentIndex < text.Length)
-        //    {
-        //        var nextFirstNameIndex = IndexOf(text, _nomineeName.FirstName, currentIndex);
-        //        var nextLastNameIndex = IndexOf(text, _nomineeName.LastName, currentIndex);
-        //        var cleanSegmentEndIndex = Math.Min(nextFirstNameIndex, nextLastNameIndex);
-        //        var cleanSegmentLength = cleanSegmentEndIndex - currentIndex;
-        //        var cleanSegment = text.Substring(currentIndex, cleanSegmentLength);
-
-        //        Write(cleanSegment);
-
-        //        if (cleanSegmentEndIndex >= finalIndex)
-        //            return;
-
-        //        var nameSegment = cleanSegmentEndIndex == nextFirstNameIndex
-        //            ? _nomineeName.FirstName
-        //            : _nomineeName.LastName;
-
-        //        WriteRed(nameSegment);
-
-        //        currentIndex = cleanSegmentEndIndex + nameSegment.Length;
-        //    }
-
-        //    WriteLine();
-        //}
-
-        private static int IndexOf(string text, string value, int startIndex)
-        {
-            var index = text.IndexOf(value, startIndex, StringComparison.InvariantCultureIgnoreCase);
-            return index == -1 ? text.Length : index;
+            PrintInvalidArgumentMessage(@"That's not a valid option.");
         }
 
         public enum Action
         {
-            Stop,
             Continue,
             Edit
         }

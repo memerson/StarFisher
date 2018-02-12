@@ -14,10 +14,13 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
             if (awardWinnerList == null)
                 throw new ArgumentNullException(nameof(awardWinnerList));
 
+            LastChangeSummary = awardWinnerList.LastChangeSummary;
             Quarter = awardWinnerList.Quarter.NumericValue;
             Year = awardWinnerList.Year.Value;
             AwardWinners = awardWinnerList.AwardWinners.Select(GetAwardWinnerDto).ToList();
         }
+
+        public string LastChangeSummary { get; set; }
 
         public int Quarter { get; set; }
 

@@ -61,6 +61,12 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return nominationList.Year;
         }
 
+        protected override string GetLastChangeSummaryFromDto(object dto)
+        {
+            var nominationListDto = dto as NominationListDto;
+            return nominationListDto?.LastChangeSummary;
+        }
+
         private static Nomination LoadNominationFromSurveyExport(Row row, int rowNumber)
         {
             var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";

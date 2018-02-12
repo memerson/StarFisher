@@ -12,9 +12,11 @@ namespace StarFisher.Console.Context
 
         AwardWinnerList AwardWinnerList { get; }
 
-        IReadOnlyList<DateTime> ListSnapshotDateTimes();
+        int GetSnapshotCount();
 
-        void LoadSnapshot(DateTime snapshotDateTime);
+        IReadOnlyList<SnapshotSummary> ListSnapshotSummaries();
+
+        void LoadSnapshot(SnapshotSummary snapshotSummary);
 
         void LoadLatestSnapshot();
 

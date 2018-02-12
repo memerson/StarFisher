@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using StarFisher.Domain.QuarterlyAwards;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 
@@ -13,9 +14,11 @@ namespace StarFisher.Console.Context
 
         void LoadSurveyExport(FilePath filePath);
 
-        IReadOnlyList<DateTime> ListSnapshotDateTimes();
+        int GetSnapshotCount();
 
-        void LoadSnapshot(DateTime snapshotDateTime);
+        IReadOnlyList<SnapshotSummary> ListSnapshotSummaries();
+
+        void LoadSnapshot(SnapshotSummary snapshotSummary);
 
         void LoadLatestSnapshot();
 

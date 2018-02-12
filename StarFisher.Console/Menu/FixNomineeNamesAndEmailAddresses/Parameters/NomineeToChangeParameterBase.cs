@@ -6,9 +6,9 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 {
-    public abstract class GetNomineeToChangeParameterBase : ParameterBase<Person>
+    public abstract class NomineeToChangeParameterBase : ParameterBase<Person>
     {
-        protected GetNomineeToChangeParameterBase(IReadOnlyCollection<Person> allNominees)
+        protected NomineeToChangeParameterBase(IReadOnlyCollection<Person> allNominees)
         {
             AllNominees = allNominees?.OrderBy(n => n.Name.FullName).ToList() ??
                            throw new ArgumentNullException(nameof(allNominees));

@@ -19,14 +19,19 @@ namespace StarFisher.Console.Context
             Quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
         }
 
-        public IReadOnlyList<DateTime> ListSnapshotDateTimes()
+        public int GetSnapshotCount()
         {
-            return Repository.ListSnapshotDateTimes(Year, Quarter);
+            return Repository.GetSnapshotCount(Year, Quarter);
         }
 
-        public void LoadSnapshot(DateTime snapshotDateTime)
+        public IReadOnlyList<SnapshotSummary> ListSnapshotSummaries()
         {
-            AggregateRoot = Repository.GetSnapshot(Year, Quarter, snapshotDateTime);
+            return Repository.ListSnapshotSummaries(Year, Quarter);
+        }
+
+        public void LoadSnapshot(SnapshotSummary snapshotSummary)
+        {
+            AggregateRoot = Repository.GetSnapshot(Year, Quarter, snapshotSummary);
         }
 
         public void LoadLatestSnapshot()

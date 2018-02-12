@@ -13,10 +13,13 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
             if(nominationList == null)
                 throw new ArgumentNullException(nameof(nominationList));
 
+            LastChangeSummary = nominationList.LastChangeSummary;
             Quarter = nominationList.Quarter.NumericValue;
             Year = nominationList.Year.Value;
             Nominations = nominationList.Nominations.Select(n => new NominationDto(n)).ToList();
         }
+
+        public string LastChangeSummary { get; set; }
 
         public int Quarter { get; set; }
 

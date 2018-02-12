@@ -65,12 +65,13 @@
     <Compile Include="Menu\Common\ParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\EmailAddressParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\PersonNameParameterBase.cs" />
+    <Compile Include="Menu\Common\Parameters\YesOrNoParameterBase.cs" />
     <Compile Include="Menu\Common\WorkflowBase.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\FixNomineeNamesAndEmailAddressesMenuItemCommand.cs" />
-    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\GetNomineeToChangeParameterBase.cs" />
+    <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeToChangeParameterBase.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeEmailAddressParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NewNomineeNameParameter.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Parameters\NomineeToChangeEmailAddressParameter.cs" />
@@ -91,6 +92,9 @@
     <Compile Include="Menu\Initialize\Parameters\WorkingDirectoryParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\QuarterParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\YearParameter.cs" />
+    <Compile Include="Menu\LoadNominationsFromSnapshot\LoadNominationsFromSnapshotMenuItemCommand.cs" />
+    <Compile Include="Menu\LoadNominationsFromSnapshot\Parameters\LoadLatestSnapshotParameter.cs" />
+    <Compile Include="Menu\LoadNominationsFromSnapshot\Parameters\SnapshotParameter.cs" />
     <Compile Include="Menu\LoadNominationsFromSurveyExport\LoadNominationsFromSurveyExportMenuItemCommand.cs" />
     <Compile Include="Menu\LoadNominationsFromSurveyExport\Parameters\SurveyExportFilePathParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />

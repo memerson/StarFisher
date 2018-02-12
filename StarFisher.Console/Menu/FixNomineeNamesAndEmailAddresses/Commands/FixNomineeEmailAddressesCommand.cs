@@ -44,18 +44,6 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             return CommandOutput.None.Success;
         }
 
-        private static bool TryGetArgumentValue<T>(IParameter<T> parameter, out T argumentValue)
-        {
-            argumentValue = default(T);
-            var argument = parameter.GetValidArgument();
-
-            if (argument.ArgumentType == ArgumentType.Abort)
-                return false;
-
-            argumentValue = argument.Value;
-            return true;
-        }
-
         public class Input : CommandInput
         {
             public Input(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses)

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeWriteUps.Parameters;
@@ -25,55 +25,38 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
         {
             var nominationList = Context.NominationListContext.NominationList;
 
-            foreach (var nomination in nominationList.Nominations)
-            {
-                var quitRequested = ReviewNomination(nomination, nominationList);
-                if (quitRequested)
-                    break;
-            }
+            if (nominationList.Nominations.Any(nomination => !ReviewNomination(nomination, nominationList)))
+                return CommandOutput.None.Success;
 
             return CommandOutput.None.Success;
         }
 
         private bool ReviewNomination(Nomination nomination, NominationList nominationList)
         {
-            var action = GetNominationWriteUpAction(nomination);
-
-            if (action == WriteUpActionParameter.Action.Stop)
-                return true;
-
-            if (action != WriteUpActionParameter.Action.Edit)
+            if (!GetNominationWriteUpAction(nomination, out WriteUpActionParameter.Action action))
                 return false;
+
+            if (action == WriteUpActionParameter.Action.Continue)
+                return true;
 
             var changedWriteUp = TryGetNewNominationWriteUp(nomination, out NominationWriteUp newWriteUp);
 
-            if (!changedWriteUp)
-                return false;
+            if (changedWriteUp)
+                nominationList.UpdateNominationWriteUp(nomination.Id, newWriteUp);
 
-            nominationList.UpdateNominationWriteUp(nomination.Id, newWriteUp);
-            return false;
+            return true;
         }
 
-        private WriteUpActionParameter.Action GetNominationWriteUpAction(Nomination nomination)
+        private static bool GetNominationWriteUpAction(Nomination nomination, out WriteUpActionParameter.Action action)
         {
             var parameter = new WriteUpActionParameter(nomination.NomineeName, nomination.WriteUp);
-            var argument = parameter.GetValidArgument();
-            return argument.Value;
+            return TryGetArgumentValue(parameter, out action);
         }
 
-        private bool TryGetNewNominationWriteUp(Nomination nomination, out NominationWriteUp newWriteUp)
+        private static bool TryGetNewNominationWriteUp(Nomination nomination, out NominationWriteUp newWriteUp)
         {
             var parameter = new NewWriteUpParameter(nomination.NomineeName, nomination.WriteUp);
-            var argument = parameter.GetValidArgument();
-
-            if (argument.ArgumentType == ArgumentType.Abort)
-            {
-                newWriteUp = null;
-                return false;
-            }
-
-            newWriteUp = argument.Value;
-            return true;
+            return TryGetArgumentValue(parameter, out newWriteUp);
         }
     }
 }

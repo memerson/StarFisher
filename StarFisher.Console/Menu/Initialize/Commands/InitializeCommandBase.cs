@@ -20,42 +20,32 @@ namespace StarFisher.Console.Menu.Initialize.Commands
         protected CommandResult<Output> RunCoreHelper(string settingName, TValue currentSettingValue,
             IParameter<TValue> getNewValueParameter)
         {
-            var currentSettingValueText = currentSettingValue?.ToString();
-            var useCurrentValue = GetUseCurrentValue(settingName, currentSettingValueText, out bool stop);
-
-            if (stop)
+            if(!TryGetUseCurrentValueParameter(settingName, currentSettingValue, out bool useCurrentValue))
                 return CommandResult<Output>.Abort();
 
-            return useCurrentValue
-                ? CommandResult<Output>.Success(new Output(currentSettingValue))
-                : GetNewValue(getNewValueParameter);
+            if(useCurrentValue)
+                return CommandResult<Output>.Success(new Output(currentSettingValue));
+
+            if(!TryGetArgumentValue(getNewValueParameter, out TValue newValue))
+                return CommandResult<Output>.Abort();
+
+            return CommandResult<Output>.Success(new Output(newValue));
         }
 
-        private bool GetUseCurrentValue(string settingName, string currentSettingValueText, out bool stop)
+        private static bool TryGetUseCurrentValueParameter(string settingName, TValue currentSettingValue, out bool useCurrentValue)
         {
-            stop = false;
+            var currentSettingValueText = currentSettingValue?.ToString();
+            var hasCurrentSettingValue = !string.IsNullOrWhiteSpace(currentSettingValueText);
 
-            if (string.IsNullOrWhiteSpace(currentSettingValueText) || !Context.IsInitialized)
-                return false;
+            if (!hasCurrentSettingValue)
+            {
+                useCurrentValue = false;
+                return true;
+            }
 
             var parameter = new UseCurrentValueParameter(settingName, currentSettingValueText);
-            var argument = parameter.GetValidArgument();
 
-            if (argument.ArgumentType != ArgumentType.Abort)
-                return argument.ArgumentType == ArgumentType.Valid && argument.Value;
-
-            stop = true;
-            return false;
-        }
-
-        private static CommandResult<Output> GetNewValue(IParameter<TValue> parameter)
-        {
-            var argument = parameter.GetValidArgument();
-
-            if (argument.ArgumentType == ArgumentType.Abort)
-                return CommandResult<Output>.Abort();
-
-            return CommandResult<Output>.Success(new Output(argument.Value));
+            return TryGetArgumentValue(parameter, out useCurrentValue);
         }
 
         public class Output : CommandOutput

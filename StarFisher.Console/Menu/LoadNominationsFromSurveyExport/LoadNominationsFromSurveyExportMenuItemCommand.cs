@@ -1,6 +1,7 @@
 ﻿using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters;
+using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
 {
@@ -15,12 +16,10 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var parameter = new SurveyExportFilePathParameter();
-            var argument = parameter.GetValidArgument();
-
-            if (argument.ArgumentType == ArgumentType.Abort)
+            if (!TryGetArgumentValue(parameter, out FilePath filePath))
                 return CommandOutput.None.Abort;
 
-            Context.NominationListContext.LoadSurveyExport(argument.Value);
+            Context.NominationListContext.LoadSurveyExport(filePath);
             Context.NominationListContext.SaveSnapshot();
 
             return CommandOutput.None.Success;

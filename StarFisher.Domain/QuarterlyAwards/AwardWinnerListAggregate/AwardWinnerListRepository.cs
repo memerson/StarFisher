@@ -28,5 +28,11 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
         {
             return awardWinnerList.Year;
         }
+
+        protected override string GetLastChangeSummaryFromDto(object dto)
+        {
+            var awardWinnerListDto = dto as AwardWinnerListDto;
+            return awardWinnerListDto?.LastChangeSummary;
+        }
     }
 }

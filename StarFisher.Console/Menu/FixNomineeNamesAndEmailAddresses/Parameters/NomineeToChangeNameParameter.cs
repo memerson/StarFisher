@@ -4,7 +4,7 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 {
-    public class NomineeToChangeNameParameter : GetNomineeToChangeParameterBase
+    public class NomineeToChangeNameParameter : NomineeToChangeParameterBase
     {
         private readonly HashSet<PersonName> _unrecognizedNomineeNames;
 

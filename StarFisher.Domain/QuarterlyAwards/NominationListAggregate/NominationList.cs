@@ -56,7 +56,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             foreach (var nomination in nominations)
             {
                 nomination.UpdateNomineeName(newNomineeName);
-                MarkAsDirty();
+                MarkAsDirty($@"Updated nominee name from {nominee.Name.FullName} to {newNomineeName.FullName}");
             }
         }
 
@@ -77,7 +77,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             foreach (var nomination in nominations)
             {
                 nomination.UpdateNomineeEmailAddress(newEmailAddress);
-                MarkAsDirty();
+                MarkAsDirty($@"Updated nominee email address from {nominee.EmailAddress.Value} to {newEmailAddress.Value}");
             }
         }
 
@@ -94,7 +94,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 throw new ArgumentException(nameof(nominationId));
 
             nomination.UpdateWriteUp(newWriteUp);
-            MarkAsDirty();
+            MarkAsDirty($@"Updated a nomination write-up for {nomination.NomineeName}");
         }
 
         private IEnumerable<Nomination> GetNominationsByAwardType(AwardType awardType)
@@ -105,6 +105,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
         private void SetNomineeIdentifiers(IEnumerable<Nomination> nominations)
         {
             var nominationsByNomineeName = nominations.GroupBy(n => n.NomineeName);
+            var updatedVotingIdentifiers = false;
 
             foreach (var group in nominationsByNomineeName)
             {
@@ -117,9 +118,12 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                         continue;
 
                     nomination.SetVotingIdentifier(votingIdentifier);
-                    MarkAsDirty();
+                    updatedVotingIdentifiers = true;
                 }
             }
+
+            if (updatedVotingIdentifiers)
+                MarkAsDirty(@"Set nominee voting identifiers.");
         }
 
         private static int CreateKey(Year year, Quarter quarter)

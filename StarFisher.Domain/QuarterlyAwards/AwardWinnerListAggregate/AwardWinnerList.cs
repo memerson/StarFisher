@@ -18,7 +18,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             Quarter = quarter;
             Year = year;
             _awardWinners = new List<AwardWinnerBase>();
-            MarkAsDirty();
+            MarkAsDirty(@"Initial creation");
         }
 
         internal AwardWinnerList(Year year, Quarter quarter, IEnumerable<AwardWinnerBase> awardWinners)
@@ -49,7 +49,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new StarValuesAwardWinner(id, person, companyValues, nominationWriteUps);
             _awardWinners.Add(winner);
-            MarkAsDirty();
+            MarkAsDirty($@"Added Star Values winner {person.Name.FullName}");
         }
 
         public void AddStarPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
@@ -58,7 +58,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new StarPerformanceAwardWinner(id, person, awardAmount, isFullTime);
             _awardWinners.Add(winner);
-            MarkAsDirty();
+            MarkAsDirty($@"Added Star Performance winner {person.Name.FullName}");
         }
 
         public void AddRisingPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
@@ -67,7 +67,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var id = GetNextAwardWinnerId();
             var winner = new RisingPerformanceAwardWinner(id, person, awardAmount, isFullTime);
             _awardWinners.Add(winner);
-            MarkAsDirty();
+            MarkAsDirty($@"Added Rising Performance winner {person.Name.FullName}");
         }
 
         private int GetNextAwardWinnerId()
