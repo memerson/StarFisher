@@ -12,6 +12,7 @@ using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
 using StarFisher.Console.Menu.TopLevelMenu;
+using StarFisher.Console.Menu.ValidateNomineesWithHr;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
@@ -119,10 +120,11 @@ namespace StarFisher.Console
                 new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),
                 new DisqualifyNomineesMenuItemCommand(StarFisherContext.Current),
                 new RemoveNominationMenuItemCommand(StarFisherContext.Current),
+                new ValidateNomineesWithHrMenuItemCommand(StarFisherContext.Current, emailFactory),
                 new ExitCommand(StarFisherContext.Current)
             };
 
-            var topLevelMenu = new TopLevelMenuCommand(menuItemCommands);
+            var topLevelMenu = new TopLevelMenuCommand(StarFisherContext.Current, menuItemCommands);
             topLevelMenu.Run();
         }
 

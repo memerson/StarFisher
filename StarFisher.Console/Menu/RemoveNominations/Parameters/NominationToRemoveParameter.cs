@@ -21,9 +21,9 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
             return $@"For {nomineeName} ({officeLocation}) nominated by {nominatorName}";
         }
 
-        protected override string GetSelectionInstructions()
+        protected override void WriteSelectionInstructions()
         {
-            return @"Enter the number of the nomination you want to remove, or enter 'stop' to stop removing nominations.";
+            WriteLine(@"Enter the number of the nomination you want to remove, or enter 'stop' to stop removing nominations.");
         }
     }
 }

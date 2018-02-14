@@ -7,11 +7,10 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
 {
     public class DisqualifyNomineesMenuItemCommand : MenuItemCommandBase
     {
-        private const string CommandText = @"Disqualify a nominee";
+        private const string CommandTitle = @"Disqualify a nominee";
 
-        public DisqualifyNomineesMenuItemCommand(IStarFisherContext context) : base(context, CommandText) { }
-
-        public DisqualifyNomineesMenuItemCommand() : base(CommandText) { }
+        public DisqualifyNomineesMenuItemCommand(IStarFisherContext context)
+            : base(context, CommandTitle) { }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {

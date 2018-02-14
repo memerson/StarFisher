@@ -39,9 +39,9 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
                 WriteLine(listItemText);
         }
 
-        protected override string GetSelectionInstructions()
+        protected override void WriteSelectionInstructions()
         {
-            return @"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.";
+            WriteLine(@"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.");
         }
     }
 }

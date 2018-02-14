@@ -151,7 +151,7 @@ namespace StarFisher.Console.Menu.Common
 
         protected static void WriteLineBlue(string text, params string[] redTokens)
         {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Blue))
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkCyan))
                 WriteLine(text, redTokens);
         }
 

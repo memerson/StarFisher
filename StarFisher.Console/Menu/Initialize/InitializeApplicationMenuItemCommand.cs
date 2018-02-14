@@ -23,14 +23,6 @@ namespace StarFisher.Console.Menu.Initialize
                                     throw new ArgumentNullException(nameof(configurationStorage));
         }
 
-        public InitializeApplicationMenuItemCommand(IConfigurationStorage configurationStorage)
-            : base(CommandTitle)
-
-        {
-            _configurationStorage = configurationStorage ??
-                                    throw new ArgumentNullException(nameof(configurationStorage));
-        }
-
         public override bool GetCanRun() => true;
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)

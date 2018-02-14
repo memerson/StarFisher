@@ -15,12 +15,6 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
         private readonly IGlobalAddressList _globalAddressList;
         private const string CommandTitle = @"Fix nominee names and email addresses";
 
-        public FixNomineeNamesAndEmailAddressesMenuItemCommand(IGlobalAddressList globalAddressList) : 
-            base(CommandTitle)
-        {
-            _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
-        }
-
         public FixNomineeNamesAndEmailAddressesMenuItemCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) :
             base(context, CommandTitle)
         {

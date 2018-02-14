@@ -65,7 +65,9 @@ namespace StarFisher.Console.Menu.Common.Parameters
             WriteLine(listItemText);
         }
 
-        protected abstract string GetSelectionInstructions();
+        protected virtual void WriteSelectionInstructions()
+        {
+        }
 
         private void SolicitInput()
         {
@@ -74,22 +76,31 @@ namespace StarFisher.Console.Menu.Common.Parameters
             WriteLine();
             WriteLine();
 
+            var itemsWritten = 0;
+
             for (var i = 0; i < _list.Count; ++i)
             {
-                if (i != 0 && i % 20 == 0)
+                var listItem = _list[i];
+                var listItemLabel = GetListItemLabel(listItem);
+
+                if (string.IsNullOrWhiteSpace(listItemLabel))
+                    continue;
+
+                var listItemText = $@"{i + 1, 5}: {listItemLabel}";
+
+                if (itemsWritten != 0 && itemsWritten % 20 == 0)
                 {
                     Write(@"Press any key to continue.");
                     WaitForKeyPress();
                     ClearLastLine();
                 }
 
-                var listItem = _list[i];
-                var listItemText = $@"{i + 1,5}: {GetListItemLabel(listItem)}";
                 WriteListItem(listItem, listItemText);
+                ++itemsWritten;
             }
 
             WriteLine();
-            WriteLine(GetSelectionInstructions());
+            WriteSelectionInstructions();
             Write(@"> ");
         }
     }

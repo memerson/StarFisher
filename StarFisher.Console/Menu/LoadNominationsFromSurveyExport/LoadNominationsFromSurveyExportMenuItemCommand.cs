@@ -11,8 +11,6 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
 
         public LoadNominationsFromSurveyExportMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle) { }
 
-        public LoadNominationsFromSurveyExportMenuItemCommand() : base(CommandTitle) { }
-
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var parameter = new SurveyExportFilePathParameter();

@@ -12,8 +12,8 @@ namespace StarFisher.Console.Menu.TopLevelMenu
         private readonly IReadOnlyList<IMenuItemCommand> _menuItemCommands;
         private const string CommandTitle = @"Print the top-level menu";
 
-        public TopLevelMenuCommand(IReadOnlyList<IMenuItemCommand> menuItemCommands)
-            : base(CommandTitle)
+        public TopLevelMenuCommand(IStarFisherContext context, IReadOnlyList<IMenuItemCommand> menuItemCommands)
+            : base(context, CommandTitle)
         {
             _menuItemCommands = menuItemCommands ?? throw new ArgumentNullException(nameof(menuItemCommands));
 
@@ -26,18 +26,22 @@ namespace StarFisher.Console.Menu.TopLevelMenu
             return _menuItemCommands.Any(mi => mi.GetCanRun());
         }
 
-        public TopLevelMenuCommand(IStarFisherContext context) : base(context, CommandTitle) { }
-
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var parameter = new MenuItemIndexParameter(_menuItemCommands);
 
-            for (;;)
+            for (; ; )
             {
                 var argument = parameter.GetValidArgument();
-                var menuItem = _menuItemCommands[argument.Value];
-                menuItem.Run();
+
+                if (argument.ArgumentType == ArgumentType.Abort)
+                    break;
+
+                var menuItem = argument.Value;
+                menuItem?.Run();
             }
+
+            return CommandOutput.None.Success;
         }
     }
 }

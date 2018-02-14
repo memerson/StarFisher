@@ -16,9 +16,9 @@ namespace StarFisher.Console.Menu.DisqualifyNominees.Parameters
             return $@"{listItem.Name.FullName} ({listItem.OfficeLocation.ConciseName})";
         }
 
-        protected override string GetSelectionInstructions()
+        protected override void WriteSelectionInstructions()
         {
-            return @"Enter the number of the nominee you want to disqualify, or enter 'stop' to stop disqualifying nominees.";
+            WriteLine(@"Enter the number of the nominee you want to disqualify, or enter 'stop' to stop disqualifying nominees.");
         }
     }
 }
