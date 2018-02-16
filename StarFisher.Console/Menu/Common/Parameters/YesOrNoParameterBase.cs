@@ -9,11 +9,11 @@ namespace StarFisher.Console.Menu.Common.Parameters
             RegisterValidInput(@"no", false);
         }
 
-        public override Argument<bool> GetArgument()
+        public override Argument<bool> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(GetInstructionsText());
-            Write(@"> ");
+            WriteCallToAction(GetCallToActionText());
+            WriteInputPrompt();
 
             return GetRegisteredValidInputArgument();
         }
@@ -23,6 +23,6 @@ namespace StarFisher.Console.Menu.Common.Parameters
             PrintInvalidArgumentMessage(@"That's not a valid option.");
         }
 
-        protected abstract string GetInstructionsText();
+        protected abstract string GetCallToActionText();
     }
 }

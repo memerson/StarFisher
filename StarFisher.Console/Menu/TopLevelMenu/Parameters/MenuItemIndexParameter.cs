@@ -7,21 +7,21 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
     public class MenuItemIndexParameter : ListItemSelectionParameterBase<IMenuItemCommand>
     {
         public MenuItemIndexParameter(IReadOnlyList<IMenuItemCommand> menuItemCommands)
-         : base(menuItemCommands, @"menu items") { }
+         : base(menuItemCommands, @"menu items", false) { }
 
         protected override string GetListItemLabel(IMenuItemCommand listItem)
         {
             return listItem.GetCanRun() ? listItem.Title : null;
         }
 
-        protected override void WriteSelectionInstructions()
+        protected override void WriteCallToAction()
         {
-            WriteLine(@"Enter one of the the number next to one of the menu items.");
+            WriteCallToAction(@"Enter one of the the numbers next to one of the menu items.");
         }
 
         protected override void WriteListIntroduction()
         {
-            WriteLineBlue(@"What do you want to do?");
+            WriteIntroduction(@"What do you want to do?");
         }
     }
 }

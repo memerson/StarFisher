@@ -10,7 +10,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return @"Would you like to pick up where you last left off with the nominations ('yes' or 'no')? You can also enter 'stop' to stop loading nominations.";
         }

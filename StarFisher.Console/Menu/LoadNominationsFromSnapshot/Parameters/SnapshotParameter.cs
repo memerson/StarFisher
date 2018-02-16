@@ -17,7 +17,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot.Parameters
             return $@"[{listItem.DateTime:MM/dd/yyyy hh:mm:ss tt}] Last Action: {listItem.LastChangeSummary}";
         }
 
-        protected override void WriteSelectionInstructions()
+        protected override void WriteCallToAction()
         {
             WriteLine(@"Enter the number of the snapshot you want to load, or enter 'stop' to stop loading nominations.");
         }

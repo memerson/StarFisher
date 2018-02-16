@@ -17,7 +17,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return $@"Enter {_personName.FullName}'s email address, or enter 'stop' to stop the initialization workflow.";
         }

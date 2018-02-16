@@ -13,13 +13,11 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        public override Argument<DirectoryPath> GetArgument()
+        public override Argument<DirectoryPath> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(@"Enter the full path of a directory you want to use as your working directory for StarFisher.");
-            WriteLine($@"Alternatively, you can enter 'default' to use the default directory of {DefaultWorkingDirectoryPath.Value}.");
-            WriteLine(@"You can also enter 'stop' to stop the initialization workflow.");
-            Write(@"> ");
+            WriteCallToAction($@"Enter the full path of a directory you want to use as your working directory for StarFisher. Alternatively, you can enter 'default' to use the default directory of {DefaultWorkingDirectoryPath.Value}. You can also enter 'stop' to stop the initialization workflow.");
+            WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();
         }

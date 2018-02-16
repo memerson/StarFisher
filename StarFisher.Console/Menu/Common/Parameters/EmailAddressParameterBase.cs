@@ -17,12 +17,11 @@ namespace StarFisher.Console.Menu.Common.Parameters
             RegisterValidInput(@"default", _derivedEmailAddress);
         }
 
-        public override Argument<EmailAddress> GetArgument()
+        public override Argument<EmailAddress> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(GetInstructionsText());
-            WriteLine($@"Alternatively you can enter 'default' to use the default email address of {_derivedEmailAddress}.");
-            Write(@"> ");
+            WriteCallToAction(GetCallToActionText() + $@" Alternatively you can enter 'default' to use the default email address of {_derivedEmailAddress}.");
+            WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();
         }
@@ -49,6 +48,6 @@ namespace StarFisher.Console.Menu.Common.Parameters
             return false;
         }
 
-        protected abstract string GetInstructionsText();
+        protected abstract string GetCallToActionText();
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using StarFisher.Console.Utilities;
 
 namespace StarFisher.Console.Menu.Common
 {
@@ -10,9 +8,12 @@ namespace StarFisher.Console.Menu.Common
         private readonly Dictionary<string, Argument<T>> _validInputs
             = new Dictionary<string, Argument<T>>(StringComparer.InvariantCultureIgnoreCase);
 
-        protected ParameterBase(bool isRequired = true)
+        private readonly IStarFisherConsole _console = StarFisherConsole.Instance;
+        private readonly bool _printCommandTitle;
+
+        protected ParameterBase(bool printCommandTitle = true)
         {
-            IsRequired = isRequired;
+            _printCommandTitle = printCommandTitle;
         }
 
         public Argument<T> GetValidArgument()
@@ -28,7 +29,13 @@ namespace StarFisher.Console.Menu.Common
             return argument;
         }
 
-        public abstract Argument<T> GetArgument();
+        public Argument<T> GetArgument()
+        {
+            _console.ResetConsole(_printCommandTitle);
+            return GetArgumentCore();
+        }
+
+        public abstract Argument<T> GetArgumentCore();
 
         public abstract void PrintInvalidArgumentMessage();
 
@@ -93,85 +100,33 @@ namespace StarFisher.Console.Menu.Common
             throw new NotImplementedException();
         }
 
-        public bool IsRequired { get; }
+        protected void Write(string text) => _console.Write(text);
 
-        protected static void Write(string text) => System.Console.Write(text);
+        protected void WriteRed(string text) => _console.WriteRed(text);
 
-        protected static void WriteRed(string text)
+        protected void WriteLine(string text, params string[] redTokens) => _console.WriteLine(text, redTokens);
+
+        protected void WriteLine() => _console.WriteLine();
+
+        protected void WriteLineRed(string text) => _console.WriteLineRed(text);
+
+        protected void WriteIntroduction(string text, params string[] redTokens) => _console.WriteLineBlue(text, redTokens);
+
+        protected void WriteCallToAction(string text) => _console.WriteLineYellow(text);
+
+        protected void WriteInputPrompt() => _console.WriteInputPrompt();
+
+        protected void WaitForKeyPress() => _console.WaitForKeyPress();
+
+        protected string ReadLine() => _console.ReadLine();
+
+        protected string ReadInput() => ReadLine().Replace("'", string.Empty);
+
+        protected void ClearLastLine() => _console.ClearLastLine();
+
+        protected void PrintInvalidArgumentMessage(string text)
         {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
-                Write(text);
-        }
-
-        protected static void WriteLine(string text, params string[] redTokens)
-        {
-            if (string.IsNullOrEmpty(text))
-            {
-                WriteLine();
-                return;
-            }
-
-            var redTokensLookup = new HashSet<string>(redTokens ?? Enumerable.Empty<string>(),
-                StringComparer.InvariantCultureIgnoreCase);
-
-            var tokens = text.Split(' ');
-            var maxLineLength = System.Console.BufferWidth - 5;
-            var charactersWritten = 0;
-
-            foreach (var token in tokens)
-            {
-                if (charactersWritten + token.Length > maxLineLength)
-                {
-                    WriteLine();
-                    charactersWritten = 0;
-                }
-                else if (charactersWritten > 0)
-                {
-                    Write(" ");
-                }
-
-                if (redTokensLookup.Contains(token))
-                    WriteRed(token);
-                else
-                    Write(token);
-
-                charactersWritten += token.Length + 1;
-            }
-
-            WriteLine();
-        }
-
-        protected static void WriteLine() => System.Console.WriteLine();
-
-        protected static void WriteLineRed(string text)
-        {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
-                WriteLine(text);
-        }
-
-        protected static void WriteLineBlue(string text, params string[] redTokens)
-        {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkCyan))
-                WriteLine(text, redTokens);
-        }
-
-        protected static void WaitForKeyPress() => System.Console.ReadKey();
-
-        protected static string ReadLine() => System.Console.ReadLine()?.Trim();
-
-        protected static string ReadInput() => ReadLine().Replace("'", string.Empty);
-
-        protected static void ClearLastLine()
-        {
-            System.Console.SetCursorPosition(0, System.Console.CursorTop - 1);
-            System.Console.Write(new string(' ', System.Console.BufferWidth));
-            System.Console.SetCursorPosition(0, System.Console.CursorTop - 1);
-        }
-
-        protected static void PrintInvalidArgumentMessage(string text)
-        {
-            WriteLine();
-            WriteLineRed(text);
+            _console.SetErrorMessage(text);
         }
     }
 }

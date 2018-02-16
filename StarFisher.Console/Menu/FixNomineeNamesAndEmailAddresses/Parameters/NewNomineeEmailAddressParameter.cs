@@ -17,7 +17,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
             RegisterAbortInput(@"done");
         }
 
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return $@"Enter the email address for the nominee named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.";
         }

@@ -19,7 +19,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return $@"Enter the name of the {_personTitle}, or enter 'stop' to stop the initialization workflow.";
         }

@@ -4,10 +4,8 @@
     {
         Argument<T> GetValidArgument();
 
-        Argument<T> GetArgument();
+        Argument<T> GetArgumentCore();
 
         void PrintInvalidArgumentMessage();
-
-        bool IsRequired { get; }
     }
 }

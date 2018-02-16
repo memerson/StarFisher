@@ -4,7 +4,7 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
 {
     public class RemoveAnotherNominationParameter : YesOrNoParameterBase
     {
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return @"Would you like to remove another nomination (yes or no)?";
         }

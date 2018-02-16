@@ -21,14 +21,14 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override void WriteListIntroduction()
         {
-            WriteLineBlue(
-                @"Here are the nominee email addresses. Email addresses in red aren't in the global address list and so are probably wrong.",
+            WriteIntroduction(
+                @"Here are the nominee email addresses. Any email addresses in red aren't in the global address list and so are probably wrong.",
                 @"red");
         }
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.EmailAddress} ({listItem.Name.FullName} from {listItem.OfficeLocation.ConciseName}";
+            return $@"{listItem.EmailAddress, -45} {listItem.Name.FullName} from {listItem.OfficeLocation.ConciseName}";
         }
 
         protected override void WriteListItem(Person listItem, string listItemText)
@@ -39,9 +39,9 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
                 WriteLine(listItemText);
         }
 
-        protected override void WriteSelectionInstructions()
+        protected override void WriteCallToAction()
         {
-            WriteLine(@"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.");
+            WriteCallToAction(@"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.");
         }
     }
 }

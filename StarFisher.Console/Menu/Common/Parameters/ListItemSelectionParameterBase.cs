@@ -8,7 +8,8 @@ namespace StarFisher.Console.Menu.Common.Parameters
         private readonly IReadOnlyList<T> _list;
         private readonly string _itemsDescription;
 
-        protected ListItemSelectionParameterBase(IReadOnlyList<T> list, string itemsDescription)
+        protected ListItemSelectionParameterBase(IReadOnlyList<T> list, string itemsDescription, bool printCommandTitle = true)
+            : base(printCommandTitle)
         {
             if (string.IsNullOrWhiteSpace(itemsDescription))
                 throw new ArgumentException(nameof(itemsDescription));
@@ -17,7 +18,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
             _itemsDescription = itemsDescription;
         }
 
-        public override Argument<T> GetArgument()
+        public override Argument<T> GetArgumentCore()
         {
             if (_list.Count == 0)
             {
@@ -55,7 +56,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
         protected virtual void WriteListIntroduction()
         {
-            WriteLineBlue($@"Here are the {_itemsDescription}:");
+            WriteIntroduction($@"Here are the {_itemsDescription}:");
         }
 
         protected abstract string GetListItemLabel(T listItem);
@@ -65,7 +66,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
             WriteLine(listItemText);
         }
 
-        protected virtual void WriteSelectionInstructions()
+        protected virtual void WriteCallToAction()
         {
         }
 
@@ -100,8 +101,8 @@ namespace StarFisher.Console.Menu.Common.Parameters
             }
 
             WriteLine();
-            WriteSelectionInstructions();
-            Write(@"> ");
+            WriteCallToAction();
+            WriteInputPrompt();
         }
     }
 }

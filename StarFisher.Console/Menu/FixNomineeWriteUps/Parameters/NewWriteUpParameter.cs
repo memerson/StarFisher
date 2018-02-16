@@ -20,11 +20,13 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             RegisterAbortInput(@"no");
         }
 
-        public override Argument<NominationWriteUp> GetArgument()
+        public override Argument<NominationWriteUp> GetArgumentCore()
         {
             WriteLine();
             WriteLine(@"I'm going to open the write-up in Notepad. Please edit it there, then SAVE and CLOSE Notepad. Come back here when you're finished.");
-            Write(@"Ready? (enter 'no' to back out or 'yes' to continue) > ");
+            WriteLine();
+            WriteCallToAction(@"Ready? Enter 'no' to back out or 'yes' to continue.");
+            WriteInputPrompt();
 
             if (GetIsAbortInput(out Argument<NominationWriteUp> abortArgument))
                 return abortArgument;

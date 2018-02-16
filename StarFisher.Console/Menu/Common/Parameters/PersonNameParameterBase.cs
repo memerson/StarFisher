@@ -13,11 +13,11 @@ namespace StarFisher.Console.Menu.Common.Parameters
             _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
         }
 
-        public override Argument<PersonName> GetArgument()
+        public override Argument<PersonName> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(GetInstructionsText());
-            Write(@"> ");
+            WriteCallToAction(GetCallToActionText());
+            WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();
         }
@@ -44,6 +44,6 @@ namespace StarFisher.Console.Menu.Common.Parameters
             return false;
         }
 
-        protected abstract string GetInstructionsText();
+        protected abstract string GetCallToActionText();
     }
 }

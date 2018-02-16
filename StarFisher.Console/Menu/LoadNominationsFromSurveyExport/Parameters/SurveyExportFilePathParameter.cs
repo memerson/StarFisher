@@ -12,11 +12,11 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        public override Argument<FilePath> GetArgument()
+        public override Argument<FilePath> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(@"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
-            Write(@"> ");
+            WriteCallToAction(@"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
+            WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();
         }

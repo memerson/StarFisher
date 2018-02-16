@@ -28,10 +28,10 @@ namespace StarFisher.Console
         {
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
-            var globalAddressList = new GlobalAddressList();
+            var globalAddressList = GetGlobalAddressList();
+            var configurationStorage = new ConfigurationStorage();
 
-            PrintSplash();
-            InitializeApplication(globalAddressList);
+            InitializeApplication(configurationStorage, globalAddressList);
 
             var emailFactory = new EmailFactory(StarFisherContext.Current);
 
@@ -121,6 +121,7 @@ namespace StarFisher.Console
                 new DisqualifyNomineesMenuItemCommand(StarFisherContext.Current),
                 new RemoveNominationMenuItemCommand(StarFisherContext.Current),
                 new ValidateNomineesWithHrMenuItemCommand(StarFisherContext.Current, emailFactory),
+                new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage),
                 new ExitCommand(StarFisherContext.Current)
             };
 
@@ -128,10 +129,21 @@ namespace StarFisher.Console
             topLevelMenu.Run();
         }
 
-        private static void InitializeApplication(IGlobalAddressList globalAddressList)
+        private static GlobalAddressList GetGlobalAddressList()
         {
-            var configurationStorage = new ConfigurationStorage();
+            var globalAddressList = new GlobalAddressList();
 
+            globalAddressList.InitializationStarted += (s, e) =>
+            {
+                StarFisherConsole.Instance.WriteLine();
+                StarFisherConsole.Instance.WriteLineBlue(@"Loading the global address list -- please wait....");
+            };
+
+            return globalAddressList;
+        }
+
+        private static void InitializeApplication(ConfigurationStorage configurationStorage, IGlobalAddressList globalAddressList)
+        {
             if (!TryInitializeContextFromSavedConfiguration(configurationStorage))
             {
                 do
@@ -160,24 +172,6 @@ namespace StarFisher.Console
             }
 
             return initialized;
-        }
-
-        private static void PrintSplash()
-        {
-            System.Console.WriteLine();
-            System.Console.WriteLine(@"        .");
-            System.Console.WriteLine(@"       ,O,");
-            System.Console.WriteLine(@"      ,OOO,");
-            System.Console.WriteLine(@"'oooooOOOOOooooo'     _________ __              ___________.__       .__");
-            System.Console.WriteLine(@"  `OOOOOOOOOOO`      /   _____//  |______ ______\_   _____/|__| _____|  |__   ___________  ");
-            System.Console.WriteLine(@"    `OOOOOOO`        \_____  \\   __\__  \\_  __ \    __)  |  |/  ___/  |  \_/ __ \_  __ \ ");
-            System.Console.WriteLine(@"    OOOO'OOOO        /        \|  |  / __ \|  | \/     \   |  |\___ \|   Y  \  ___/|  | \/ ");
-            System.Console.WriteLine(@"   OOO'   'OOO      /_______  /|__| (____  /__|  \___  /   |__/____  >___|  /\___  >__|    ");
-            System.Console.WriteLine(@"  O'         'O             \/           \/          \/            \/     \/     \/        ");
-            System.Console.WriteLine(@"                                                                         Nashville Edition ");
-            System.Console.WriteLine(@"                                                                         By Matt Emerson   ");
-            System.Console.WriteLine();
-            System.Console.WriteLine();
         }
     }
 }

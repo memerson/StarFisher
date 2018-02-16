@@ -21,6 +21,9 @@ namespace StarFisher.Office.Outlook.AddressBook
         private static readonly Dictionary<string, List<Person>> PeopleByEmailAddress = new Dictionary<string, List<Person>>(3000);
         private static bool _isInitialized;
 
+        public event EventHandler InitializationStarted;
+        public event EventHandler InitializationCompleted;
+
         public bool GetPersonExists(PersonName name)
         {
             if (name == null)
@@ -47,6 +50,8 @@ namespace StarFisher.Office.Outlook.AddressBook
             if (_isInitialized)
                 return;
 
+            InitializationStarted?.Invoke(this, EventArgs.Empty);
+
             using (var com = new ComObjectManager())
             {
                 var outlook = com.Get(() => new OutlookApplication());
@@ -67,6 +72,8 @@ namespace StarFisher.Office.Outlook.AddressBook
                 foreach (var group in people.GroupBy(p => p.EmailAddress))
                     PeopleByEmailAddress.Add(group.Key, group.ToList());
             }
+
+            InitializationCompleted?.Invoke(this, EventArgs.Empty);
 
             _isInitialized = true;
         }

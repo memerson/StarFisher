@@ -19,15 +19,15 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             RegisterValidInput(@"c", Action.Continue);
         }
 
-        public override Argument<Action> GetArgument()
+        public override Argument<Action> GetArgumentCore()
         {
             WriteLine();
-            WriteLineBlue($@"Nomination Write-Up for {_nomineeName.FullName}:");
+            WriteIntroduction($@"Nomination Write-Up for {_nomineeName.FullName}:");
             WriteLine();
             WriteLine(_writeUp.Value, _nomineeName.FirstName, _nomineeName.LastName);
             WriteLine();
-            WriteLine("Please enter 'edit' to edit the write-up, 'c' to continue to the next write-up, or 'stop' to stop reviewing write-ups.");
-            Write(@"> ");
+            WriteCallToAction("Please enter 'edit' to edit the write-up, 'c' to continue to the next write-up, or 'stop' to stop reviewing write-ups.");
+            WriteInputPrompt();
 
             return GetRegisteredValidInputArgument();
         }

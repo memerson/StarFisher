@@ -10,11 +10,11 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        public override Argument<Quarter> GetArgument()
+        public override Argument<Quarter> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(@"Please specify the quarter for the award ('1', '2', '3', or '4'), or enter 'stop' to stop the initialization workflow.");
-            Write(@"> ");
+            WriteCallToAction(@"Please specify the quarter for the award ('1', '2', '3', or '4'), or enter 'stop' to stop the initialization workflow.");
+            WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();
         }

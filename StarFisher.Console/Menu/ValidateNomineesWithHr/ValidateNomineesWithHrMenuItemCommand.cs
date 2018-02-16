@@ -23,7 +23,7 @@ namespace StarFisher.Console.Menu.ValidateNomineesWithHr
             var nominationList = Context.NominationListContext.NominationList;
             using (var email = _emailFactory.GetHumanResourcesNomineeValidationEmail(nominationList))
                 email.Display();
-
+            
             return CommandOutput.None.Success;
         }
 

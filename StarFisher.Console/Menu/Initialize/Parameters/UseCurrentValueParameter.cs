@@ -21,7 +21,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
             RegisterAbortInput(@"stop");
         }
 
-        protected override string GetInstructionsText()
+        protected override string GetCallToActionText()
         {
             return $@"Your current value for {_settingName} is {_currentSettingValue}. Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.";
         }
