@@ -13,7 +13,7 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail.Parameters
         public override Argument<string> GetArgumentCore()
         {
             WriteLine();
-            WriteIntroduction(@"Please enter the web link for the Survey Monkey voting survey.");
+            WriteIntroduction(@"Please enter the web link for the Survey Monkey voting survey, or enter 'stop' to stop creating the voting survey review email.");
             WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();

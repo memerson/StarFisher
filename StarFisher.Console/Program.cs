@@ -5,6 +5,7 @@ using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.CreateAwardVotingGuide;
 using StarFisher.Console.Menu.CreateAwardVotingKey;
 using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
+using StarFisher.Console.Menu.CreateVotingKeyEmail;
 using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
 using StarFisher.Console.Menu.DisqualifyNominees;
 using StarFisher.Console.Menu.Exit;
@@ -34,7 +35,7 @@ namespace StarFisher.Console
 
             InitializeApplication(configurationStorage, globalAddressList);
 
-            var emailFactory = new EmailFactory(StarFisherContext.Current, mailMergeFactory);
+            var emailFactory = new EmailFactory(StarFisherContext.Current, excelFileFactory, mailMergeFactory);
 
             //var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
 
@@ -77,6 +78,7 @@ namespace StarFisher.Console
                 new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.StarValues),
                 new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.RisingStar),
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
+                new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage),
                 new ExitCommand(StarFisherContext.Current)
             };

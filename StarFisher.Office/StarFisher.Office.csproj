@@ -67,6 +67,7 @@
     <Compile Include="Outlook\IEmail.cs" />
     <Compile Include="Outlook\HumanResourcesNomineeValidationEmail.cs" />
     <Compile Include="Outlook\IEmailConfiguration.cs" />
+    <Compile Include="Outlook\VotingKeyEmail.cs" />
     <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ComObjectManager.cs" />

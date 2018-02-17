@@ -2,6 +2,7 @@
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail.Parameters;
+using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Outlook;
 
 namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail
@@ -33,7 +34,10 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail
 
         public override bool GetCanRun()
         {
-            return Context.IsInitialized && Context.NominationListContext.HasNominationListLoaded;
+            return Context.IsInitialized
+                   && Context.NominationListContext.HasNominationListLoaded
+                   && (Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.StarValues) ||
+                       Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.RisingStar));
         }
     }
 }

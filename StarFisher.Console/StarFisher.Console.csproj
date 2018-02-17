@@ -71,6 +71,7 @@
     <Compile Include="Menu\Common\WorkflowBase.cs" />
     <Compile Include="Menu\CreateAwardVotingGuide\CreateAwardVotingGuideMenuItemCommand.cs" />
     <Compile Include="Menu\CreateAwardVotingKey\CreateAwardVotingKeyMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateVotingKeyEmail\CreateVotingKeyEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingSurveyReviewEmail\CreateVotingSurveyReviewEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingSurveyReviewEmail\Parameters\VotingSurveyWebLinkParameter.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />

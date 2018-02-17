@@ -4,16 +4,16 @@ using StarFisher.Console.Menu.Common;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Outlook;
 
-namespace StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail
+namespace StarFisher.Console.Menu.CreateVotingKeyEmail
 {
-    public class CreateHumanResourceNomineeValidationEmailMenuItemCommand : MenuItemCommandBase
+    public class CreateVotingKeyEmailMenuItemCommand : MenuItemCommandBase
     {
         private readonly IEmailFactory _emailFactory;
 
-        private const string CommandTitle = @"Create Human Resources nominee validation email";
-        private const string SuccessMessage = @"Success! You should now see an email ready to review and send on to Human Resources.";
+        private const string CommandTitle = @"Create voting key email";
+        private const string SuccessMessage = @"Success! You should now see an email ready to review and send on to the EIA Chairperson(s).";
 
-        public CreateHumanResourceNomineeValidationEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory) 
+        public CreateVotingKeyEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory)
             : base(context, CommandTitle, SuccessMessage)
         {
             _emailFactory = emailFactory ?? throw new ArgumentNullException(nameof(emailFactory));
@@ -22,9 +22,9 @@ namespace StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var nominationList = Context.NominationListContext.NominationList;
-            using (var email = _emailFactory.GetHumanResourcesNomineeValidationEmail(nominationList))
+            using (var email = _emailFactory.GetVotingKeyEmail(nominationList)) 
                 email.Display();
-            
+
             return CommandOutput.None.Success;
         }
 

@@ -5,29 +5,25 @@ using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
+using StarFisher.Office.Excel;
 using StarFisher.Office.Utilities;
-using StarFisher.Office.Word;
 
 namespace StarFisher.Office.Outlook
 {
-    internal class VotingSurveyReviewEmail : EmailBase
+    internal class VotingKeyEmail : EmailBase
     {
-        public VotingSurveyReviewEmail(IEmailConfiguration emailConfiguration, IMailMergeFactory mailMergeFactory,
-            NominationList nominationList, string votingSurveyWebLink)
+        public VotingKeyEmail(IEmailConfiguration emailConfiguration, IExcelFileFactory excelFileFactory,
+            NominationList nominationList)
             : base((com, mailItem) => BuildEmail(
                 com,
                 mailItem,
                 emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)),
-                mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory)),
-                nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
-                votingSurveyWebLink))
-        {
-            if(string.IsNullOrWhiteSpace(votingSurveyWebLink))
-                throw new ArgumentException(votingSurveyWebLink);
-        }
+                excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory)),
+                nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
+        { }
 
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
-            IMailMergeFactory mailMergeFactory, NominationList nominationList, string votingSurveyWebLink)
+            IExcelFileFactory excelFileFactory, NominationList nominationList)
         {
             var eiaChairPerson = emailConfiguration.EiaChairPerson;
             var quarter = nominationList.Quarter.Abbreviation;
@@ -48,14 +44,13 @@ namespace StarFisher.Office.Outlook
             if (!hasStarValues)
                 WriteNoNomineesCaveat(content, AwardType.StarValues, quarter);
             else
-                AddVotingGuideAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
+                AddVotingKeyAttachment(com, mailItem, excelFileFactory, nominationList, AwardType.StarValues);
 
             if (!hasRisingStar)
                 WriteNoNomineesCaveat(content, AwardType.RisingStar, quarter);
             else
-                AddVotingGuideAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
+                AddVotingKeyAttachment(com, mailItem, excelFileFactory, nominationList, AwardType.RisingStar);
 
-            WriteVotingSurveyWebLink(votingSurveyWebLink, content);
             WriteThanks(content);
 
             var body = document.DocumentNode.SelectSingleNode("//body");
@@ -64,18 +59,18 @@ namespace StarFisher.Office.Outlook
             mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
-        private static void AddVotingGuideAttachment(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
+        private static void AddVotingKeyAttachment(ComObjectManager com, MailItem mailItem, IExcelFileFactory excelFileFactory,
             NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
-            var fileName = awardType.GetVotingGuideFileName(nominationList.Year, nominationList.Quarter);
+            var fileName = awardType.GetVotingKeyFileName(nominationList.Year, nominationList.Quarter);
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
             if(File.Exists(filePath.Value))
                 File.Delete(filePath.Value);
 
-            var mailMerge = mailMergeFactory.GetVotingGuideMailMerge(awardType, nominationList);
-            mailMerge.Execute(filePath);
+            using (var excelFile = excelFileFactory.GetVotingKeyExcelFile(awardType, nominationList))
+                excelFile.Save(filePath);
 
             com.Get(() => attachments.Add(filePath.Value));
         }
@@ -84,13 +79,6 @@ namespace StarFisher.Office.Outlook
         {
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
-        }
-
-        private static void WriteVotingSurveyWebLink(string votingSurveyWebLink, HtmlNode content)
-        {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $"<p class=MsoNormal>Here is the survey link: <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a><o:p></o:p></p>"));
         }
 
         private static void WriteNoNomineesCaveat(HtmlNode content, AwardType awardType, string quarter)
@@ -103,12 +91,12 @@ namespace StarFisher.Office.Outlook
         private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content, Person eiaChairPerson,
             string quarter)
         {
-            var guideOrGuides = hasRisingStar && hasStarValues ? @"guides" : "guide";
+            var keyorKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
 
             content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Could you please review and approve the attached voting {guideOrGuides} and below-linked survey for the {quarter} Star Awards?</p>"));
+                $@"<p class=MsoNormal>Please find attached the {quarter} Star Awards voting {keyorKeys}.</p>"));
         }
     }
 }
