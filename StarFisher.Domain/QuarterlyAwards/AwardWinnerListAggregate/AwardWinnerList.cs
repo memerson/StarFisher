@@ -33,11 +33,9 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
 
         public IReadOnlyCollection<AwardWinnerBase> AwardWinners => _awardWinners;
 
-        public IReadOnlyCollection<StarRisingAwardWinner> StarRisingAwardWinners => GetAwardWinnersOfType<StarRisingAwardWinner>();
+        public IReadOnlyCollection<RisingStarAwardWinner> RisingStarAwardWinners => GetAwardWinnersOfType<RisingStarAwardWinner>();
 
         public IReadOnlyCollection<StarValuesAwardWinner> StarValuesAwardWinners => GetAwardWinnersOfType<StarValuesAwardWinner>();
-
-        public IReadOnlyCollection<PerformanceAwardWinnerBase> PerformanceAwardWinners => GetAwardWinnersOfType<PerformanceAwardWinnerBase>();
 
         public void AddStarValuesWinner(Person person, ICollection<CompanyValue> companyValues, ICollection<NominationWriteUp> nominationWriteUps)
         {
@@ -50,24 +48,6 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
             var winner = new StarValuesAwardWinner(id, person, companyValues, nominationWriteUps);
             _awardWinners.Add(winner);
             MarkAsDirty($@"Added Star Values winner {person.Name.FullName}");
-        }
-
-        public void AddStarPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
-        {
-            // TODO: Internalize business logic of award amounts
-            var id = GetNextAwardWinnerId();
-            var winner = new StarPerformanceAwardWinner(id, person, awardAmount, isFullTime);
-            _awardWinners.Add(winner);
-            MarkAsDirty($@"Added Star Performance winner {person.Name.FullName}");
-        }
-
-        public void AddRisingPerformanceAwardWinner(Person person, AwardAmount awardAmount, bool isFullTime)
-        {
-            // TODO: Internalize business logic of award amounts
-            var id = GetNextAwardWinnerId();
-            var winner = new RisingPerformanceAwardWinner(id, person, awardAmount, isFullTime);
-            _awardWinners.Add(winner);
-            MarkAsDirty($@"Added Rising Performance winner {person.Name.FullName}");
         }
 
         private int GetNextAwardWinnerId()

@@ -6,54 +6,17 @@ using Microsoft.Office.Interop.Outlook;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.Utilities;
 using StarFisher.Domain.ValueObjects;
-using StarFisher.Office.Utilities;
-using OutlookApplication = Microsoft.Office.Interop.Outlook.Application;
 
 namespace StarFisher.Office.Outlook
 {
-    internal class HumanResourcesNomineeValidationEmail : IEmail
+    internal class HumanResourcesNomineeValidationEmail : EmailBase
     {
-        private readonly MailItem _mailItem;
-        private bool _isDisposed;
-
         internal HumanResourcesNomineeValidationEmail(IEmailConfiguration emailConfiguration, NominationList nominationList)
-        {
-            _mailItem = CreateMailItem(emailConfiguration, nominationList);
-        }
-
-        private ComObjectManager Com => new ComObjectManager();
-
-        public void Dispose()
-        {
-            if (_isDisposed)
-                return;
-
-            _isDisposed = true;
-
-            Com.Dispose();
-        }
-
-        public void Display()
-        {
-            if(_isDisposed)
-                throw new ObjectDisposedException("Object is disposed.");
-
-            _mailItem.Display();
-        }
-
-        private MailItem CreateMailItem(IEmailConfiguration emailConfiguration,
-            NominationList nominationList)
-        {
-            var outlook = Com.Get(() => new OutlookApplication());
-            var mailItem = Com.Get(() => (MailItem)outlook.CreateItem(OlItemType.olMailItem));
-
-            mailItem.Open += (ref bool cancel) =>
-            {
-                BuildEmail(mailItem, emailConfiguration, nominationList);
-            };
-
-            return mailItem;
-        }
+            : base((com, mailItem) => BuildEmail(
+                mailItem, 
+                emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)), 
+                nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
+        { }
 
         private static void BuildEmail(MailItem mailItem, IEmailConfiguration emailConfiguration,
             NominationList nominationList)
@@ -64,7 +27,7 @@ namespace StarFisher.Office.Outlook
             mailItem.Subject = $@"Need: {nominationList.Quarter} Star Awards nominee eligibility check";
 
             var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
-            var hasStarRising = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarRising);
+            var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);
@@ -72,13 +35,13 @@ namespace StarFisher.Office.Outlook
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
             WriteInstructions(emailConfiguration.HrPeople, nominationList.Quarter, content, hasStarValues,
-                hasStarRising);
+                hasRisingStar);
 
             if (hasStarValues)
                 WriteNominees(nominationList, AwardType.StarValues, content);
 
-            if(hasStarRising)
-                WriteNominees(nominationList, AwardType.StarRising, content);
+            if(hasRisingStar)
+                WriteNominees(nominationList, AwardType.RisingStar, content);
 
             var body = document.DocumentNode.SelectSingleNode("//body");
             body.ChildNodes.Prepend(content);
@@ -87,7 +50,7 @@ namespace StarFisher.Office.Outlook
         }
 
         private static void WriteInstructions(IReadOnlyList<Person> hrPeople, Quarter quarter,
-            HtmlNode content, bool hasStarValues, bool hasStarRising)
+            HtmlNode content, bool hasStarValues, bool hasRisingStar)
         {
             var hrFirstNames = hrPeople.Select(n => n.Name.FirstName).PrettyPrint();
 
@@ -103,7 +66,7 @@ namespace StarFisher.Office.Outlook
                     @"<p class=MsoNormal>Star Values nominees must be full-time or part-time/20 employees in good standing. They must have been with HealthStream for at least one full quarter.</p>"));
             }
 
-            if (hasStarRising)
+            if (hasRisingStar)
             {
                 content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
                 content.ChildNodes.Append(HtmlNode.CreateNode(
@@ -131,7 +94,7 @@ namespace StarFisher.Office.Outlook
 
             foreach (var group in nominationGroups)
             {
-                var nomineeName =@group.Key.NomineeName.FullNameLastNameFirst;
+                var nomineeName = group.Key.NomineeName.FullNameLastNameFirst;
                 var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.SurveyName;
 
                 var nomineeTableRow = HtmlNode.CreateNode(@"<tr>");

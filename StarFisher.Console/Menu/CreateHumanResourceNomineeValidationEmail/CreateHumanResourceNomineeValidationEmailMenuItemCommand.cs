@@ -3,16 +3,16 @@ using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Office.Outlook;
 
-namespace StarFisher.Console.Menu.ValidateNomineesWithHr
+namespace StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail
 {
-    public class ValidateNomineesWithHrMenuItemCommand : MenuItemCommandBase
+    public class CreateHumanResourceNomineeValidationEmailMenuItemCommand : MenuItemCommandBase
     {
         private readonly IEmailFactory _emailFactory;
 
-        private const string CommandTitle = @"Validate nominees with Human Resources";
+        private const string CommandTitle = @"Create Human Resources nominee validation email";
         private const string SuccessMessage = @"Success! You should now see an email ready to review and send on to Human Resources.";
 
-        public ValidateNomineesWithHrMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory) 
+        public CreateHumanResourceNomineeValidationEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory) 
             : base(context, CommandTitle, SuccessMessage)
         {
             _emailFactory = emailFactory ?? throw new ArgumentNullException(nameof(emailFactory));

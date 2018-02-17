@@ -1,4 +1,5 @@
-﻿using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
+﻿using System;
+using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 
@@ -6,9 +7,9 @@ namespace StarFisher.Office.Excel
 {
     public interface IExcelFileFactory
     {
-        IExcelFile GetStarValuesVotingGuideSourceExcelFile(NominationList nominationList);
+        IExcelFile GetVotingGuideSourceExcelFile(AwardType awardType, NominationList nominationList);
 
-        IExcelFile GetStarValuesVotingKeyExcelFile(NominationList nominationList);
+        IExcelFile GetVotingKeyExcelFile(AwardType awardType, NominationList nominationList);
 
         IExcelFile GetStarValuesNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
@@ -16,25 +17,37 @@ namespace StarFisher.Office.Excel
 
         IExcelFile GetStarValuesCertificateSourceExcelFile(AwardWinnerList awardWinnerList, params OfficeLocation[] officeLocations);
 
-        IExcelFile GetStarRisingVotingGuideSourceExcelFile(NominationList nominationList);
+        IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
-        IExcelFile GetStarRisingVotingKeyExcelFile(NominationList nominationList);
-
-        IExcelFile GetStarRisingNominationNotificationEmailSourceExcelFile(NominationList nominationList);
-
-        IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList);
+        IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList);
     }
 
     public class ExcelFileFactory : IExcelFileFactory
     {
-        public IExcelFile GetStarValuesVotingGuideSourceExcelFile(NominationList nominationList)
+        public IExcelFile GetVotingGuideSourceExcelFile(AwardType awardType, NominationList nominationList)
         {
-            return new StarValuesVotingGuideSourceExcelFile(nominationList);
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            if (awardType == AwardType.StarValues)
+                return new StarValuesVotingGuideSourceExcelFile(nominationList);
+            if (awardType == AwardType.RisingStar)
+                return new RisingStarVotingGuideSourceExcelFile(nominationList);
+
+            throw new NotSupportedException(awardType.Value);
         }
 
-        public IExcelFile GetStarValuesVotingKeyExcelFile(NominationList nominationList)
+        public IExcelFile GetVotingKeyExcelFile(AwardType awardType, NominationList nominationList)
         {
-            return new StarValuesVotingKeyExcelFile(nominationList);
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            if (awardType == AwardType.StarValues)
+                return new StarValuesVotingKeyExcelFile(nominationList);
+            if(awardType == AwardType.RisingStar)
+                return new RisingStarVotingKeyExcelFile(nominationList);
+
+            throw new NotSupportedException(awardType.Value);
         }
 
         public IExcelFile GetStarValuesNominationNotificationEmailSourceExcelFile(NominationList nominationList)
@@ -52,24 +65,14 @@ namespace StarFisher.Office.Excel
             return new StarValuesCertificateSourceExcelFile(awardWinnerList, officeLocations);
         }
 
-        public IExcelFile GetStarRisingVotingGuideSourceExcelFile(NominationList nominationList)
+        public IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList)
         {
-            return new StarRisingVotingGuideSourceExcelFile(nominationList);
+            return new RisingStarNominationNotificationEmailSourceExcelFile(nominationList);
         }
 
-        public IExcelFile GetStarRisingVotingKeyExcelFile(NominationList nominationList)
+        public IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList)
         {
-            return new StarRisingVotingKeyExcelFile(nominationList);
-        }
-
-        public IExcelFile GetStarRisingNominationNotificationEmailSourceExcelFile(NominationList nominationList)
-        {
-            return new StarRisingNominationNotificationEmailSourceExcelFile(nominationList);
-        }
-
-        public IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList)
-        {
-            return new AwardsLunchInviteeListExcelFile(nominationList, awardWinnerList);
+            return new AwardsLunchInviteeListExcelFile(nominationList);
         }
     }
 }

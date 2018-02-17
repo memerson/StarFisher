@@ -1,12 +1,14 @@
-﻿using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
+﻿using System;
+using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 
 namespace StarFisher.Office.Word
 {
     public interface IMailMergeFactory
     {
-        IMailMerge GetStarValuesVotingGuideMailMerge(NominationList nominationList);
+        IMailMerge GetVotingGuideMailMerge(AwardType awardType, NominationList nominationList);
 
         IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList);
     }
@@ -20,9 +22,17 @@ namespace StarFisher.Office.Word
             _excelFileFactory = excelFileFactory;
         }
 
-        public IMailMerge GetStarValuesVotingGuideMailMerge(NominationList nominationList)
+        public IMailMerge GetVotingGuideMailMerge(AwardType awardType, NominationList nominationList)
         {
-            return new StarValuesVotingGuideMailMerge(_excelFileFactory, nominationList);
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            if (awardType == AwardType.StarValues)
+                return new StarValuesVotingGuideMailMerge(_excelFileFactory, nominationList);
+            if(awardType == AwardType.RisingStar)
+                return new RisingStarVotingGuideMailMerge(_excelFileFactory, nominationList);
+
+            throw new NotSupportedException(awardType.Value);
         }
 
         public IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList)

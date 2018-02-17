@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
 
@@ -6,24 +7,25 @@ namespace StarFisher.Domain.ValueObjects
 {
     public class AwardType : ValueObject<AwardType>
     {
-        public static readonly AwardType StarValues = new AwardType(@"Employee - Star Values Award Nominee");
-        public static readonly AwardType StarRising = new AwardType(@"Intern - Rising Star Award Nominee");
-        public static readonly AwardType StarPerformance = new AwardType(@"Star Performance");
-        public static readonly AwardType RisingPerformance = new AwardType(@"Rising Performance");
+        public static readonly AwardType StarValues = new AwardType(
+            @"Employee - Star Values Award Nominee", @"StarValues", @"Star Values Award", true);
+        public static readonly AwardType RisingStar = new AwardType(
+            @"Intern - Rising Star Award Nominee", @"RisingStar", @"Rising Star Award", true);
 
         private static readonly List<AwardType> ValidAwardTypes = new List<AwardType>
         {
             StarValues,
-            StarRising, 
-            StarPerformance,
-            RisingPerformance
+            RisingStar
         };
 
-        public static readonly AwardType Invalid = new AwardType(@"INVALID");
+        public static readonly AwardType Invalid = new AwardType(@"INVALID", @"INVALID", @"INVALID", false);
 
-        private AwardType(string value)
+        private AwardType(string value, string fileNameIdentifier, string prettyName, bool supportsVoting)
         {
             Value = value;
+            SupportsVoting = supportsVoting;
+            FileNameIdentifier = fileNameIdentifier;
+            PrettyName = prettyName;
         }
 
         internal static AwardType Create(string awardType)
@@ -35,6 +37,26 @@ namespace StarFisher.Domain.ValueObjects
         }
 
         public string Value { get; }
+
+        public string PrettyName { get; }
+
+        public bool SupportsVoting { get; }
+
+        public string GetVotingGuideFileName(Year year, Quarter quarter)
+        {
+            if (!SupportsVoting)
+                throw new InvalidOperationException(@"This award type does not support voting.");
+
+            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingGuide.docx";
+        }
+
+        public string GetVotingKeyFileName(Year year, Quarter quarter)
+        {
+            if (!SupportsVoting)
+                throw new InvalidOperationException(@"This award type does not support voting.");
+
+            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingKey.xlsx";
+        }
 
         protected override bool EqualsCore(AwardType other)
         {
@@ -50,5 +72,7 @@ namespace StarFisher.Domain.ValueObjects
         {
             return Value;
         }
+
+        private string FileNameIdentifier { get; }
     }
 }

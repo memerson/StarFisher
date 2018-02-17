@@ -23,12 +23,6 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
             AwardAmount = awardWinner.AwardAmount.ValueInDollars;
         }
 
-        public AwardWinnerDto(PerformanceAwardWinnerBase performanceAwardWinner)
-            : this((AwardWinnerBase)performanceAwardWinner)
-        {
-            IsFullTime = performanceAwardWinner.IsFullTime;
-        }
-
         public AwardWinnerDto(StarValuesAwardWinner starValuesAwardWinner)
             : this((AwardWinnerBase)starValuesAwardWinner)
         {
@@ -48,8 +42,6 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 
         public decimal AwardAmount { get; set; }
 
-        public bool IsFullTime { get; set; }
-
         public List<string> CompanyValues { get; set; }
 
         public List<string> NominationWriteUps { get; set; }
@@ -61,31 +53,17 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
             var person = Person.Create(PersonName.Create(Name), ValueObjects.OfficeLocation.Create(OfficeLocation),
                 ValueObjects.EmailAddress.Create(EmailAddress));
 
-            if (awardType == ValueObjects.AwardType.RisingPerformance)
-                return ToRisingPerformanceAwardWinner(person);
-            if (awardType == ValueObjects.AwardType.StarPerformance)
-                return ToStarPerformanceAwardWinner(person);
-            if (awardType == ValueObjects.AwardType.StarRising)
-                return ToStarRisingAwardWinner(person);
+            if (awardType == ValueObjects.AwardType.RisingStar)
+                return ToRisingStarAwardWinner(person);
             if (awardType == ValueObjects.AwardType.StarValues)
                 return ToStarValuesAwardWinner(person);
 
             return null;
         }
 
-        private RisingPerformanceAwardWinner ToRisingPerformanceAwardWinner(Person person)
+        private RisingStarAwardWinner ToRisingStarAwardWinner(Person person)
         {
-            return new RisingPerformanceAwardWinner(Id, person, ValueObjects.AwardAmount.Create(AwardAmount), IsFullTime);
-        }
-
-        private StarPerformanceAwardWinner ToStarPerformanceAwardWinner(Person person)
-        {
-            return new StarPerformanceAwardWinner(Id, person, ValueObjects.AwardAmount.Create(AwardAmount), IsFullTime);
-        }
-
-        private StarRisingAwardWinner ToStarRisingAwardWinner(Person person)
-        {
-            return new StarRisingAwardWinner(Id, person);
+            return new RisingStarAwardWinner(Id, person);
         }
 
         private StarValuesAwardWinner ToStarValuesAwardWinner(Person person)

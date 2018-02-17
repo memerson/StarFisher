@@ -9,20 +9,18 @@ namespace StarFisher.Office.Excel
 {
     internal class AwardsLunchInviteeListExcelFile : ExcelFileBase
     {
-        public AwardsLunchInviteeListExcelFile(NominationList nominationList, AwardWinnerList awardWinnerList)
+        public AwardsLunchInviteeListExcelFile(NominationList nominationList)
             : base((com, worksheet) => BuildWorksheet(com,
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
-                awardWinnerList ?? throw new ArgumentNullException(nameof(awardWinnerList)),
                 worksheet))
         { }
 
-        private static void BuildWorksheet(ComObjectManager com, NominationList nominationList, AwardWinnerList awardWinnerList, Worksheet workSheet)
+        private static void BuildWorksheet(ComObjectManager com, NominationList nominationList, Worksheet workSheet)
         {
             var cells = com.Get(() => workSheet.Cells);
 
             var attendees = nominationList
                 .AwardsLuncheonInvitees
-                .Concat(awardWinnerList.PerformanceAwardWinners.Select(w => w.Person))
                 .OrderBy(i => i.OfficeLocation.ToString())
                 .ThenBy(i => i.Name.FullName)
                 .ToList();

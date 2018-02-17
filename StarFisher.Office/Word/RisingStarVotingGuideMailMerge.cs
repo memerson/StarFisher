@@ -6,13 +6,13 @@ using StarFisher.Office.Excel;
 
 namespace StarFisher.Office.Word
 {
-    public class StarValuesVotingGuideMailMerge : MailMergeBase
+    public class RisingStarVotingGuideMailMerge : MailMergeBase
     {
         private readonly IExcelFileFactory _excelFileFactory;
         private readonly NominationList _nominationList;
 
-        public StarValuesVotingGuideMailMerge(IExcelFileFactory excelFileFactory, NominationList nominationList)
-            : base(@"StarFisher.Office.Word.MailMergeTemplates.StarValuesVotingGuideMailMergeTemplate.docx", WdMailMergeMainDocType.wdFormLetters)
+        public RisingStarVotingGuideMailMerge(IExcelFileFactory excelFileFactory, NominationList nominationList)
+            : base(@"StarFisher.Office.Word.MailMergeTemplates.RisingStarVotingGuideMailMergeTemplate.docx", WdMailMergeMainDocType.wdFormLetters)
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
             _nominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
@@ -20,7 +20,7 @@ namespace StarFisher.Office.Word
 
         protected override IExcelFile GetDataSourceExcelFile()
         {
-            return _excelFileFactory.GetVotingGuideSourceExcelFile(AwardType.StarValues, _nominationList);
+            return _excelFileFactory.GetVotingGuideSourceExcelFile(AwardType.RisingStar, _nominationList);
         }
     }
 }

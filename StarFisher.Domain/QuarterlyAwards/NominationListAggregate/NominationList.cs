@@ -29,7 +29,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public IReadOnlyCollection<Person> Nominees => Nominations.Select(n => n.Nominee).Distinct().ToList();
 
-        public IReadOnlyCollection<Nomination> StarRisingNominees => GetNominationsByAwardType(AwardType.StarRising).ToList();
+        public IReadOnlyCollection<Nomination> RisingStar => GetNominationsByAwardType(AwardType.RisingStar).ToList();
 
         public IReadOnlyCollection<Person> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues)
             .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
@@ -40,6 +40,14 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             .ToList();
 
         public IReadOnlyCollection<Nomination> StarValuesNominees => GetNominationsByAwardType(AwardType.StarValues).ToList();
+
+        public bool HasNominationsForAward(AwardType awardType)
+        {
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            return Nominations.Any(n => n.AwardType == awardType);
+        }
 
         public void UpdateNomineeName(Person nominee, PersonName newNomineeName)
         {

@@ -39,8 +39,6 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistenc
 
         private AwardWinnerDto GetAwardWinnerDto(AwardWinnerBase awardWinner)
         {
-            if(awardWinner is PerformanceAwardWinnerBase)
-                return new AwardWinnerDto((PerformanceAwardWinnerBase)awardWinner);
             if(awardWinner is StarValuesAwardWinner)
                 return new AwardWinnerDto((StarValuesAwardWinner)awardWinner);
             

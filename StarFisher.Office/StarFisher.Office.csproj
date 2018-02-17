@@ -49,10 +49,10 @@
     <Compile Include="Excel\IExcelFile.cs" />
     <Compile Include="Excel\NominationNotificationEmailSourceExcelFileBase.cs" />
     <Compile Include="Excel\StarValuesCertificateSourceExcelFile.cs" />
-    <Compile Include="Excel\StarRisingCertificateSourceExcelFile.cs" />
-    <Compile Include="Excel\StarRisingNominationNotificationEmailSourceExcelFile.cs" />
-    <Compile Include="Excel\StarRisingVotingGuideSourceExcelFile.cs" />
-    <Compile Include="Excel\StarRisingVotingKeyExcelFile.cs" />
+    <Compile Include="Excel\RisingStarCertificateSourceExcelFile.cs" />
+    <Compile Include="Excel\RisingStarNominationNotificationEmailSourceExcelFile.cs" />
+    <Compile Include="Excel\RisingStarVotingGuideSourceExcelFile.cs" />
+    <Compile Include="Excel\RisingStarVotingKeyExcelFile.cs" />
     <Compile Include="Excel\StarValuesNominationNotificationEmailSourceExcelFile.cs" />
     <Compile Include="Excel\StarValuesVotingKeyExcelFile.cs" />
     <Compile Include="Excel\StarValuesVotingGuideSourceExcelFile.cs" />
@@ -61,16 +61,19 @@
     <Compile Include="Excel\ExcelFileFactory.cs" />
     <Compile Include="Excel\VotingKeyExcelFileBase.cs" />
     <Compile Include="Outlook\AddressBook\PersonQueryResult.cs" />
+    <Compile Include="Outlook\EmailBase.cs" />
     <Compile Include="Outlook\EmailFactory.cs" />
     <Compile Include="Outlook\AddressBook\GlobalAddressList.cs" />
     <Compile Include="Outlook\IEmail.cs" />
     <Compile Include="Outlook\HumanResourcesNomineeValidationEmail.cs" />
     <Compile Include="Outlook\IEmailConfiguration.cs" />
+    <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ComObjectManager.cs" />
     <Compile Include="Word\IMailMerge.cs" />
     <Compile Include="Word\MailMergeBase.cs" />
     <Compile Include="Word\MailMergeFactory.cs" />
+    <Compile Include="Word\RisingStarVotingGuideMailMerge.cs" />
     <Compile Include="Word\StarValuesWinnersMemoMailMerge.cs" />
     <Compile Include="Word\StarValuesVotingGuideMailMerge.cs" />
   </ItemGroup>
@@ -140,6 +143,7 @@
     <None Include="packages.config" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesVotingGuideMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesWinnersMemoMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarVotingGuideMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

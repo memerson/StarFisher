@@ -51,6 +51,7 @@
     <Compile Include="Context\NominationListContext.cs" />
     <Compile Include="Context\QuarterlyAwardsAggregateContext.cs" />
     <Compile Include="Context\StarFisherContext.cs" />
+    <Compile Include="Faults\InvalidFilePathException.cs" />
     <Compile Include="Menu\Common\Argument.cs" />
     <Compile Include="Menu\Common\ArgumentType.cs" />
     <Compile Include="Menu\Common\CommandBase.cs" />
@@ -68,6 +69,10 @@
     <Compile Include="Menu\Common\Parameters\PersonNameParameterBase.cs" />
     <Compile Include="Menu\Common\Parameters\YesOrNoParameterBase.cs" />
     <Compile Include="Menu\Common\WorkflowBase.cs" />
+    <Compile Include="Menu\CreateAwardVotingGuide\CreateAwardVotingGuideMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateAwardVotingKey\CreateAwardVotingKeyMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateVotingSurveyReviewEmail\CreateVotingSurveyReviewEmailMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateVotingSurveyReviewEmail\Parameters\VotingSurveyWebLinkParameter.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
@@ -106,7 +111,7 @@
     <Compile Include="Menu\RemoveNominations\Parameters\RemoveAnotherNominationParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
-    <Compile Include="Menu\ValidateNomineesWithHr\ValidateNomineesWithHrMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateHumanResourceNomineeValidationEmail\CreateHumanResourceNomineeValidationEmailMenuItemCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StarFisherConsole.cs" />

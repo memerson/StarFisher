@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
+using StarFisher.Console.Menu.CreateAwardVotingGuide;
+using StarFisher.Console.Menu.CreateAwardVotingKey;
+using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
+using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
 using StarFisher.Console.Menu.DisqualifyNominees;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
@@ -12,8 +15,6 @@ using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
 using StarFisher.Console.Menu.TopLevelMenu;
-using StarFisher.Console.Menu.ValidateNomineesWithHr;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
@@ -33,70 +34,20 @@ namespace StarFisher.Console
 
             InitializeApplication(configurationStorage, globalAddressList);
 
-            var emailFactory = new EmailFactory(StarFisherContext.Current);
+            var emailFactory = new EmailFactory(StarFisherContext.Current, mailMergeFactory);
 
-            var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Makayla Johnson"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformanceFullTimeFirstPlace,
-                true);
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Kay Fortner "),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformanceFullTimeSecondPlace,
-                true);
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Jan Spaeth"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformanceFullTimeThirdPlace,
-                true);
+            //var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
 
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Angela Mayer"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformancePartTimeFirstPlace,
-                false);
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Lamesha Wells"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformancePartTimeSecondPlace,
-                false);
-            awardWinnerList.AddStarPerformanceAwardWinner(
-                Person.Create(PersonName.Create("John Boggan"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.StarPerformancePartTimeThirdPlace,
-                false);
-
-            awardWinnerList.AddRisingPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Cesilia Carlos"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.RisingPerformanceFullTime,
-                true);
-            awardWinnerList.AddRisingPerformanceAwardWinner(
-                Person.Create(PersonName.Create("Bernadine Upson"),
-                    OfficeLocation.HighlandRidge,
-                    EmailAddress.None),
-                AwardAmount.RisingPerformancePartTime,
-                false);
-
-            var starValuesWinnerNames = new List<PersonName>
-            {
-                PersonName.Create("Alexandru Rusu"),
-                PersonName.Create("Carol Selawski"),
-                PersonName.Create("Deanna Buhl"),
-                PersonName.Create("Gregory Savage"),
-                PersonName.Create("Kristine Dizon"),
-                PersonName.Create("Matt Emerson"),
-                PersonName.Create("Van Irwin")
-            };
+            //var starValuesWinnerNames = new List<PersonName>
+            //{
+            //    PersonName.Create("Alexandru Rusu"),
+            //    PersonName.Create("Carol Selawski"),
+            //    PersonName.Create("Deanna Buhl"),
+            //    PersonName.Create("Gregory Savage"),
+            //    PersonName.Create("Kristine Dizon"),
+            //    PersonName.Create("Matt Emerson"),
+            //    PersonName.Create("Van Irwin")
+            //};
 
             //foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
             //{
@@ -120,7 +71,12 @@ namespace StarFisher.Console
                 new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),
                 new DisqualifyNomineesMenuItemCommand(StarFisherContext.Current),
                 new RemoveNominationMenuItemCommand(StarFisherContext.Current),
-                new ValidateNomineesWithHrMenuItemCommand(StarFisherContext.Current, emailFactory),
+                new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Current, excelFileFactory, AwardType.StarValues),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Current, excelFileFactory, AwardType.RisingStar),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.StarValues),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.RisingStar),
+                new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage),
                 new ExitCommand(StarFisherContext.Current)
             };

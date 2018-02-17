@@ -22,25 +22,25 @@ namespace StarFisher.Office.Word
             _mailMergeDocType = mailMergeDocType;
         }
 
-        public void Execute()
+        public void Execute(FilePath filePath)
         {
             using (var com = new ComObjectManager())
-                Execute(com, _mailMergeTemplateResourceName);
+                Execute(com, filePath);
         }
 
-        private void Execute(ComObjectManager com, string mailMergeTemplateResourceName)
+        private void Execute(ComObjectManager com, FilePath outputFilePath)
         {
             object no = false;
             object missing = Missing.Value;
             var dataSourcePath = GetDataSourcePath();
-            object templatePath = ExtractMailMergeTemplate(mailMergeTemplateResourceName);
-            var word = com.Get(() => new Application { Visible = true });
+            object templatePath = ExtractMailMergeTemplate(_mailMergeTemplateResourceName);
+            var word = com.Get(() => new Application { Visible = false });
             var documents = com.Get(() => word.Documents);
             var mergeTemplateDocument = com.Get(() => documents.Add(ref templatePath, ref missing, ref missing, ref no));
 
             try
             {
-                Execute(com, dataSourcePath, mergeTemplateDocument);
+                Execute(com, word, dataSourcePath, mergeTemplateDocument, outputFilePath);
             }
             finally 
             {
@@ -48,7 +48,7 @@ namespace StarFisher.Office.Word
             }
         }
 
-        private void Execute(ComObjectManager com, FilePath dataSourcePath, Document mergeTemplateDocument)
+        private void Execute(ComObjectManager com, Application word, FilePath dataSourcePath, Document mergeTemplateDocument, FilePath outputFilePath)
         {
             object yes = true;
             object no = false;
@@ -75,6 +75,11 @@ namespace StarFisher.Office.Word
             dataSource.LastRecord = (int) WdMailMergeDefaultRecord.wdDefaultLastRecord;
 
             mailMerge.Execute(ref no);
+
+            var activeDocument = com.Get(() => word.ActiveDocument);
+            object filePath = outputFilePath.Value;
+            activeDocument.SaveAs(ref filePath);
+            activeDocument.Close(ref no);
         }
 
         private static void Cleanup(Document mergeTemplateDocument, string dataSourcePath, string templatePath)
@@ -82,8 +87,7 @@ namespace StarFisher.Office.Word
             if (mergeTemplateDocument != null)
             {
                 object no = false;
-                object missing = Missing.Value;
-                mergeTemplateDocument.Close(ref no, ref missing, ref missing);
+                mergeTemplateDocument.Close(ref no);
             }
 
             if (File.Exists(dataSourcePath))
