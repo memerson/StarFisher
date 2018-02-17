@@ -29,7 +29,7 @@ namespace StarFisher.Office.Outlook
             var quarter = nominationList.Quarter.Abbreviation;
 
             mailItem.To = string.Join(";", eiaChairPerson.EmailAddress);
-            mailItem.Subject = $@"EIA: {quarter} Star Awards voting survey review request";
+            mailItem.Subject = $@"EIA: {quarter} Star Awards voting key";
 
             var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
             var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);

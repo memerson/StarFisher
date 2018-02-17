@@ -10,6 +10,7 @@ namespace StarFisher.Office.Outlook
         IEmail GetHumanResourcesNomineeValidationEmail(NominationList nominationList);
         IEmail GetVotingSurveyReviewEmail(NominationList nominationList, string votingSurveyWebLink);
         IEmail GetVotingKeyEmail(NominationList nominationList);
+        IEmail GetLuncheonInviteeListEmail(NominationList nominationList);
     }
 
     public class EmailFactory : IEmailFactory
@@ -38,6 +39,11 @@ namespace StarFisher.Office.Outlook
         public IEmail GetVotingKeyEmail(NominationList nominationList)
         {
             return new VotingKeyEmail(_emailConfiguration, _excelFileFactory, nominationList);
+        }
+
+        public IEmail GetLuncheonInviteeListEmail(NominationList nominationList)
+        {
+            return new LuncheonInviteeListEmail(_emailConfiguration, _excelFileFactory, nominationList);
         }
     }
 

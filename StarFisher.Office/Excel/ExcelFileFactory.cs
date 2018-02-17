@@ -19,7 +19,7 @@ namespace StarFisher.Office.Excel
 
         IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
-        IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList);
+        IExcelFile GetAwardsLuncheonInviteeListExcelFile(NominationList nominationList);
     }
 
     public class ExcelFileFactory : IExcelFileFactory
@@ -70,9 +70,9 @@ namespace StarFisher.Office.Excel
             return new RisingStarNominationNotificationEmailSourceExcelFile(nominationList);
         }
 
-        public IExcelFile GetAwardsLunchInviteeListExcelFile(NominationList nominationList)
+        public IExcelFile GetAwardsLuncheonInviteeListExcelFile(NominationList nominationList)
         {
-            return new AwardsLunchInviteeListExcelFile(nominationList);
+            return new AwardsLuncheonInviteeListExcelFile(nominationList);
         }
     }
 }

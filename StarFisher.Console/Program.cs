@@ -5,6 +5,7 @@ using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.CreateAwardVotingGuide;
 using StarFisher.Console.Menu.CreateAwardVotingKey;
 using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
+using StarFisher.Console.Menu.CreateLuncheonInviteeListEmail;
 using StarFisher.Console.Menu.CreateVotingKeyEmail;
 using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
 using StarFisher.Console.Menu.DisqualifyNominees;
@@ -79,6 +80,7 @@ namespace StarFisher.Console
                 new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.RisingStar),
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
+                new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage),
                 new ExitCommand(StarFisherContext.Current)
             };

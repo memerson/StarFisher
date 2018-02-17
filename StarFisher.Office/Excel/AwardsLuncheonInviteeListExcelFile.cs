@@ -7,9 +7,9 @@ using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
-    internal class AwardsLunchInviteeListExcelFile : ExcelFileBase
+    internal class AwardsLuncheonInviteeListExcelFile : ExcelFileBase
     {
-        public AwardsLunchInviteeListExcelFile(NominationList nominationList)
+        public AwardsLuncheonInviteeListExcelFile(NominationList nominationList)
             : base((com, worksheet) => BuildWorksheet(com,
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
                 worksheet))

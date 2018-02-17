@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Excel\AwardsLunchInviteeListExcelFile.cs" />
+    <Compile Include="Excel\AwardsLuncheonInviteeListExcelFile.cs" />
     <Compile Include="Excel\ExcelFileBase.cs" />
     <Compile Include="Excel\CertificateSourceExcelFileBase.cs" />
     <Compile Include="Excel\IExcelFile.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Outlook\IEmail.cs" />
     <Compile Include="Outlook\HumanResourcesNomineeValidationEmail.cs" />
     <Compile Include="Outlook\IEmailConfiguration.cs" />
+    <Compile Include="Outlook\LuncheonInviteeListEmail.cs" />
     <Compile Include="Outlook\VotingKeyEmail.cs" />
     <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
