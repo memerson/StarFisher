@@ -5,6 +5,6 @@ namespace StarFisher.Office.Excel
     internal class RisingStarVotingGuideSourceExcelFile : VotingGuideSourceExcelFileBase
     {
         public RisingStarVotingGuideSourceExcelFile(NominationList nominationList)
-            : base(nominationList?.RisingStar) { }
+            : base(nominationList?.RisingStarNominations) { }
     }
 }

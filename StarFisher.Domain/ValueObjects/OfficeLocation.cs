@@ -11,6 +11,8 @@ namespace StarFisher.Domain.ValueObjects
         public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Echo - Brentwood", @"Brentwood");
         public static readonly OfficeLocation EchoSanDiego = new OfficeLocation(@"Echo - San Diego", @"San Diego");
         public static readonly OfficeLocation Hccs = new OfficeLocation(@"HCCS - Jericho NY", @"Jericho");
+
+        // TODO: Remove next quarter since this is no longer a HSTM office location.
         public static readonly OfficeLocation HighlandRidge = new OfficeLocation(@"Nashville - Highland Ridge (Marriott Dr.)", @"Highland Ridge");
         public static readonly OfficeLocation Morrisey = new OfficeLocation(@"Morrisey - Chicago", @"Chicago");
         public static readonly OfficeLocation NashvilleCorporate = new OfficeLocation(@"Nashville - Corporate (Downtown + Brentwood Sales)", @"Nashville Downtown");
@@ -41,6 +43,13 @@ namespace StarFisher.Domain.ValueObjects
         public string SurveyName { get; }
 
         public string ConciseName { get; }
+
+        public static IReadOnlyCollection<OfficeLocation> OfficeLocationsForCertificatePrinting =>
+            new List<OfficeLocation>
+            {
+                NashvilleCorporate,
+                Remote
+            };
 
         internal static OfficeLocation Create(string officeLocationSurveyName)
         {

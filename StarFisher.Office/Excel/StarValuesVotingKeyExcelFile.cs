@@ -5,6 +5,6 @@ namespace StarFisher.Office.Excel
     internal class StarValuesVotingKeyExcelFile : VotingKeyExcelFileBase
     {
         public StarValuesVotingKeyExcelFile(NominationList nominationList)
-            : base(nominationList?.StarValuesNominees) { }
+            : base(nominationList?.StarValuesNominations) { }
     }
 }

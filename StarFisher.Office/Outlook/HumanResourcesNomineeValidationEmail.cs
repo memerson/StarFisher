@@ -23,11 +23,10 @@ namespace StarFisher.Office.Outlook
         {
             mailItem.To = string.Join(";", emailConfiguration.HrPeople.Select(p => p.EmailAddress));
             mailItem.CC = string.Join(";", emailConfiguration.EiaChairPerson.EmailAddress);
-
-            mailItem.Subject = $@"Need: {nominationList.Quarter} Star Awards nominee eligibility check";
-
             var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
             var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
+
+            mailItem.Subject = $@"Need: {nominationList.Quarter} Star Awards nominee eligibility check";
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);

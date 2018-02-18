@@ -14,7 +14,7 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
             AwardAmount = awardAmount ?? throw new ArgumentNullException(nameof(awardAmount));
         }
 
-        public Person Person { get; }
+        internal Person Person { get; private set; }
 
         public PersonName Name => Person.Name;
 
@@ -25,5 +25,15 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
         public AwardType AwardType { get; }
 
         public AwardAmount AwardAmount { get; }
+
+        internal void UpdateWinnerName(PersonName newWinnerName)
+        {
+            Person = Person.UpdateName(newWinnerName);
+        }
+
+        internal void UpdateWinnerEmailAddress(EmailAddress newEmailAddress)
+        {
+            Person = Person.UpdateEmailAddress(newEmailAddress);
+        }
     }
 }

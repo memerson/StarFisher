@@ -31,12 +31,11 @@ namespace StarFisher.Office.Outlook
         {
             var eiaChairPerson = emailConfiguration.EiaChairPerson;
             var quarter = nominationList.Quarter.Abbreviation;
+            var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
+            var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
 
             mailItem.To = string.Join(";", eiaChairPerson.EmailAddress);
             mailItem.Subject = $@"EIA: {quarter} Star Awards voting survey review request";
-
-            var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
-            var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);

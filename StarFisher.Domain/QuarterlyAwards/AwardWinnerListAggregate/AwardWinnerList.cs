@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.Utilities;
 using StarFisher.Domain.ValueObjects;
 
@@ -37,17 +39,109 @@ namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate
 
         public IReadOnlyCollection<StarValuesAwardWinner> StarValuesAwardWinners => GetAwardWinnersOfType<StarValuesAwardWinner>();
 
-        public void AddStarValuesWinner(Person person, ICollection<CompanyValue> companyValues, ICollection<NominationWriteUp> nominationWriteUps)
+        public bool GetIsWinner(AwardType awardType, Person person)
         {
-            if (companyValues?.Count == 0)
-                throw new ArgumentException("A winner must exhibit at least one company value.");
-            if (nominationWriteUps?.Count == 0)
-                throw new ArgumentException("A winner must have at least one nomination write-up.");
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+            if (person == null)
+                throw new ArgumentNullException(nameof(person));
+
+            return AwardWinners.Any(w => w.AwardType == awardType && w.Person == person);
+        }
+
+        public void UpsertNomineeToWinners(NominationList nominationList, AwardType awardType, Person nominee)
+        {
+            if (nominationList == null)
+                throw new ArgumentNullException(nameof(nominationList));
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+            if (nominee == null)
+                throw new ArgumentNullException(nameof(nominee));
+
+            var nominations = nominationList.GetNominationsForNominee(awardType, nominee);
+            if (nominations.Count == 0)
+                throw new ArgumentException(nameof(nominee));
+
+            var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
+            var nominationWriteUps = nominations.Select(n => n.WriteUp).ToList();
 
             var id = GetNextAwardWinnerId();
-            var winner = new StarValuesAwardWinner(id, person, companyValues, nominationWriteUps);
+
+            AwardWinnerBase winner;
+            if (awardType == AwardType.StarValues)
+                winner = new StarValuesAwardWinner(id, nominee, companyValues, nominationWriteUps);
+            else if (awardType == AwardType.RisingStar)
+                winner = new RisingStarAwardWinner(id, nominee);
+            else
+                throw new NotSupportedException(awardType.Value);
+
+            _awardWinners.RemoveAll(w => w.Person == nominee);
             _awardWinners.Add(winner);
-            MarkAsDirty($@"Added Star Values winner {person.Name.FullName}");
+            MarkAsDirty($@"Upserted winner {nominee.Name.FullName}");
+        }
+
+        public void SyncWithUpdatedNomination(NominationList nominationList, Nomination nomination)
+        {
+            if (nominationList == null)
+                throw new ArgumentNullException(nameof(nominationList));
+            if (nomination == null)
+                throw new ArgumentNullException(nameof(nomination));
+
+            var awardType = nomination.AwardType;
+            var nominee = nomination.Nominee;
+            if (GetIsWinner(awardType, nominee))
+                UpsertNomineeToWinners(nominationList, awardType, nominee);
+        }
+
+        public void RemoveWinner(Person winner)
+        {
+            if (winner == null)
+                throw new ArgumentNullException(nameof(winner));
+
+            var removed = _awardWinners.RemoveAll(w => w.Person == winner);
+
+            if (removed > 0)
+                MarkAsDirty($@"Removed {winner.Name.FullName} from winner list");
+        }
+
+        public void UpdateWinnerName(Person winner, PersonName newWinnerName)
+        {
+            if (winner == null)
+                throw new ArgumentNullException(nameof(winner));
+            if (newWinnerName == null)
+                throw new ArgumentNullException(nameof(newWinnerName));
+            if (!newWinnerName.IsValid)
+                throw new ArgumentException(nameof(newWinnerName));
+
+            if (winner.Name == newWinnerName)
+                return;
+
+            var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == winner);
+            if (awardWinner == null)
+                return;
+
+            awardWinner.UpdateWinnerName(newWinnerName);
+            MarkAsDirty($@"Updated winner name from {winner.Name.FullName} to {newWinnerName.FullName}");
+        }
+
+        public void UpdateWinnerEmailAddress(Person winner, EmailAddress newEmailAddress)
+        {
+            if (winner == null)
+                throw new ArgumentNullException(nameof(winner));
+            if (newEmailAddress == null)
+                throw new ArgumentNullException(nameof(newEmailAddress));
+            if (!newEmailAddress.IsValid)
+                throw new ArgumentException(nameof(newEmailAddress));
+
+            if (winner.EmailAddress == newEmailAddress)
+                return;
+
+            var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == winner);
+            if (awardWinner == null)
+                return;
+
+            awardWinner.UpdateWinnerEmailAddress(newEmailAddress);
+            MarkAsDirty($@"Updated winner email address from {winner.EmailAddress.Value} to {newEmailAddress.Value}");
         }
 
         private int GetNextAwardWinnerId()

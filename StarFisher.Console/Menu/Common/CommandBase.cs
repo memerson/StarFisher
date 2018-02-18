@@ -24,19 +24,14 @@ namespace StarFisher.Console.Menu.Common
                 if (commandResult.ResultType != CommandResultType.Success)
                     return commandResult;
 
-                if (Context.IsInitialized)
-                {
-                    if (Context.NominationListContext.HasNominationListLoaded)
-                        Context.NominationListContext.SaveSnapshot();
-
-                    if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
-                        Context.AwardWinnerListContext.SaveSnapshot();
-                }
+                Persist();
 
                 return commandResult;
             }
             catch (Exception e)
             {
+                Rollback();
+
                 return CommandResult<TOutput>.Failure(e);
             }
         }
@@ -56,5 +51,29 @@ namespace StarFisher.Console.Menu.Common
         }
 
         protected abstract CommandResult<TOutput> RunCore(TInput input);
+
+        private void Rollback()
+        {
+            if (!Context.IsInitialized)
+                return;
+
+            if (Context.NominationListContext.HasNominationListLoaded)
+                Context.NominationListContext.LoadLatestSnapshot();
+
+            if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                Context.AwardWinnerListContext.LoadLatestSnapshot();
+        }
+
+        private void Persist()
+        {
+            if (!Context.IsInitialized)
+                return;
+
+            if (Context.NominationListContext.HasNominationListLoaded)
+                Context.NominationListContext.SaveSnapshot();
+
+            if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                Context.AwardWinnerListContext.SaveSnapshot();
+        }
     }
 }

@@ -44,6 +44,10 @@ namespace StarFisher.Domain.ValueObjects
 
         public string GetVotingGuideFileName(Year year, Quarter quarter)
         {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
             if (!SupportsVoting)
                 throw new InvalidOperationException(@"This award type does not support voting.");
 
@@ -52,10 +56,24 @@ namespace StarFisher.Domain.ValueObjects
 
         public string GetVotingKeyFileName(Year year, Quarter quarter)
         {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
             if (!SupportsVoting)
                 throw new InvalidOperationException(@"This award type does not support voting.");
 
             return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingKey.xlsx";
+        }
+
+        public string GetCertificatesFileName(Year year, Quarter quarter)
+        {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
+
+            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_Certificates.docx";
         }
 
         protected override bool EqualsCore(AwardType other)

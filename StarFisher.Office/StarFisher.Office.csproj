@@ -45,11 +45,11 @@
   <ItemGroup>
     <Compile Include="Excel\AwardsLuncheonInviteeListExcelFile.cs" />
     <Compile Include="Excel\ExcelFileBase.cs" />
-    <Compile Include="Excel\CertificateSourceExcelFileBase.cs" />
+    <Compile Include="Excel\CertificatesSourceExcelFileBase.cs" />
     <Compile Include="Excel\IExcelFile.cs" />
     <Compile Include="Excel\NominationNotificationEmailSourceExcelFileBase.cs" />
-    <Compile Include="Excel\StarValuesCertificateSourceExcelFile.cs" />
-    <Compile Include="Excel\RisingStarCertificateSourceExcelFile.cs" />
+    <Compile Include="Excel\StarValuesCertificatesSourceExcelFile.cs" />
+    <Compile Include="Excel\RisingStarCertificatesSourceExcelFile.cs" />
     <Compile Include="Excel\RisingStarNominationNotificationEmailSourceExcelFile.cs" />
     <Compile Include="Excel\RisingStarVotingGuideSourceExcelFile.cs" />
     <Compile Include="Excel\RisingStarVotingKeyExcelFile.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="Outlook\IEmail.cs" />
     <Compile Include="Outlook\HumanResourcesNomineeValidationEmail.cs" />
     <Compile Include="Outlook\IEmailConfiguration.cs" />
+    <Compile Include="Outlook\CertificatesEmail.cs" />
     <Compile Include="Outlook\LuncheonInviteeListEmail.cs" />
     <Compile Include="Outlook\VotingKeyEmail.cs" />
     <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Word\IMailMerge.cs" />
     <Compile Include="Word\MailMergeBase.cs" />
     <Compile Include="Word\MailMergeFactory.cs" />
+    <Compile Include="Word\StarValuesCertificatesMailMerge.cs" />
+    <Compile Include="Word\RisingStarCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarVotingGuideMailMerge.cs" />
     <Compile Include="Word\StarValuesWinnersMemoMailMerge.cs" />
     <Compile Include="Word\StarValuesVotingGuideMailMerge.cs" />
@@ -146,6 +149,9 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesVotingGuideMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesWinnersMemoMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarVotingGuideMailMergeTemplate.docx" />
+    <None Include="Word\MailMergeTemplates\RisingStarCertificatesMailMergeTemplate.docx" />
+    <None Include="Word\MailMergeTemplates\StarValuesCertificatesMailMergeTemplate.docx" />
+    <None Include="Word\MailMergeTemplates\SuperStarCertificatesMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

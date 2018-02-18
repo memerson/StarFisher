@@ -30,6 +30,13 @@ namespace StarFisher.Console.Menu.RemoveNominations
                 return false;
 
             nominationList.RemoveNomination(nominationToRemove.Id);
+
+            if (!Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                return true;
+
+            var awardWinnerList = Context.AwardWinnerListContext.AwardWinnerList;
+            awardWinnerList.SyncWithUpdatedNomination(nominationList, nominationToRemove);
+
             return true;
         }
 

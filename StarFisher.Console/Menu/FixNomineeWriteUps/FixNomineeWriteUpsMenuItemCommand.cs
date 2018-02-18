@@ -41,8 +41,16 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
 
             var changedWriteUp = TryGetNewNominationWriteUp(nomination, out NominationWriteUp newWriteUp);
 
-            if (changedWriteUp)
-                nominationList.UpdateNominationWriteUp(nomination.Id, newWriteUp);
+            if (!changedWriteUp)
+                return true;
+
+            nominationList.UpdateNominationWriteUp(nomination.Id, newWriteUp);
+
+            if (!Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                return true;
+
+            var awardWinnerList = Context.AwardWinnerListContext.AwardWinnerList;
+            awardWinnerList.SyncWithUpdatedNomination(nominationList, nomination);
 
             return true;
         }

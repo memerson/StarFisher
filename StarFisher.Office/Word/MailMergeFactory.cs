@@ -9,8 +9,8 @@ namespace StarFisher.Office.Word
     public interface IMailMergeFactory
     {
         IMailMerge GetVotingGuideMailMerge(AwardType awardType, NominationList nominationList);
-
         IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList);
+        IMailMerge GetCertificatesMailMerge(AwardType awardType, AwardWinnerList awardWinnerList);
     }
 
     public class MailMergeFactory : IMailMergeFactory
@@ -29,7 +29,7 @@ namespace StarFisher.Office.Word
 
             if (awardType == AwardType.StarValues)
                 return new StarValuesVotingGuideMailMerge(_excelFileFactory, nominationList);
-            if(awardType == AwardType.RisingStar)
+            if (awardType == AwardType.RisingStar)
                 return new RisingStarVotingGuideMailMerge(_excelFileFactory, nominationList);
 
             throw new NotSupportedException(awardType.Value);
@@ -38,6 +38,19 @@ namespace StarFisher.Office.Word
         public IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList)
         {
             return new StarValuesWinnersMemoMailMerge(_excelFileFactory, awardWinnerList);
+        }
+
+        public IMailMerge GetCertificatesMailMerge(AwardType awardType, AwardWinnerList awardWinnerList)
+        {
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            if (awardType == AwardType.StarValues)
+                return new StarValuesCertificatesMailMerge(_excelFileFactory, awardWinnerList);
+            if (awardType == AwardType.RisingStar)
+                return new RisingStarCertificatesMailMerge(_excelFileFactory, awardWinnerList);
+
+            throw new NotSupportedException(awardType.Value);
         }
     }
 }

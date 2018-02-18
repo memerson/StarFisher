@@ -31,14 +31,21 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
                 var nomineeParameter =
                     new NomineeToChangeNameParameter(nominationList.Nominees, unrecognizedNomineeNames);
 
-                if (!TryGetArgumentValue(nomineeParameter, out Person nomineeToChange))
+                if (!TryGetArgumentValue(nomineeParameter, out Person personToChange))
                     break;
 
-                var newNomineeNameParameter = new NewNomineeNameParameter(_globalAddressList, nomineeToChange);
-                if (!TryGetArgumentValue(newNomineeNameParameter, out PersonName newNomineeName))
+                var newNomineeNameParameter = new NewNomineeNameParameter(_globalAddressList, personToChange);
+                if (!TryGetArgumentValue(newNomineeNameParameter, out PersonName newName))
                     continue;
 
-                nominationList.UpdateNomineeName(nomineeToChange, newNomineeName);
+                nominationList.UpdateNomineeName(personToChange, newName);
+
+
+                if (!Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+                    continue;
+
+                var awardWinnerList = Context.AwardWinnerListContext.AwardWinnerList;
+                awardWinnerList.UpdateWinnerName(personToChange, newName);
             }
 
             return CommandOutput.None.Success;

@@ -6,7 +6,7 @@ using StarFisher.Domain.ValueObjects;
 namespace StarFisher.Console.Menu.DisqualifyNominees
 {
     public class DisqualifyNomineesMenuItemCommand : MenuItemCommandBase
-    {
+    {// TODO: Make award-specific
         private const string CommandTitle = @"Disqualify a nominee";
 
         public DisqualifyNomineesMenuItemCommand(IStarFisherContext context)
@@ -29,6 +29,12 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
             var parameter = new NomineeToDisqualifyParameter(nominationList.Nominees);
             if (!TryGetArgumentValue(parameter, out Person nomineeToDisqualify))
                 return false;
+
+            if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
+            {
+                var awardWinnerList = Context.AwardWinnerListContext.AwardWinnerList;
+                awardWinnerList.RemoveWinner(nomineeToDisqualify);
+            }
 
             nominationList.DisqualifyNominee(nomineeToDisqualify);
             return true;
