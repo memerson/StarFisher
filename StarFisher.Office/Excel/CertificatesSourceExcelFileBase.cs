@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Utilities;
 

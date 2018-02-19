@@ -59,9 +59,6 @@ namespace StarFisher.Console.Menu.Common
 
             if (Context.NominationListContext.HasNominationListLoaded)
                 Context.NominationListContext.LoadLatestSnapshot();
-
-            if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
-                Context.AwardWinnerListContext.LoadLatestSnapshot();
         }
 
         private void Persist()
@@ -71,9 +68,6 @@ namespace StarFisher.Console.Menu.Common
 
             if (Context.NominationListContext.HasNominationListLoaded)
                 Context.NominationListContext.SaveSnapshot();
-
-            if (Context.AwardWinnerListContext.HasAwardWinnerListLoaded)
-                Context.AwardWinnerListContext.SaveSnapshot();
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.IO;
 using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Utilities;
 using StarFisher.Office.Word;
@@ -12,22 +12,22 @@ namespace StarFisher.Office.Outlook
     internal class CertificatesEmail : EmailBase
     {
         public CertificatesEmail(IEmailConfiguration emailConfiguration, IMailMergeFactory mailMergeFactory,
-            AwardWinnerList awardWinnerList)
+            NominationList nominationList)
             : base((com, mailItem) => BuildEmail(
                 com,
                 mailItem,
                 emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)),
                 mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory)),
-                awardWinnerList ?? throw new ArgumentNullException(nameof(awardWinnerList))))
+                nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
         { }
 
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
-            IMailMergeFactory mailMergeFactory, AwardWinnerList awardWinnerList)
+            IMailMergeFactory mailMergeFactory, NominationList nominationList)
         {
             var certificatePrinter = emailConfiguration.CertificatePrinterPerson;
-            var quarter = awardWinnerList.Quarter.Abbreviation;
-            var hasStarValues = awardWinnerList.RisingStarAwardWinners.Count > 0;
-            var hasRisingStar = awardWinnerList.StarValuesAwardWinners.Count > 0;
+            var quarter = nominationList.Quarter.Abbreviation;
+            var hasStarValues = nominationList.RisingStarAwardWinners.Count > 0;
+            var hasRisingStar = nominationList.StarValuesAwardWinners.Count > 0;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
@@ -43,12 +43,12 @@ namespace StarFisher.Office.Outlook
             if (!hasStarValues)
                 WriteNoNomineesCaveat(content, AwardType.StarValues, quarter);
             else
-                AddCertificatesAttachment(com, mailItem, mailMergeFactory, awardWinnerList, AwardType.StarValues);
+                AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
 
             if (!hasRisingStar)
                 WriteNoNomineesCaveat(content, AwardType.RisingStar, quarter);
             else
-                AddCertificatesAttachment(com, mailItem, mailMergeFactory, awardWinnerList, AwardType.RisingStar);
+                AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
 
             WriteThanks(content);
 
@@ -59,16 +59,16 @@ namespace StarFisher.Office.Outlook
         }
 
         private static void AddCertificatesAttachment(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
-            AwardWinnerList awardWinnerList, AwardType awardType)
+            NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
-            var fileName = awardType.GetCertificatesFileName(awardWinnerList.Year, awardWinnerList.Quarter);
+            var fileName = awardType.GetCertificatesFileName(nominationList.Year, nominationList.Quarter);
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
             if (File.Exists(filePath.Value))
                 File.Delete(filePath.Value);
 
-            var mailMerge = mailMergeFactory.GetCertificatesMailMerge(awardType, awardWinnerList);
+            var mailMerge = mailMergeFactory.GetCertificatesMailMerge(awardType, nominationList);
             mailMerge.Execute(filePath);
 
             com.Get(() => attachments.Add(filePath.Value));

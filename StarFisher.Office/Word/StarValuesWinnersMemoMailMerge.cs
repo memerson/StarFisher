@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.Office.Interop.Word;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Office.Excel;
 
 namespace StarFisher.Office.Word
@@ -8,18 +8,18 @@ namespace StarFisher.Office.Word
     internal class StarValuesWinnersMemoMailMerge : MailMergeBase
     {
         private readonly IExcelFileFactory _excelFileFactory;
-        private readonly AwardWinnerList _awardWinnerList;
+        private readonly NominationList _nominationList;
 
-        public StarValuesWinnersMemoMailMerge(IExcelFileFactory excelFileFactory, AwardWinnerList awardWinnerList)
+        public StarValuesWinnersMemoMailMerge(IExcelFileFactory excelFileFactory, NominationList nominationList)
             : base(@"StarFisher.Office.Word.MailMergeTemplates.StarValuesWinnersMemoMailMergeTemplate.docx", WdMailMergeMainDocType.wdCatalog)
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
-            _awardWinnerList = awardWinnerList ?? throw new ArgumentNullException(nameof(awardWinnerList));
+            _nominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
         }
 
         protected override IExcelFile GetDataSourceExcelFile()
         {
-            return _excelFileFactory.GetStarValuesWinnersMemoSourceExcelFile(_awardWinnerList);
+            return _excelFileFactory.GetStarValuesWinnersMemoSourceExcelFile(_nominationList);
         }
     }
 }

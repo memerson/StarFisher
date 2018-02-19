@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Context\AwardWinnerListContext.cs" />
     <Compile Include="Context\ConfigurationStorage.cs" />
     <Compile Include="Context\IConfiguration.cs" />
     <Compile Include="Context\NominationListContext.cs" />

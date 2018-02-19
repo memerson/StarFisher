@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Office.Utilities;
 

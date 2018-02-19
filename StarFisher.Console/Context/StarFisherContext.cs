@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 
@@ -15,8 +14,6 @@ namespace StarFisher.Console.Context
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson);
 
         INominationListContext NominationListContext { get; }
-
-        IAwardWinnerListContext AwardWinnerListContext { get; }
     }
 
     public class StarFisherContext : IStarFisherContext
@@ -50,10 +47,8 @@ namespace StarFisher.Console.Context
                                        throw new ArgumentNullException(nameof(certificatePrinterPerson));
 
             var nominationListRepository = new NominationListRepository(workingDirectoryPath);
-            var awardWinnerRepository = new AwardWinnerListRepository(workingDirectoryPath);
 
             Context.NominationListContext.Initialize(nominationListRepository, year, quarter);
-            Context.AwardWinnerListContext.Initialize(awardWinnerRepository, year, quarter);
 
             IsInitialized = true;
         }
@@ -133,8 +128,6 @@ namespace StarFisher.Console.Context
         }
 
         public INominationListContext NominationListContext => Context.NominationListContext.Current;
-
-        public IAwardWinnerListContext AwardWinnerListContext => Context.AwardWinnerListContext.Current;
 
         private void CheckIsInitialized()
         {

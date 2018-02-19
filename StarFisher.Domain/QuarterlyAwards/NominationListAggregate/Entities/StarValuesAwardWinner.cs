@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
+namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public class StarValuesAwardWinner : AwardWinnerBase
     {

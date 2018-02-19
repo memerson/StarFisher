@@ -7,8 +7,6 @@ namespace StarFisher.Domain.ValueObjects
     {
         private PersonName(string nameText, bool isAnonymous)
         {
-            // TODO: Account for invalid names.
-
             RawNameText = nameText ?? string.Empty;
             IsAnonymous = isAnonymous;
             FullName = string.Empty;

@@ -2,7 +2,7 @@
 using StarFisher.Domain.Common;
 using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
+namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public abstract class AwardWinnerBase : Entity
     {

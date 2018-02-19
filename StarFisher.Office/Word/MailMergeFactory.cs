@@ -1,5 +1,4 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
@@ -9,8 +8,8 @@ namespace StarFisher.Office.Word
     public interface IMailMergeFactory
     {
         IMailMerge GetVotingGuideMailMerge(AwardType awardType, NominationList nominationList);
-        IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList);
-        IMailMerge GetCertificatesMailMerge(AwardType awardType, AwardWinnerList awardWinnerList);
+        IMailMerge GetStarValuesWinnersMemoMailMerge(NominationList nominationList);
+        IMailMerge GetCertificatesMailMerge(AwardType awardType, NominationList nominationList);
     }
 
     public class MailMergeFactory : IMailMergeFactory
@@ -35,20 +34,20 @@ namespace StarFisher.Office.Word
             throw new NotSupportedException(awardType.Value);
         }
 
-        public IMailMerge GetStarValuesWinnersMemoMailMerge(AwardWinnerList awardWinnerList)
+        public IMailMerge GetStarValuesWinnersMemoMailMerge(NominationList nominationList)
         {
-            return new StarValuesWinnersMemoMailMerge(_excelFileFactory, awardWinnerList);
+            return new StarValuesWinnersMemoMailMerge(_excelFileFactory, nominationList);
         }
 
-        public IMailMerge GetCertificatesMailMerge(AwardType awardType, AwardWinnerList awardWinnerList)
+        public IMailMerge GetCertificatesMailMerge(AwardType awardType, NominationList nominationList)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
 
             if (awardType == AwardType.StarValues)
-                return new StarValuesCertificatesMailMerge(_excelFileFactory, awardWinnerList);
+                return new StarValuesCertificatesMailMerge(_excelFileFactory, nominationList);
             if (awardType == AwardType.RisingStar)
-                return new RisingStarCertificatesMailMerge(_excelFileFactory, awardWinnerList);
+                return new RisingStarCertificatesMailMerge(_excelFileFactory, nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }

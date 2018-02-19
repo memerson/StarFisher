@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Perisistence
+namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 {
     internal class AwardWinnerDto
     {

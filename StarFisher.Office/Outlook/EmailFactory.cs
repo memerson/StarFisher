@@ -1,5 +1,4 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Word;
@@ -12,7 +11,7 @@ namespace StarFisher.Office.Outlook
         IEmail GetVotingSurveyReviewEmail(NominationList nominationList, string votingSurveyWebLink);
         IEmail GetVotingKeyEmail(NominationList nominationList);
         IEmail GetLuncheonInviteeListEmail(NominationList nominationList);
-        IEmail GetCertificatesEmail(AwardWinnerList awardWinnerList);
+        IEmail GetCertificatesEmail(NominationList nominationList);
     }
 
     public class EmailFactory : IEmailFactory
@@ -48,9 +47,9 @@ namespace StarFisher.Office.Outlook
             return new LuncheonInviteeListEmail(_emailConfiguration, _excelFileFactory, nominationList);
         }
 
-        public IEmail GetCertificatesEmail(AwardWinnerList awardWinnerList)
+        public IEmail GetCertificatesEmail(NominationList nominationList)
         {
-            return new CertificatesEmail(_emailConfiguration, _mailMergeFactory, awardWinnerList);
+            return new CertificatesEmail(_emailConfiguration, _mailMergeFactory, nominationList);
         }
     }
 

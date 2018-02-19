@@ -59,11 +59,9 @@
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\AwardWinnerListRepository.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\RisingStarAwardWinner.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\StarValuesAwardWinner.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Perisistence\AwardWinnerDto.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Perisistence\AwardWinnerListDto.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\RisingStarAwardWinner.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\StarValuesAwardWinner.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Persistence\AwardWinnerDto.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\Nomination.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\NominationList.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\NominationListRepository.cs" />
@@ -74,8 +72,7 @@
     <Compile Include="ValueObjects\Person.cs" />
     <Compile Include="ValueObjects\AwardAmount.cs" />
     <Compile Include="ValueObjects\AwardType.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\Entities\AwardWinnerBase.cs" />
-    <Compile Include="QuarterlyAwards\AwardWinnerListAggregate\AwardWinnerList.cs" />
+    <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\AwardWinnerBase.cs" />
     <Compile Include="Utilities\PersonNameComparer.cs" />
     <Compile Include="Utilities\PrettyPrintEnumerableExtension.cs" />
     <Compile Include="Utilities\SafeMaxCollectionExtension.cs" />

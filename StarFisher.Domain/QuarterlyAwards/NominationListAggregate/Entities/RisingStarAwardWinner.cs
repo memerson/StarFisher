@@ -1,6 +1,6 @@
 ﻿using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities
+namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public class RisingStarAwardWinner : AwardWinnerBase
     {

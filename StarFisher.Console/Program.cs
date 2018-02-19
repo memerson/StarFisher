@@ -38,7 +38,7 @@ namespace StarFisher.Console
 
             var emailFactory = new EmailFactory(StarFisherContext.Current, excelFileFactory, mailMergeFactory);
 
-            //var awardWinnerList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
+            //var nominationList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
 
             //var starValuesWinnerNames = new List<PersonName>
             //{
@@ -62,7 +62,7 @@ namespace StarFisher.Console
             //    var person = nominations.Select(n => n.Nominee).First(); // TODO: Internalize this so we don't need to expose Nominee property.
             //    var writeUps = nominations.Select(n => n.WriteUp).ToList();
             //    var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-            //    awardWinnerList.AddStarValuesWinner(person, companyValues, writeUps);
+            //    nominationList.AddStarValuesWinner(person, companyValues, writeUps);
             //}
 
             var menuItemCommands = new List<IMenuItemCommand>

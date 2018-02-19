@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate.Entities;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Utilities;
 
@@ -12,10 +12,10 @@ namespace StarFisher.Office.Excel
 {
     internal class StarValuesWinnersMemoSourceExcelFile : ExcelFileBase
     {
-        public StarValuesWinnersMemoSourceExcelFile(AwardWinnerList awardWinnerList)
+        public StarValuesWinnersMemoSourceExcelFile(NominationList nominationList)
             : base((com, worksheet) => BuildWorksheet(com,
-                awardWinnerList?.Quarter ?? throw new ArgumentNullException(nameof(awardWinnerList)),
-                awardWinnerList?.StarValuesAwardWinners ?? throw new ArgumentNullException(nameof(awardWinnerList)),
+                nominationList?.Quarter ?? throw new ArgumentNullException(nameof(nominationList)),
+                nominationList?.StarValuesAwardWinners ?? throw new ArgumentNullException(nameof(nominationList)),
                 worksheet))
         { }
 

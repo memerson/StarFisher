@@ -1,5 +1,4 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.AwardWinnerListAggregate;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
 using StarFisher.Domain.ValueObjects;
 
@@ -13,9 +12,9 @@ namespace StarFisher.Office.Excel
 
         IExcelFile GetStarValuesNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
-        IExcelFile GetStarValuesWinnersMemoSourceExcelFile(AwardWinnerList awardWinnerList);
+        IExcelFile GetStarValuesWinnersMemoSourceExcelFile(NominationList nominationList);
 
-        IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, AwardWinnerList awardWinnerList);
+        IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, NominationList nominationList);
 
         IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
@@ -55,20 +54,20 @@ namespace StarFisher.Office.Excel
             return new StarValuesNominationNotificationEmailSourceExcelFile(nominationList);
         }
 
-        public IExcelFile GetStarValuesWinnersMemoSourceExcelFile(AwardWinnerList awardWinnerList)
+        public IExcelFile GetStarValuesWinnersMemoSourceExcelFile(NominationList nominationList)
         {
-            return new StarValuesWinnersMemoSourceExcelFile(awardWinnerList);
+            return new StarValuesWinnersMemoSourceExcelFile(nominationList);
         }
 
-        public IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, AwardWinnerList awardWinnerList)
+        public IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, NominationList nominationList)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
 
             if (awardType == AwardType.StarValues)
-                return new StarValuesCertificatesSourceExcelFile(awardWinnerList);
+                return new StarValuesCertificatesSourceExcelFile(nominationList);
             if (awardType == AwardType.RisingStar)
-                return new RisingStarCertificatesSourceExcelFile(awardWinnerList);
+                return new RisingStarCertificatesSourceExcelFile(nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
