@@ -22,8 +22,6 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
-            // TODO: Really should just create the email.
-
             var nominationList = Context.NominationListContext.NominationList;
             var fileName = GetVotingKeyFileName();
 

@@ -77,6 +77,14 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return Nominations.Any(n => n.AwardType == awardType);
         }
 
+        public IReadOnlyCollection<Person> GetNomineesForAward(AwardType awardType)
+        {
+            return Nominations
+                .Where(n => n.AwardType == awardType)
+                .Select(n => n.Nominee)
+                .ToList();
+        }
+
         public void UpdateNomineeName(Person nominee, PersonName newNomineeName)
         {
             if (nominee == null)

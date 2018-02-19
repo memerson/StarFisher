@@ -24,8 +24,9 @@ namespace StarFisher.Console.Menu.Common.Parameters
             if (_list.Count == 0)
             {
                 WriteLine();
-                WriteLine($@"There are no {_itemsDescription}.");
-                WriteLine();
+                WriteLine($@"There are no {_itemsDescription}. Press any key to continue.");
+                WriteInputPrompt();
+                WaitForKeyPress();
                 return Argument<T>.Abort;
             }
 
@@ -91,9 +92,10 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
                 var listItemText = $@"{i + 1,5}: {listItemLabel}";
 
-                if (itemsWritten != 0 && itemsWritten % 20 == 0)
+                if (itemsWritten != 0 && itemsWritten % 30 == 0)
                 {
-                    Write(@"Press any key to continue.");
+                    Write(@"Wow, there are a lot! Press any key to continue. ");
+                    WriteInputPrompt();
                     WaitForKeyPress();
                     ClearLastLine();
                 }

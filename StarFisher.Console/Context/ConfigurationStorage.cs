@@ -89,19 +89,19 @@ namespace StarFisher.Console.Context
                 CertificatePrinterPerson = Convert(context.CertificatePrinterPerson);
             }
 
-            public string WorkingDirectoryPath { get; }
+            public string WorkingDirectoryPath { get; set; }
 
-            public int Year { get; }
+            public int Year { get; set; }
 
-            public int Quarter { get; }
+            public int Quarter { get; set; }
 
-            public Person EiaChairPerson { get; }
+            public Person EiaChairPerson { get; set; }
 
-            public List<Person> HrPeople { get; }
+            public List<Person> HrPeople { get; set; }
 
-            public List<Person> LuncheonPlannerPeople { get; }
+            public List<Person> LuncheonPlannerPeople { get; set; }
 
-            public Person CertificatePrinterPerson { get; }
+            public Person CertificatePrinterPerson { get; set; }
 
             public void InitializeContext()
             {

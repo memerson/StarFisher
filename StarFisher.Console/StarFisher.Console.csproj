@@ -73,6 +73,7 @@
     <Compile Include="Menu\CreateVotingKeyEmail\CreateVotingKeyEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingSurveyReviewEmail\CreateVotingSurveyReviewEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingSurveyReviewEmail\Parameters\VotingSurveyWebLinkParameter.cs" />
+    <Compile Include="Menu\DisqualifyNominees\Parameters\AwardTypeParameter.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeEmailAddressesCommand.cs" />
     <Compile Include="Menu\FixNomineeNamesAndEmailAddresses\Commands\FixNomineeNamesCommand.cs" />
