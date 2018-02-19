@@ -13,7 +13,7 @@ namespace StarFisher.Domain.ValueObjects
         private static readonly List<AwardAmount> ValidAwardAmounts = new List<AwardAmount>
         {
             StarValues,
-            RisingStar,
+            RisingStar
         };
 
         private AwardAmount(decimal valueInDollars)
@@ -21,11 +21,11 @@ namespace StarFisher.Domain.ValueObjects
             ValueInDollars = valueInDollars;
         }
 
+        public decimal ValueInDollars { get; }
+
         internal static AwardAmount Create(decimal valueInDollars)
         {
             return ValidAwardAmounts.FirstOrDefault(aa => aa.ValueInDollars == valueInDollars) ?? Invalid;
         }
-
-        public decimal ValueInDollars { get; }
     }
 }

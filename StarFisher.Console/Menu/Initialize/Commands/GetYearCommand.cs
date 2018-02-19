@@ -7,7 +7,9 @@ namespace StarFisher.Console.Menu.Initialize.Commands
 {
     public class GetYearCommand : InitializeCommandBase<Year>
     {
-        public GetYearCommand(IStarFisherContext context) : base(context) { }
+        public GetYearCommand(IStarFisherContext context) : base(context)
+        {
+        }
 
         protected override CommandResult<Output> RunCore(CommandInput.None input)
         {

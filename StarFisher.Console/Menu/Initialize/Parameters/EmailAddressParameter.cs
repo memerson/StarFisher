@@ -19,7 +19,9 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
         protected override string GetCallToActionText()
         {
-            return $@"Enter {_personName.FullName}'s email address, or enter 'stop' to stop the initialization workflow.";
+            return $@"Enter {
+                    _personName.FullName
+                }'s email address, or enter 'stop' to stop the initialization workflow.";
         }
     }
 }

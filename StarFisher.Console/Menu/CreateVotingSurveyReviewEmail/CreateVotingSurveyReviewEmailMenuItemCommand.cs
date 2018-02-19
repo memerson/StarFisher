@@ -9,10 +9,12 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail
 {
     public class CreateVotingSurveyReviewEmailMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IEmailFactory _emailFactory;
-
         private const string CommandTitle = @"Create voting survey review email";
-        private const string SuccessMessage = @"Success! You should now see an email ready to review and send on to the EIA Chairperson(s).";
+
+        private const string SuccessMessage =
+            @"Success! You should now see an email ready to review and send on to the EIA Chairperson(s).";
+
+        private readonly IEmailFactory _emailFactory;
 
         public CreateVotingSurveyReviewEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory)
             : base(context, CommandTitle, SuccessMessage)
@@ -26,8 +28,10 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail
                 return CommandOutput.None.Success;
 
             var nominationList = Context.NominationListContext.NominationList;
-            using (var email = _emailFactory.GetVotingSurveyReviewEmail(nominationList, votingSurveyWebLink)) 
+            using (var email = _emailFactory.GetVotingSurveyReviewEmail(nominationList, votingSurveyWebLink))
+            {
                 email.Display();
+            }
 
             return CommandOutput.None.Success;
         }

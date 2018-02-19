@@ -11,12 +11,14 @@ namespace StarFisher.Office.Outlook
 {
     internal class HumanResourcesNomineeValidationEmail : EmailBase
     {
-        internal HumanResourcesNomineeValidationEmail(IEmailConfiguration emailConfiguration, NominationList nominationList)
+        internal HumanResourcesNomineeValidationEmail(IEmailConfiguration emailConfiguration,
+            NominationList nominationList)
             : base((com, mailItem) => BuildEmail(
-                mailItem, 
-                emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)), 
+                mailItem,
+                emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)),
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
-        { }
+        {
+        }
 
         private static void BuildEmail(MailItem mailItem, IEmailConfiguration emailConfiguration,
             NominationList nominationList)
@@ -39,7 +41,7 @@ namespace StarFisher.Office.Outlook
             if (hasStarValues)
                 WriteNominees(nominationList, AwardType.StarValues, content);
 
-            if(hasRisingStar)
+            if (hasRisingStar)
                 WriteNominees(nominationList, AwardType.RisingStar, content);
 
             var body = document.DocumentNode.SelectSingleNode("//body");
@@ -56,7 +58,9 @@ namespace StarFisher.Office.Outlook
             content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {hrFirstNames},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Could you please check the list of nominees for the {quarter} Star Awards and let us know if any are not eligible?</p>"));
+                $@"<p class=MsoNormal>Could you please check the list of nominees for the {
+                        quarter
+                    } Star Awards and let us know if any are not eligible?</p>"));
 
             if (hasStarValues)
             {

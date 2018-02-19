@@ -6,7 +6,7 @@ namespace StarFisher.Domain.ValueObjects
 {
     public class NomineeVotingIdentifier : ValueObject<NomineeVotingIdentifier>
     {
-        public static readonly NomineeVotingIdentifier Unknown = new NomineeVotingIdentifier(new[] { 0 });
+        public static readonly NomineeVotingIdentifier Unknown = new NomineeVotingIdentifier(new[] {0});
 
         private NomineeVotingIdentifier(ICollection<int> nominationIds)
         {
@@ -27,6 +27,10 @@ namespace StarFisher.Domain.ValueObjects
             Value = string.Join(", ", items);
         }
 
+        internal IReadOnlyCollection<int> NominationIds { get; }
+
+        public string Value { get; }
+
         internal static NomineeVotingIdentifier Create(ICollection<int> nomineeIds)
         {
             if (nomineeIds == null || nomineeIds.Count == 0)
@@ -34,10 +38,6 @@ namespace StarFisher.Domain.ValueObjects
 
             return new NomineeVotingIdentifier(nomineeIds);
         }
-
-        internal IReadOnlyCollection<int> NominationIds { get; }
-
-        public string Value { get; }
 
         protected override bool EqualsCore(NomineeVotingIdentifier other)
         {

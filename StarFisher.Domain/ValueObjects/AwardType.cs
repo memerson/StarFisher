@@ -8,9 +8,10 @@ namespace StarFisher.Domain.ValueObjects
     public class AwardType : ValueObject<AwardType>
     {
         public static readonly AwardType StarValues = new AwardType(
-            @"Employee - Star Values Award Nominee", @"StarValues", @"Star Values Award", true);
+            @"Employee - Star Values Award Nominee", @"StarValues", @"Star Values Award", AwardAmount.StarValues);
+
         public static readonly AwardType RisingStar = new AwardType(
-            @"Intern - Rising Star Award Nominee", @"RisingStar", @"Rising Star Award", true);
+            @"Intern - Rising Star Award Nominee", @"RisingStar", @"Rising Star Award", AwardAmount.RisingStar);
 
         private static readonly List<AwardType> ValidAwardTypes = new List<AwardType>
         {
@@ -18,15 +19,24 @@ namespace StarFisher.Domain.ValueObjects
             RisingStar
         };
 
-        public static readonly AwardType Invalid = new AwardType(@"INVALID", @"INVALID", @"INVALID", false);
+        public static readonly AwardType Invalid =
+            new AwardType(@"INVALID", @"INVALID", @"INVALID", AwardAmount.Invalid);
 
-        private AwardType(string value, string fileNameIdentifier, string prettyName, bool supportsVoting)
+        private AwardType(string value, string fileNameIdentifier, string prettyName, AwardAmount awardAmount)
         {
             Value = value;
-            SupportsVoting = supportsVoting;
-            FileNameIdentifier = fileNameIdentifier;
             PrettyName = prettyName;
+            FileNameIdentifier = fileNameIdentifier;
+            AwardAmount = awardAmount;
         }
+
+        public string Value { get; }
+
+        public string PrettyName { get; }
+
+        public AwardAmount AwardAmount { get; }
+
+        private string FileNameIdentifier { get; }
 
         internal static AwardType Create(string awardType)
         {
@@ -36,20 +46,12 @@ namespace StarFisher.Domain.ValueObjects
             return ValidAwardTypes.FirstOrDefault(et => awardType.StartsWith(et.Value)) ?? Invalid;
         }
 
-        public string Value { get; }
-
-        public string PrettyName { get; }
-
-        public bool SupportsVoting { get; }
-
         public string GetVotingGuideFileName(Year year, Quarter quarter)
         {
             if (year == null)
                 throw new ArgumentNullException(nameof(year));
             if (quarter == null)
                 throw new ArgumentNullException(nameof(quarter));
-            if (!SupportsVoting)
-                throw new InvalidOperationException(@"This award type does not support voting.");
 
             return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingGuide.docx";
         }
@@ -60,8 +62,6 @@ namespace StarFisher.Domain.ValueObjects
                 throw new ArgumentNullException(nameof(year));
             if (quarter == null)
                 throw new ArgumentNullException(nameof(quarter));
-            if (!SupportsVoting)
-                throw new InvalidOperationException(@"This award type does not support voting.");
 
             return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingKey.xlsx";
         }
@@ -90,7 +90,5 @@ namespace StarFisher.Domain.ValueObjects
         {
             return Value;
         }
-
-        private string FileNameIdentifier { get; }
     }
 }

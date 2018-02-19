@@ -9,7 +9,8 @@ using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 {
-    public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None>
+    public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None
+    >
     {
         private readonly IGlobalAddressList _globalAddressList;
 
@@ -27,9 +28,10 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             var nominationList = input.NominationList;
             var unrecognizedEmailAddresses = input.UnrecognizedEmailAddresses;
 
-            for (; ; )
+            for (;;)
             {
-                var nomineeParameter = new NomineeToChangeEmailAddressParameter(nominationList.Nominees, unrecognizedEmailAddresses);
+                var nomineeParameter =
+                    new NomineeToChangeEmailAddressParameter(nominationList.Nominees, unrecognizedEmailAddresses);
 
                 if (!TryGetArgumentValue(nomineeParameter, out Person nomineeToChange))
                     break;
@@ -49,7 +51,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             public Input(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses)
             {
                 NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
-                UnrecognizedEmailAddresses = unrecognizedEmailAddresses ?? throw new ArgumentNullException(nameof(unrecognizedEmailAddresses));
+                UnrecognizedEmailAddresses = unrecognizedEmailAddresses ??
+                                             throw new ArgumentNullException(nameof(unrecognizedEmailAddresses));
             }
 
             public NominationList NominationList { get; }

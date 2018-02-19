@@ -6,6 +6,7 @@ namespace StarFisher.Office.Excel
     {
         public RisingStarCertificatesSourceExcelFile(NominationList nominationList)
             : base(nominationList?.Year, nominationList?.Quarter, nominationList?.RisingStarAwardWinners)
-        { }
+        {
+        }
     }
 }

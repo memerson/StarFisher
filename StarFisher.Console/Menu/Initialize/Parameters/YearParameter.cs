@@ -13,7 +13,8 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
         public override Argument<Year> GetArgumentCore()
         {
             WriteLine();
-            WriteCallToAction(@"Please specify the year for the award, or enter 'stop' to stop the initialization workflow.");
+            WriteCallToAction(
+                @"Please specify the year for the award, or enter 'stop' to stop the initialization workflow.");
             WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();

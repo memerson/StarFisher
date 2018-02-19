@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Utilities;
 
@@ -14,13 +13,12 @@ namespace StarFisher.Office.Excel
     {
         public StarValuesWinnersMemoSourceExcelFile(NominationList nominationList)
             : base((com, worksheet) => BuildWorksheet(com,
-                nominationList?.Quarter ?? throw new ArgumentNullException(nameof(nominationList)),
-                nominationList?.StarValuesAwardWinners ?? throw new ArgumentNullException(nameof(nominationList)),
+                nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
                 worksheet))
-        { }
+        {
+        }
 
-        private static void BuildWorksheet(ComObjectManager com, Quarter quarter,
-            IEnumerable<StarValuesAwardWinner> awardWinners, Worksheet worksheet)
+        private static void BuildWorksheet(ComObjectManager com, NominationList nominationList, Worksheet worksheet)
         {
             var cells = com.Get(() => worksheet.Cells);
 
@@ -33,15 +31,16 @@ namespace StarFisher.Office.Excel
             SetCellValue(cells, 1, 5, @"WriteUps");
 
             var rowNumber = 2;
-            foreach (var awardWinner in awardWinners)
+            foreach (var awardWinner in nominationList.StarValuesAwardWinners)
             {
-                var values = string.Join("; ", awardWinner.CompanyValues.Select(cv => cv.ToString()));
-                var writeUps = CompileWriteUps(awardWinner.NominationWriteUps);
+                var companyValues = string.Join("; ",
+                    nominationList.GetCompanyValuesForAwardWinner(awardWinner).Select(cv => cv.ToString()));
+                var writeUps = CompileWriteUps(nominationList.GetNominationWriteUpsForAwardWinner(awardWinner));
 
-                SetCellValue(cells, rowNumber, 1, quarter.Abbreviation);
+                SetCellValue(cells, rowNumber, 1, nominationList.Quarter.Abbreviation);
                 SetCellValue(cells, rowNumber, 2, awardWinner.Name.FullName);
                 SetCellValue(cells, rowNumber, 3, awardWinner.OfficeLocation.ConciseName);
-                SetCellValue(cells, rowNumber, 4, values);
+                SetCellValue(cells, rowNumber, 4, companyValues);
                 SetCellValue(cells, rowNumber, 5, writeUps);
 
                 ++rowNumber;

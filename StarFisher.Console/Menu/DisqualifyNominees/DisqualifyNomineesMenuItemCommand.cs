@@ -10,7 +10,9 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
         private const string CommandTitle = @"Disqualify a nominee";
 
         public DisqualifyNomineesMenuItemCommand(IStarFisherContext context)
-            : base(context, CommandTitle) { }
+            : base(context, CommandTitle)
+        {
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
@@ -37,7 +39,8 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
 
         private static bool GetDisqualifyAnotherNominee()
         {
-            return TryGetArgumentValue(new DisqualifyAnotherNomineeParameter(), out bool disqualifyAnother) && disqualifyAnother;
+            return TryGetArgumentValue(new DisqualifyAnotherNomineeParameter(), out bool disqualifyAnother) &&
+                   disqualifyAnother;
         }
 
         public override bool GetCanRun()

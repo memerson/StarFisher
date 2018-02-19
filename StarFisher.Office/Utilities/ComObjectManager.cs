@@ -8,6 +8,15 @@ namespace StarFisher.Office.Utilities
     {
         private readonly Stack<object> _comObjects = new Stack<object>();
 
+        public void Dispose()
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            while (_comObjects.Count > 0)
+                Marshal.ReleaseComObject(_comObjects.Pop());
+        }
+
         public TComObject Get<TComObject>(Func<TComObject> getter)
         {
             var comObject = getter();
@@ -16,15 +25,6 @@ namespace StarFisher.Office.Utilities
                 _comObjects.Push(comObject);
 
             return comObject;
-        }
-
-        public void Dispose()
-        {
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-
-            while (_comObjects.Count > 0)
-                Marshal.ReleaseComObject(_comObjects.Pop());
         }
     }
 }

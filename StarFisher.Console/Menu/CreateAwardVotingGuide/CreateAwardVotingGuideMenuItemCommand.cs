@@ -9,10 +9,11 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
 {
     public class CreateAwardVotingGuideMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IMailMergeFactory _mailMergeFactory;
         private readonly AwardType _awardType;
+        private readonly IMailMergeFactory _mailMergeFactory;
 
-        public CreateAwardVotingGuideMenuItemCommand(IStarFisherContext context, IMailMergeFactory mailMergeFactory, AwardType awardType)
+        public CreateAwardVotingGuideMenuItemCommand(IStarFisherContext context, IMailMergeFactory mailMergeFactory,
+            AwardType awardType)
             : base(context, GetCommandTitle(awardType))
         {
             _mailMergeFactory = mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory));
@@ -24,7 +25,8 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
             var nominationList = Context.NominationListContext.NominationList;
             var fileName = GetVotingKeyFileName();
 
-            if (!Context.WorkingDirectoryPath.TryGetFilePathForFileInDirectory(fileName, false, false, out FilePath filePath))
+            if (!Context.WorkingDirectoryPath.TryGetFilePathForFileInDirectory(fileName, false, false,
+                out FilePath filePath))
                 throw InvalidFilePathException.WorkingDirectoryFilePathInvalid(fileName);
 
             var mailMerge = _mailMergeFactory.GetVotingGuideMailMerge(_awardType, nominationList);
@@ -36,8 +38,8 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
         public override bool GetCanRun()
         {
             return Context.IsInitialized
-                && Context.NominationListContext.HasNominationListLoaded
-                && Context.NominationListContext.NominationList.HasNominationsForAward(_awardType);
+                   && Context.NominationListContext.HasNominationListLoaded
+                   && Context.NominationListContext.NominationList.HasNominationsForAward(_awardType);
         }
 
         private static string GetCommandTitle(AwardType awardType)
@@ -55,7 +57,9 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
 
-            return $@"Success! You can find {GetVotingGuideFileName(context, awardType)} saved in your working directory ({context.WorkingDirectoryPath.Value}).";
+            return $@"Success! You can find {
+                    GetVotingGuideFileName(context, awardType)
+                } saved in your working directory ({context.WorkingDirectoryPath.Value}).";
         }
 
         private string GetVotingKeyFileName()

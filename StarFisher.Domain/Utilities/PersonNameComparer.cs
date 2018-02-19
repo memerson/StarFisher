@@ -11,8 +11,6 @@ namespace StarFisher.Domain.Utilities
 
         internal class ByFirstName : IComparer<PersonName>
         {
-            internal ByFirstName() { }
-
             public int Compare(PersonName x, PersonName y)
             {
                 return string.Compare(x?.FullName, y?.FullName, StringComparison.InvariantCulture);
@@ -21,11 +19,10 @@ namespace StarFisher.Domain.Utilities
 
         internal class ByLastName : IComparer<PersonName>
         {
-            internal ByLastName() { }
-
             public int Compare(PersonName x, PersonName y)
             {
-                return string.Compare(x?.FullNameLastNameFirst, y?.FullNameLastNameFirst, StringComparison.InvariantCulture);
+                return string.Compare(x?.FullNameLastNameFirst, y?.FullNameLastNameFirst,
+                    StringComparison.InvariantCulture);
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace StarFisher.Domain.Common
 {
@@ -15,13 +14,16 @@ namespace StarFisher.Domain.Common
 
         internal bool IsDirty { get; private set; }
 
-        internal void SetCurrent() => IsDirty = false;
+        internal void SetCurrent()
+        {
+            IsDirty = false;
+        }
 
         protected void MarkAsDirty(string changeSummary)
         {
-            if(string.IsNullOrWhiteSpace(changeSummary))
+            if (string.IsNullOrWhiteSpace(changeSummary))
                 throw new ArgumentException(nameof(changeSummary));
-            
+
             IsDirty = true;
             LastChangeSummary = changeSummary;
         }

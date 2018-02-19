@@ -5,8 +5,8 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 {
     public class UseCurrentValueParameter : YesOrNoParameterBase
     {
-        private readonly string _settingName;
         private readonly string _currentSettingValue;
+        private readonly string _settingName;
 
         public UseCurrentValueParameter(string settingName, string currentSettingValue)
         {
@@ -23,7 +23,9 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
         protected override string GetCallToActionText()
         {
-            return $@"Your current value for {_settingName} is {_currentSettingValue}. Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.";
+            return $@"Your current value for {_settingName} is {
+                    _currentSettingValue
+                }. Would you like to keep that ('yes' or 'no')? You can also enter 'stop' to stop the initialization workflow.";
         }
     }
 }

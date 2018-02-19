@@ -20,7 +20,8 @@ namespace StarFisher.Office.Outlook
                 emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)),
                 excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory)),
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
-        { }
+        {
+        }
 
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
             IExcelFileFactory excelFileFactory, NominationList nominationList)
@@ -59,18 +60,21 @@ namespace StarFisher.Office.Outlook
             mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
-        private static void AddVotingKeyAttachment(ComObjectManager com, MailItem mailItem, IExcelFileFactory excelFileFactory,
+        private static void AddVotingKeyAttachment(ComObjectManager com, MailItem mailItem,
+            IExcelFileFactory excelFileFactory,
             NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
             var fileName = awardType.GetVotingKeyFileName(nominationList.Year, nominationList.Quarter);
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
-            if(File.Exists(filePath.Value))
+            if (File.Exists(filePath.Value))
                 File.Delete(filePath.Value);
 
             using (var excelFile = excelFileFactory.GetVotingKeyExcelFile(awardType, nominationList))
+            {
                 excelFile.Save(filePath);
+            }
 
             com.Get(() => attachments.Add(filePath.Value));
         }
@@ -88,12 +92,14 @@ namespace StarFisher.Office.Outlook
                 $@"<p class=MsoNormal>We had no eligible {awardType.PrettyName} nominees for {quarter}.</p>"));
         }
 
-        private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content, Person eiaChairPerson,
+        private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
+            Person eiaChairPerson,
             string quarter)
         {
             var keyorKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
 
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
+            content.ChildNodes.Append(
+                HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
                 $@"<p class=MsoNormal>Please find attached the {quarter} Star Awards voting {keyorKeys}.</p>"));

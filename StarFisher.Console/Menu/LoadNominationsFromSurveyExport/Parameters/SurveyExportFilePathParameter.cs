@@ -15,7 +15,8 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters
         public override Argument<FilePath> GetArgumentCore()
         {
             WriteLine();
-            WriteCallToAction(@"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
+            WriteCallToAction(
+                @"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
             WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();

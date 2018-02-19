@@ -16,7 +16,10 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
         public override Argument<DirectoryPath> GetArgumentCore()
         {
             WriteLine();
-            WriteCallToAction($@"Enter the full path of a directory you want to use as your working directory for StarFisher. Alternatively, you can enter 'default' to use the default directory of {DefaultWorkingDirectoryPath.Value}. You can also enter 'stop' to stop the initialization workflow.");
+            WriteCallToAction(
+                $@"Enter the full path of a directory you want to use as your working directory for StarFisher. Alternatively, you can enter 'default' to use the default directory of {
+                        DefaultWorkingDirectoryPath.Value
+                    }. You can also enter 'stop' to stop the initialization workflow.");
             WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();

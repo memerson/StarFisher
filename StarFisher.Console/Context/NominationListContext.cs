@@ -25,38 +25,64 @@ namespace StarFisher.Console.Context
         void SaveSnapshot();
     }
 
-    public class NominationListContext : QuarterlyAwardsAggregateContext<NominationList, INominationListRepository>, INominationListContext
+    public class NominationListContext : INominationListContext
     {
-        private static NominationListContext _current;
+        private readonly Quarter _quarter;
+        private readonly INominationListRepository _repository;
+        private readonly Year _year;
 
-        private NominationListContext(INominationListRepository nominationListRepository, Year year, Quarter quarter)
-            : base(nominationListRepository, year, quarter) { }
+        private NominationList _nominationList;
 
-        public static void Initialize(INominationListRepository nominationListRepository, Year year, Quarter quarter)
+        public NominationListContext(INominationListRepository nominationListRepository, Year year, Quarter quarter)
         {
-            _current = new NominationListContext(nominationListRepository, year, quarter);
+            _repository = nominationListRepository ?? throw new ArgumentNullException(nameof(nominationListRepository));
+            _year = year ?? throw new ArgumentNullException(nameof(year));
+            _quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
         }
 
-        public static bool IsInitialized => _current != null;
+        public bool HasNominationListLoaded => _nominationList != null;
 
-        public static NominationListContext Current
+        public NominationList NominationList
         {
             get
             {
-                if (!IsInitialized)
-                    throw new InvalidOperationException(@"NominationListContext not yet initialized");
+                if (!HasNominationListLoaded)
+                    throw new InvalidOperationException("No NominationList loaded.");
 
-                return _current;
+                return _nominationList;
             }
+
+            set => _nominationList = value;
         }
-
-        public bool HasNominationListLoaded => HasAggregateRootLoaded;
-
-        public NominationList NominationList => AggregateRoot;
 
         public void LoadSurveyExport(FilePath filePath)
         {
-            AggregateRoot = Repository.LoadSurveyExport(filePath, Year, Quarter);
+            NominationList = _repository.LoadSurveyExport(filePath, _year, _quarter);
+        }
+
+        public int GetSnapshotCount()
+        {
+            return _repository.GetSnapshotCount(_year, _quarter);
+        }
+
+        public IReadOnlyList<SnapshotSummary> ListSnapshotSummaries()
+        {
+            return _repository.ListSnapshotSummaries(_year, _quarter);
+        }
+
+        public void LoadSnapshot(SnapshotSummary snapshotSummary)
+        {
+            NominationList = _repository.GetSnapshot(_year, _quarter, snapshotSummary);
+        }
+
+        public void LoadLatestSnapshot()
+        {
+            NominationList = _repository.GetLatestSnapshot(_year, _quarter);
+        }
+
+        public void SaveSnapshot()
+        {
+            _repository.SaveSnapshot(NominationList);
         }
     }
 }

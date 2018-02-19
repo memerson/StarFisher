@@ -1,16 +1,16 @@
-﻿using StarFisher.Console.Menu.Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Console.Context;
+using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.TopLevelMenu.Parameters;
 
 namespace StarFisher.Console.Menu.TopLevelMenu
 {
     public class TopLevelMenuCommand : MenuItemCommandBase
     {
-        private readonly IReadOnlyList<IMenuItemCommand> _menuItemCommands;
         private const string CommandTitle = @"Print the top-level menu";
+        private readonly IReadOnlyList<IMenuItemCommand> _menuItemCommands;
 
         public TopLevelMenuCommand(IStarFisherContext context, IReadOnlyList<IMenuItemCommand> menuItemCommands)
             : base(context, CommandTitle)
@@ -30,7 +30,7 @@ namespace StarFisher.Console.Menu.TopLevelMenu
         {
             var parameter = new MenuItemIndexParameter(_menuItemCommands);
 
-            for (; ; )
+            for (;;)
             {
                 var argument = parameter.GetValidArgument();
 

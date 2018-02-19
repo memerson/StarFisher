@@ -19,7 +19,9 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override string GetCallToActionText()
         {
-            return $@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {_nominee.OfficeLocation.ConciseName}, or enter 'done' if you don't want to change it.";
+            return $@"Enter the new name for the nominee currently named {_nominee.Name.FullName} from {
+                    _nominee.OfficeLocation.ConciseName
+                }, or enter 'done' if you don't want to change it.";
         }
     }
 }

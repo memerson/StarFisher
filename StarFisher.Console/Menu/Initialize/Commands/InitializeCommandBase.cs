@@ -8,31 +8,37 @@ namespace StarFisher.Console.Menu.Initialize.Commands
     public abstract class InitializeCommandBase<TValue> : InitializeCommandBase<CommandInput.None, TValue>
         where TValue : class
     {
-        protected InitializeCommandBase(IStarFisherContext context) : base(context){ }
+        protected InitializeCommandBase(IStarFisherContext context) : base(context)
+        {
+        }
     }
 
-    public abstract class InitializeCommandBase<TCommandInput, TValue> : CommandBase<TCommandInput, InitializeCommandBase<TCommandInput, TValue>.Output>
+    public abstract class InitializeCommandBase<TCommandInput, TValue> : CommandBase<TCommandInput,
+        InitializeCommandBase<TCommandInput, TValue>.Output>
         where TCommandInput : CommandInput
         where TValue : class
     {
-        protected InitializeCommandBase(IStarFisherContext context) : base(context) { }
+        protected InitializeCommandBase(IStarFisherContext context) : base(context)
+        {
+        }
 
         protected CommandResult<Output> RunCoreHelper(string settingName, TValue currentSettingValue,
             IParameter<TValue> getNewValueParameter)
         {
-            if(!TryGetUseCurrentValueParameter(settingName, currentSettingValue, out bool useCurrentValue))
+            if (!TryGetUseCurrentValueParameter(settingName, currentSettingValue, out bool useCurrentValue))
                 return CommandResult<Output>.Abort();
 
-            if(useCurrentValue)
+            if (useCurrentValue)
                 return CommandResult<Output>.Success(new Output(currentSettingValue));
 
-            if(!TryGetArgumentValue(getNewValueParameter, out TValue newValue))
+            if (!TryGetArgumentValue(getNewValueParameter, out TValue newValue))
                 return CommandResult<Output>.Abort();
 
             return CommandResult<Output>.Success(new Output(newValue));
         }
 
-        private static bool TryGetUseCurrentValueParameter(string settingName, TValue currentSettingValue, out bool useCurrentValue)
+        private static bool TryGetUseCurrentValueParameter(string settingName, TValue currentSettingValue,
+            out bool useCurrentValue)
         {
             var currentSettingValueText = currentSettingValue?.ToString();
             var hasCurrentSettingValue = !string.IsNullOrWhiteSpace(currentSettingValueText);

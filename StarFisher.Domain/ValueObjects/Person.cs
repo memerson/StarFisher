@@ -12,6 +12,12 @@ namespace StarFisher.Domain.ValueObjects
             EmailAddress = emailAddress;
         }
 
+        public PersonName Name { get; }
+
+        public OfficeLocation OfficeLocation { get; }
+
+        public EmailAddress EmailAddress { get; }
+
         public static Person Create(PersonName name, OfficeLocation officeLocation, EmailAddress emailAddress)
         {
             return new Person(
@@ -19,12 +25,6 @@ namespace StarFisher.Domain.ValueObjects
                 officeLocation ?? throw new ArgumentNullException(nameof(officeLocation)),
                 emailAddress ?? throw new ArgumentNullException(nameof(emailAddress)));
         }
-
-        public PersonName Name { get; private set; }
-
-        public OfficeLocation OfficeLocation { get; }
-
-        public EmailAddress EmailAddress { get; }
 
         public Person UpdateName(PersonName newName)
         {
@@ -43,10 +43,13 @@ namespace StarFisher.Domain.ValueObjects
 
         protected override int GetHashCodeCore()
         {
-            var hashCode = Name.GetHashCode();
-            hashCode = (hashCode * 397) ^ OfficeLocation.GetHashCode();
-            hashCode = (hashCode * 397) ^ EmailAddress.GetHashCode();
-            return hashCode;
+            unchecked
+            {
+                var hashCode = Name.GetHashCode();
+                hashCode = (hashCode * 397) ^ OfficeLocation.GetHashCode();
+                hashCode = (hashCode * 397) ^ EmailAddress.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

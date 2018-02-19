@@ -1,5 +1,4 @@
-﻿
-namespace StarFisher.Console.Menu.Common
+﻿namespace StarFisher.Console.Menu.Common
 {
     public abstract class CommandInput
     {
@@ -7,7 +6,9 @@ namespace StarFisher.Console.Menu.Common
         {
             public static readonly None Instance = new None();
 
-            private None() { }
+            private None()
+            {
+            }
         }
     }
 }

@@ -10,45 +10,45 @@ namespace StarFisher.Console.Context
     {
         bool IsInitialized { get; }
 
+        INominationListContext NominationListContext { get; }
+
         void Initialize(DirectoryPath workingDirectoryPath, Year year, Quarter quarter, Person eiaChairPerson,
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson);
-
-        INominationListContext NominationListContext { get; }
     }
 
     public class StarFisherContext : IStarFisherContext
     {
-        private static readonly StarFisherContext SingletonContext = new StarFisherContext();
-
-        private DirectoryPath _workingDirectoryPath;
-        private Year _year;
-        private Quarter _quarter;
+        public static readonly StarFisherContext Instance = new StarFisherContext();
+        private Person _certificatePrinterPerson;
         private Person _eiaChairPerson;
         private IReadOnlyList<Person> _hrPeople;
         private IReadOnlyList<Person> _luncheonPlannerPeople;
-        private Person _certificatePrinterPerson;
+        private NominationListContext _nominationListContext;
+        private Quarter _quarter;
+        private DirectoryPath _workingDirectoryPath;
+        private Year _year;
 
-        private StarFisherContext() { }
-
-        public static StarFisherContext Current => SingletonContext;
+        private StarFisherContext()
+        {
+        }
 
         public void Initialize(DirectoryPath workingDirectoryPath, Year year, Quarter quarter, Person eiaChairPerson,
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson)
         {
-            WorkingDirectoryPath = workingDirectoryPath ??
-                                   throw new ArgumentNullException(nameof(workingDirectoryPath));
-            Year = year ?? throw new ArgumentNullException(nameof(year));
-            Quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
-            EiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
-            HrPeople = hrPeople?.ToList() ?? throw new ArgumentNullException(nameof(hrPeople));
-            LuncheonPlannerPeople = luncheonPlannerPeople?.ToList() ??
-                                    throw new ArgumentNullException(nameof(luncheonPlannerPeople));
-            CertificatePrinterPerson = certificatePrinterPerson ??
-                                       throw new ArgumentNullException(nameof(certificatePrinterPerson));
+            _workingDirectoryPath = workingDirectoryPath ??
+                                    throw new ArgumentNullException(nameof(workingDirectoryPath));
+            _year = year ?? throw new ArgumentNullException(nameof(year));
+            _quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
+            _eiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
+            _hrPeople = hrPeople?.ToList() ?? throw new ArgumentNullException(nameof(hrPeople));
+            _luncheonPlannerPeople = luncheonPlannerPeople?.ToList() ??
+                                     throw new ArgumentNullException(nameof(luncheonPlannerPeople));
+            _certificatePrinterPerson = certificatePrinterPerson ??
+                                        throw new ArgumentNullException(nameof(certificatePrinterPerson));
 
             var nominationListRepository = new NominationListRepository(workingDirectoryPath);
 
-            Context.NominationListContext.Initialize(nominationListRepository, year, quarter);
+            _nominationListContext = new NominationListContext(nominationListRepository, year, quarter);
 
             IsInitialized = true;
         }
@@ -62,8 +62,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _workingDirectoryPath;
             }
-
-            private set => _workingDirectoryPath = value;
         }
 
         public Year Year
@@ -73,8 +71,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _year;
             }
-
-            private set => _year = value;
         }
 
         public Quarter Quarter
@@ -84,7 +80,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _quarter;
             }
-            private set => _quarter = value;
         }
 
         public Person EiaChairPerson
@@ -94,7 +89,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _eiaChairPerson;
             }
-            private set => _eiaChairPerson = value;
         }
 
         public IReadOnlyList<Person> HrPeople
@@ -104,7 +98,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _hrPeople;
             }
-            private set => _hrPeople = value;
         }
 
         public IReadOnlyList<Person> LuncheonPlannerPeople
@@ -114,7 +107,6 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _luncheonPlannerPeople;
             }
-            private set => _luncheonPlannerPeople = value;
         }
 
         public Person CertificatePrinterPerson
@@ -124,10 +116,16 @@ namespace StarFisher.Console.Context
                 CheckIsInitialized();
                 return _certificatePrinterPerson;
             }
-            private set => _certificatePrinterPerson = value;
         }
 
-        public INominationListContext NominationListContext => Context.NominationListContext.Current;
+        public INominationListContext NominationListContext
+        {
+            get
+            {
+                CheckIsInitialized();
+                return _nominationListContext;
+            }
+        }
 
         private void CheckIsInitialized()
         {

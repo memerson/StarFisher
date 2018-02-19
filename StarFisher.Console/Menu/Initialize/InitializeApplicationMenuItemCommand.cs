@@ -10,12 +10,12 @@ namespace StarFisher.Console.Menu.Initialize
 {
     public class InitializeApplicationMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IGlobalAddressList _globalAddressList;
-        private readonly IConfigurationStorage _configurationStorage;
-
         private const string CommandTitle = @"Initialize StarFisher";
+        private readonly IConfigurationStorage _configurationStorage;
+        private readonly IGlobalAddressList _globalAddressList;
 
-        public InitializeApplicationMenuItemCommand(IStarFisherContext context, IGlobalAddressList globalAddressList, IConfigurationStorage configurationStorage)
+        public InitializeApplicationMenuItemCommand(IStarFisherContext context, IGlobalAddressList globalAddressList,
+            IConfigurationStorage configurationStorage)
             : base(context, CommandTitle)
         {
             _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
@@ -23,7 +23,10 @@ namespace StarFisher.Console.Menu.Initialize
                                     throw new ArgumentNullException(nameof(configurationStorage));
         }
 
-        public override bool GetCanRun() => true;
+        public override bool GetCanRun()
+        {
+            return true;
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
@@ -72,14 +75,14 @@ namespace StarFisher.Console.Menu.Initialize
 
         private List<Person> GetHrPeople(out CommandResult<CommandOutput.None> unsuccessfulResult)
         {
-            var currentHrPeople = Context.IsInitialized ? Context.HrPeople : new List<Person> { null, null };
+            var currentHrPeople = Context.IsInitialized ? Context.HrPeople : new List<Person> {null, null};
             var hrPeople = GetPeople(@"Human Resources person #{0}", currentHrPeople, out unsuccessfulResult);
             return hrPeople;
         }
 
         private List<Person> GetLuncheonPlannerPeople(out CommandResult<CommandOutput.None> unsuccessfulResult)
         {
-            var currentHrPeople = Context.IsInitialized ? Context.LuncheonPlannerPeople : new List<Person> { null, null };
+            var currentHrPeople = Context.IsInitialized ? Context.LuncheonPlannerPeople : new List<Person> {null, null};
             var hrPeople = GetPeople(@"luncheon planner #{0}", currentHrPeople, out unsuccessfulResult);
             return hrPeople;
         }
@@ -90,7 +93,8 @@ namespace StarFisher.Console.Menu.Initialize
             return GetPerson(@"award certificate printer", currentCertificatePrinterPerson, out unsuccessfulResult);
         }
 
-        private List<Person> GetPeople(string personTitleFormat, IReadOnlyList<Person> currentPeople, out CommandResult<CommandOutput.None> unsuccessfulResult)
+        private List<Person> GetPeople(string personTitleFormat, IReadOnlyList<Person> currentPeople,
+            out CommandResult<CommandOutput.None> unsuccessfulResult)
         {
             var people = new List<Person>();
 
@@ -110,7 +114,8 @@ namespace StarFisher.Console.Menu.Initialize
             return people;
         }
 
-        private Person GetPerson(string personTitle, Person currentPerson, out CommandResult<CommandOutput.None> unsuccessfulResult)
+        private Person GetPerson(string personTitle, Person currentPerson,
+            out CommandResult<CommandOutput.None> unsuccessfulResult)
         {
             var personNameCommandInput = new GetPersonNameCommand.Input(personTitle, currentPerson?.Name);
             var personName = GetCommandResult(new GetPersonNameCommand(Context, _globalAddressList),
@@ -119,7 +124,8 @@ namespace StarFisher.Console.Menu.Initialize
             if (personName == null)
                 return null;
 
-            var getPersonEmailAddressCommandInput = new GetPersonEmailAddressCommand.Input(personName, currentPerson?.EmailAddress);
+            var getPersonEmailAddressCommandInput =
+                new GetPersonEmailAddressCommand.Input(personName, currentPerson?.EmailAddress);
             var emailAddress = GetCommandResult(new GetPersonEmailAddressCommand(Context, _globalAddressList),
                 getPersonEmailAddressCommandInput, out unsuccessfulResult);
 
@@ -130,11 +136,12 @@ namespace StarFisher.Console.Menu.Initialize
             out CommandResult<CommandOutput.None> unsuccessfulResult)
             where TValue : class
         {
-            return GetCommandResult<CommandInput.None, TValue>(command, CommandInput.None.Instance,
+            return GetCommandResult(command, CommandInput.None.Instance,
                 out unsuccessfulResult);
         }
 
-        private static TValue GetCommandResult<TCommandInput, TValue>(InitializeCommandBase<TCommandInput, TValue> command,
+        private static TValue GetCommandResult<TCommandInput, TValue>(
+            InitializeCommandBase<TCommandInput, TValue> command,
             TCommandInput commandInput, out CommandResult<CommandOutput.None> unsuccessfulResult)
             where TCommandInput : CommandInput
             where TValue : class

@@ -12,7 +12,8 @@ namespace StarFisher.Office.Excel
             : base((com, worksheet) => BuildWorksheet(com,
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
                 worksheet))
-        { }
+        {
+        }
 
         private static void BuildWorksheet(ComObjectManager com, NominationList nominationList, Worksheet workSheet)
         {

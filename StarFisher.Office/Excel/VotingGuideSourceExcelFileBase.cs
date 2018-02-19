@@ -13,9 +13,11 @@ namespace StarFisher.Office.Excel
             : base((com, worksheet) => BuildWorksheet(com,
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),
                 worksheet))
-        { }
+        {
+        }
 
-        private static void BuildWorksheet(ComObjectManager com, IEnumerable<Nomination> nominations, Worksheet worksheet)
+        private static void BuildWorksheet(ComObjectManager com, IEnumerable<Nomination> nominations,
+            Worksheet worksheet)
         {
             var cells = com.Get(() => worksheet.Cells);
 
@@ -31,7 +33,7 @@ namespace StarFisher.Office.Excel
             SetCellValue(cells, 1, 8, @"WRITEUP");
 
             var rowNumber = 2;
-            foreach(var nomination in nominations)
+            foreach (var nomination in nominations)
             {
                 SetCellValue(cells, rowNumber, 1, nomination.Id);
                 SetCellValue(cells, rowNumber, 2, nomination.VotingIdentifier.ToString());

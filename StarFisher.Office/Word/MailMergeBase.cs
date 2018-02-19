@@ -10,12 +10,12 @@ namespace StarFisher.Office.Word
 {
     public abstract class MailMergeBase : IMailMerge
     {
-        private readonly string _mailMergeTemplateResourceName;
         private readonly WdMailMergeMainDocType _mailMergeDocType;
+        private readonly string _mailMergeTemplateResourceName;
 
         protected MailMergeBase(string mailMergeTemplateResourceName, WdMailMergeMainDocType mailMergeDocType)
         {
-            if(string.IsNullOrWhiteSpace(mailMergeTemplateResourceName))
+            if (string.IsNullOrWhiteSpace(mailMergeTemplateResourceName))
                 throw new ArgumentException(nameof(mailMergeTemplateResourceName));
 
             _mailMergeTemplateResourceName = mailMergeTemplateResourceName;
@@ -25,7 +25,9 @@ namespace StarFisher.Office.Word
         public void Execute(FilePath filePath)
         {
             using (var com = new ComObjectManager())
+            {
                 Execute(com, filePath);
+            }
         }
 
         private void Execute(ComObjectManager com, FilePath outputFilePath)
@@ -34,21 +36,23 @@ namespace StarFisher.Office.Word
             object missing = Missing.Value;
             var dataSourcePath = GetDataSourcePath();
             object templatePath = ExtractMailMergeTemplate(_mailMergeTemplateResourceName);
-            var word = com.Get(() => new Application { Visible = false });
+            var word = com.Get(() => new Application {Visible = false});
             var documents = com.Get(() => word.Documents);
-            var mergeTemplateDocument = com.Get(() => documents.Add(ref templatePath, ref missing, ref missing, ref no));
+            var mergeTemplateDocument =
+                com.Get(() => documents.Add(ref templatePath, ref missing, ref missing, ref no));
 
             try
             {
                 Execute(com, word, dataSourcePath, mergeTemplateDocument, outputFilePath);
             }
-            finally 
+            finally
             {
                 Cleanup(mergeTemplateDocument, dataSourcePath.Value, templatePath.ToString());
             }
         }
 
-        private void Execute(ComObjectManager com, Application word, FilePath dataSourcePath, Document mergeTemplateDocument, FilePath outputFilePath)
+        private void Execute(ComObjectManager com, Application word, FilePath dataSourcePath,
+            Document mergeTemplateDocument, FilePath outputFilePath)
         {
             object yes = true;
             object no = false;
@@ -63,7 +67,8 @@ namespace StarFisher.Office.Word
 
             mailMerge.MainDocumentType = _mailMergeDocType;
 
-            mergeTemplateDocument.MailMerge.OpenDataSource(dataSourcePath.Value, ref format, ref no, ref no, ref yes, ref no,
+            mergeTemplateDocument.MailMerge.OpenDataSource(dataSourcePath.Value, ref format, ref no, ref no, ref yes,
+                ref no,
                 ref missing, ref missing, ref no, ref missing, ref missing, ref connection, ref sqlStatement,
                 ref missing, ref no, ref subtype);
 
@@ -107,7 +112,9 @@ namespace StarFisher.Office.Word
 
             using (stream)
             using (var tmpFileStream = File.Create(tempFileName))
+            {
                 stream.CopyTo(tmpFileStream);
+            }
 
             return tempFileName;
         }
@@ -117,7 +124,9 @@ namespace StarFisher.Office.Word
             var dataSourcePath = FilePath.Create(Path.GetTempFileName() + ".xlsx", false);
 
             using (var excelFile = GetDataSourceExcelFile())
+            {
                 excelFile.Save(dataSourcePath);
+            }
 
             return dataSourcePath;
         }

@@ -6,12 +6,14 @@ using StarFisher.Office.Outlook;
 
 namespace StarFisher.Console.Menu.CreateLuncheonInviteeListEmail
 {
-    class CreateLuncheonInviteeListEmailMenuItemCommand : MenuItemCommandBase
+    internal class CreateLuncheonInviteeListEmailMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IEmailFactory _emailFactory;
-
         private const string CommandTitle = @"Create luncheon invitee list email";
-        private const string SuccessMessage = @"Success! You should now see an email ready to review and send on to the luncheon planner(s).";
+
+        private const string SuccessMessage =
+            @"Success! You should now see an email ready to review and send on to the luncheon planner(s).";
+
+        private readonly IEmailFactory _emailFactory;
 
         public CreateLuncheonInviteeListEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory)
             : base(context, CommandTitle, SuccessMessage)
@@ -23,7 +25,9 @@ namespace StarFisher.Console.Menu.CreateLuncheonInviteeListEmail
         {
             var nominationList = Context.NominationListContext.NominationList;
             using (var email = _emailFactory.GetLuncheonInviteeListEmail(nominationList))
+            {
                 email.Display();
+            }
 
             return CommandOutput.None.Success;
         }

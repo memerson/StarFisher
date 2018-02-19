@@ -19,7 +19,8 @@ namespace StarFisher.Office.Outlook
                 emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration)),
                 mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory)),
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList))))
-        { }
+        {
+        }
 
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
             IMailMergeFactory mailMergeFactory, NominationList nominationList)
@@ -58,7 +59,8 @@ namespace StarFisher.Office.Outlook
             mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
-        private static void AddCertificatesAttachment(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
+        private static void AddCertificatesAttachment(ComObjectManager com, MailItem mailItem,
+            IMailMergeFactory mailMergeFactory,
             NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
@@ -89,7 +91,8 @@ namespace StarFisher.Office.Outlook
 
         private static void WriteRequest(HtmlNode content, Person certificatePrinter, string quarter)
         {
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {certificatePrinter.Name.FirstName},</p>"));
+            content.ChildNodes.Append(
+                HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {certificatePrinter.Name.FirstName},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
                 $@"<p class=MsoNormal>Please find attached the {quarter} Star Awards winners certificates.</p>"));

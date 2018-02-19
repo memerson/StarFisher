@@ -8,7 +8,9 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 {
     public class Nomination : Entity
     {
-        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, Person nominee, AwardType nomineeAwardType, PersonName nominatorName, IEnumerable<CompanyValue> companyValues, NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary)
+        internal Nomination(int id, NomineeVotingIdentifier votingIdentifier, Person nominee,
+            AwardType nomineeAwardType, PersonName nominatorName, IEnumerable<CompanyValue> companyValues,
+            NominationWriteUp writeUp, NominationWriteUpSummary writeUpSummary)
             : base(id)
         {
             VotingIdentifier = votingIdentifier;
@@ -22,7 +24,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
 
         public NomineeVotingIdentifier VotingIdentifier { get; private set; }
 
-        public Person Nominee { get; private set; }
+        internal Person Nominee { get; private set; }
 
         public PersonName NomineeName => Nominee.Name;
 

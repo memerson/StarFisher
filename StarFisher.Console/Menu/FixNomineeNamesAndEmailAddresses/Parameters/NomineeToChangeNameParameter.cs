@@ -9,7 +9,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
     {
         private readonly HashSet<PersonName> _unrecognizedNomineeNames;
 
-        public NomineeToChangeNameParameter(IReadOnlyCollection<Person> allNominees, IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
+        public NomineeToChangeNameParameter(IReadOnlyCollection<Person> allNominees,
+            IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
             : base(allNominees)
         {
             _unrecognizedNomineeNames =
@@ -28,7 +29,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.Name.FullName, -25} {listItem.OfficeLocation.ConciseName}";
+            return $@"{listItem.Name.FullName,-25} {listItem.OfficeLocation.ConciseName}";
         }
 
         protected override void WriteListItem(Person listItem, string listItemText)
@@ -41,7 +42,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction(@"Enter the number of the name you want to change, or enter 'done' if you don't want to modify any names.");
+            WriteCallToAction(
+                @"Enter the number of the name you want to change, or enter 'done' if you don't want to modify any names.");
         }
     }
 }

@@ -5,10 +5,11 @@ namespace StarFisher.Console.Menu.Common.Parameters
 {
     public abstract class ListItemSelectionParameterBase<T> : ParameterBase<T>
     {
-        private readonly IReadOnlyList<T> _list;
         private readonly string _itemsDescription;
+        private readonly IReadOnlyList<T> _list;
 
-        protected ListItemSelectionParameterBase(IReadOnlyList<T> list, string itemsDescription, bool printCommandTitle = true)
+        protected ListItemSelectionParameterBase(IReadOnlyList<T> list, string itemsDescription,
+            bool printCommandTitle = true)
             : base(printCommandTitle)
         {
             if (string.IsNullOrWhiteSpace(itemsDescription))
@@ -27,7 +28,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
                 WriteLine();
                 return Argument<T>.Abort;
             }
-            
+
             SolicitInput();
 
             return GetArgumentFromInputIfValid();
@@ -35,7 +36,8 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
         public override void PrintInvalidArgumentMessage()
         {
-            PrintInvalidArgumentMessage($@"That's not a valid selection. Enter one of the numbers next to one of the {_itemsDescription}.");
+            PrintInvalidArgumentMessage(
+                $@"That's not a valid selection. Enter one of the numbers next to one of the {_itemsDescription}.");
         }
 
         protected override bool TryParseArgumentValueFromInput(string input, out T argumentValue)
@@ -87,7 +89,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
                 if (string.IsNullOrWhiteSpace(listItemLabel))
                     continue;
 
-                var listItemText = $@"{i + 1, 5}: {listItemLabel}";
+                var listItemText = $@"{i + 1,5}: {listItemLabel}";
 
                 if (itemsWritten != 0 && itemsWritten % 20 == 0)
                 {

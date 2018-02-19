@@ -24,7 +24,8 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
         public override void PrintInvalidArgumentMessage()
         {
-            PrintInvalidArgumentMessage(@"That's not a valid name, or it's not in the global address list. Valid names are like Matthew Joel Emerson or Matthew Emerson.");
+            PrintInvalidArgumentMessage(
+                @"That's not a valid name, or it's not in the global address list. Valid names are like Matthew Joel Emerson or Matthew Emerson.");
         }
 
         protected override bool TryParseArgumentValueFromInput(string input, out PersonName argumentValue)

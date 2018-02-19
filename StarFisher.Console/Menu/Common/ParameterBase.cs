@@ -5,11 +5,11 @@ namespace StarFisher.Console.Menu.Common
 {
     public abstract class ParameterBase<T> : IParameter<T>
     {
-        private readonly Dictionary<string, Argument<T>> _validInputs
-            = new Dictionary<string, Argument<T>>(StringComparer.InvariantCultureIgnoreCase);
-
         private readonly IStarFisherConsole _console = StarFisherConsole.Instance;
         private readonly bool _printCommandTitle;
+
+        private readonly Dictionary<string, Argument<T>> _validInputs
+            = new Dictionary<string, Argument<T>>(StringComparer.InvariantCultureIgnoreCase);
 
         protected ParameterBase(bool printCommandTitle = true)
         {
@@ -29,15 +29,15 @@ namespace StarFisher.Console.Menu.Common
             return argument;
         }
 
+        public abstract Argument<T> GetArgumentCore();
+
+        public abstract void PrintInvalidArgumentMessage();
+
         public Argument<T> GetArgument()
         {
             _console.ResetConsole(_printCommandTitle);
             return GetArgumentCore();
         }
-
-        public abstract Argument<T> GetArgumentCore();
-
-        public abstract void PrintInvalidArgumentMessage();
 
         protected void RegisterValidInput(string input, T argumentValue)
         {
@@ -100,29 +100,65 @@ namespace StarFisher.Console.Menu.Common
             throw new NotImplementedException();
         }
 
-        protected void Write(string text) => _console.Write(text);
+        protected void Write(string text)
+        {
+            _console.Write(text);
+        }
 
-        protected void WriteRed(string text) => _console.WriteRed(text);
+        protected void WriteRed(string text)
+        {
+            _console.WriteRed(text);
+        }
 
-        protected void WriteLine(string text, params string[] redTokens) => _console.WriteLine(text, redTokens);
+        protected void WriteLine(string text, params string[] redTokens)
+        {
+            _console.WriteLine(text, redTokens);
+        }
 
-        protected void WriteLine() => _console.WriteLine();
+        protected void WriteLine()
+        {
+            _console.WriteLine();
+        }
 
-        protected void WriteLineRed(string text) => _console.WriteLineRed(text);
+        protected void WriteLineRed(string text)
+        {
+            _console.WriteLineRed(text);
+        }
 
-        protected void WriteIntroduction(string text, params string[] redTokens) => _console.WriteLineBlue(text, redTokens);
+        protected void WriteIntroduction(string text, params string[] redTokens)
+        {
+            _console.WriteLineBlue(text, redTokens);
+        }
 
-        protected void WriteCallToAction(string text) => _console.WriteLineYellow(text);
+        protected void WriteCallToAction(string text)
+        {
+            _console.WriteLineYellow(text);
+        }
 
-        protected void WriteInputPrompt() => _console.WriteInputPrompt();
+        protected void WriteInputPrompt()
+        {
+            _console.WriteInputPrompt();
+        }
 
-        protected void WaitForKeyPress() => _console.WaitForKeyPress();
+        protected void WaitForKeyPress()
+        {
+            _console.WaitForKeyPress();
+        }
 
-        protected string ReadLine() => _console.ReadLine();
+        protected string ReadLine()
+        {
+            return _console.ReadLine();
+        }
 
-        protected string ReadInput() => ReadLine().Replace("'", string.Empty);
+        protected string ReadInput()
+        {
+            return ReadLine().Replace("'", string.Empty);
+        }
 
-        protected void ClearLastLine() => _console.ClearLastLine();
+        protected void ClearLastLine()
+        {
+            _console.ClearLastLine();
+        }
 
         protected void PrintInvalidArgumentMessage(string text)
         {

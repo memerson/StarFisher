@@ -14,9 +14,11 @@ namespace StarFisher.Office.Excel
                 quarter ?? throw new ArgumentNullException(nameof(quarter)),
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),
                 worksheet))
-        { }
+        {
+        }
 
-        private static void BuildWorksheet(ComObjectManager com, Quarter quarter, IEnumerable<Nomination> nominations, Worksheet worksheet)
+        private static void BuildWorksheet(ComObjectManager com, Quarter quarter, IEnumerable<Nomination> nominations,
+            Worksheet worksheet)
         {
             var cells = com.Get(() => worksheet.Cells);
 

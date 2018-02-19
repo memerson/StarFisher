@@ -19,6 +19,8 @@ namespace StarFisher.Office.Outlook
             _mailItem = CreateMailItem(buildEmail);
         }
 
+        protected ComObjectManager Com { get; }
+
         public virtual void Dispose()
         {
             if (_isDisposed)
@@ -37,17 +39,12 @@ namespace StarFisher.Office.Outlook
             _mailItem.Display();
         }
 
-        protected ComObjectManager Com { get; }
-
         private MailItem CreateMailItem(Action<ComObjectManager, MailItem> buildEmail)
         {
             var outlook = Com.Get(() => new OutlookApplication());
-            var mailItem = Com.Get(() => (MailItem)outlook.CreateItem(OlItemType.olMailItem));
+            var mailItem = Com.Get(() => (MailItem) outlook.CreateItem(OlItemType.olMailItem));
 
-            mailItem.Open += (ref bool cancel) =>
-            {
-                buildEmail(Com, mailItem);
-            };
+            mailItem.Open += (ref bool cancel) => { buildEmail(Com, mailItem); };
 
             return mailItem;
         }

@@ -9,7 +9,9 @@ namespace StarFisher.Console.Menu.RemoveNominations
     {
         private const string CommandTitle = @"Remove a nomination";
 
-        public RemoveNominationMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+        public RemoveNominationMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle)
+        {
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {

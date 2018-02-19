@@ -7,7 +7,9 @@ namespace StarFisher.Console.Menu.Initialize.Commands
 {
     public class GetQuarterCommand : InitializeCommandBase<Quarter>
     {
-        public GetQuarterCommand(IStarFisherContext context) : base(context) { }
+        public GetQuarterCommand(IStarFisherContext context) : base(context)
+        {
+        }
 
         protected override CommandResult<Output> RunCore(CommandInput.None input)
         {

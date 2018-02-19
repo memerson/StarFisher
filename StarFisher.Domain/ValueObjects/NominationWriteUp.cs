@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace StarFisher.Domain.ValueObjects
 {
@@ -11,9 +10,15 @@ namespace StarFisher.Domain.ValueObjects
             ContainsNomineeName = containsNomineeName;
         }
 
+        public bool IsValid => !ContainsNomineeName && !string.IsNullOrWhiteSpace(Value);
+
+        public string Value { get; }
+
+        public bool ContainsNomineeName { get; }
+
         public static NominationWriteUp Create(PersonName nomineeName, string nominationWriteUpText)
         {
-            if(nomineeName == null)
+            if (nomineeName == null)
                 throw new ArgumentNullException(nameof(nomineeName));
 
             var value = nominationWriteUpText ?? string.Empty;
@@ -27,12 +32,6 @@ namespace StarFisher.Domain.ValueObjects
             return !string.IsNullOrWhiteSpace(nominationWriteUpText) &&
                    !GetContainsNomineeName(nomineeName, nominationWriteUpText);
         }
-
-        public bool IsValid => !ContainsNomineeName && !string.IsNullOrWhiteSpace(Value);
-
-        public string Value { get; }
-
-        public bool ContainsNomineeName { get; }
 
         public override string ToString()
         {

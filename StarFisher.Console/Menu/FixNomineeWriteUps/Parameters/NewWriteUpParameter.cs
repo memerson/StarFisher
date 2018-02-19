@@ -8,9 +8,9 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
 {
     public class NewWriteUpParameter : ParameterBase<NominationWriteUp>
     {
+        private static readonly string TempFilePath = Path.GetTempFileName();
         private readonly PersonName _nomineeName;
         private readonly NominationWriteUp _writeUp;
-        private static readonly string TempFilePath = Path.GetTempFileName();
 
         public NewWriteUpParameter(PersonName nomineeName, NominationWriteUp writeUp)
         {
@@ -23,7 +23,8 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
         public override Argument<NominationWriteUp> GetArgumentCore()
         {
             WriteLine();
-            WriteLine(@"I'm going to open the write-up in Notepad. Please edit it there, then SAVE and CLOSE Notepad. Come back here when you're finished.");
+            WriteLine(
+                @"I'm going to open the write-up in Notepad. Please edit it there, then SAVE and CLOSE Notepad. Come back here when you're finished.");
             WriteLine();
             WriteCallToAction(@"Ready? Enter 'no' to back out or 'yes' to continue.");
             WriteInputPrompt();
@@ -35,7 +36,7 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
 
             using (var process = Process.Start("c:\\windows\\notepad.exe", $"\"{TempFilePath}\""))
             {
-                if(process == null)
+                if (process == null)
                     return Argument<NominationWriteUp>.Invalid;
 
                 WriteLine("I'm waiting on you to SAVE and CLOSE Notepad.");
@@ -58,7 +59,8 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
 
         public override void PrintInvalidArgumentMessage()
         {
-            PrintInvalidArgumentMessage(@"The nomination write-up text wasn't valid. Either it included some part of the nominee's name or it didn't have any text.");
+            PrintInvalidArgumentMessage(
+                @"The nomination write-up text wasn't valid. Either it included some part of the nominee's name or it didn't have any text.");
         }
 
         protected override bool TryParseArgumentValueFromInput(string input, out NominationWriteUp argumentValue)

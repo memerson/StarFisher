@@ -36,56 +36,34 @@ namespace StarFisher.Console
 
             InitializeApplication(configurationStorage, globalAddressList);
 
-            var emailFactory = new EmailFactory(StarFisherContext.Current, excelFileFactory, mailMergeFactory);
-
-            //var nominationList = new AwardWinnerList(StarFisherContext.Current.Year, StarFisherContext.Current.Quarter);
-
-            //var starValuesWinnerNames = new List<PersonName>
-            //{
-            //    PersonName.Create("Alexandru Rusu"),
-            //    PersonName.Create("Carol Selawski"),
-            //    PersonName.Create("Deanna Buhl"),
-            //    PersonName.Create("Gregory Savage"),
-            //    PersonName.Create("Kristine Dizon"),
-            //    PersonName.Create("Matt Emerson"),
-            //    PersonName.Create("Van Irwin")
-            //};
-
-            //foreach (var starValuesWinnerName in starValuesWinnerNames.OrderBy(n => n.FullNameLastNameFirst))
-            //{
-            //    var nominations = StarFisherContext.Current.NominationListContext.NominationList.Nominations
-            //        .Where(n => n.NomineeName == starValuesWinnerName)
-            //        .ToList();
-
-            //    // TODO: Handle same name different office
-
-            //    var person = nominations.Select(n => n.Nominee).First(); // TODO: Internalize this so we don't need to expose Nominee property.
-            //    var writeUps = nominations.Select(n => n.WriteUp).ToList();
-            //    var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-            //    nominationList.AddStarValuesWinner(person, companyValues, writeUps);
-            //}
+            var emailFactory = new EmailFactory(StarFisherContext.Instance, excelFileFactory, mailMergeFactory);
 
             var menuItemCommands = new List<IMenuItemCommand>
             {
-                new LoadNominationsFromSnapshotMenuItemCommand(StarFisherContext.Current),
-                new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Current),
-                new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Current, globalAddressList),
-                new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Current),
-                new DisqualifyNomineesMenuItemCommand(StarFisherContext.Current),
-                new RemoveNominationMenuItemCommand(StarFisherContext.Current),
-                new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
-                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Current, excelFileFactory, AwardType.StarValues),
-                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Current, excelFileFactory, AwardType.RisingStar),
-                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.StarValues),
-                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Current, mailMergeFactory, AwardType.RisingStar),
-                new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
-                new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
-                new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Current, emailFactory),
-                new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage),
-                new ExitCommand(StarFisherContext.Current)
+                new LoadNominationsFromSnapshotMenuItemCommand(StarFisherContext.Instance),
+                new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Instance),
+                new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Instance, globalAddressList),
+                new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Instance),
+                new DisqualifyNomineesMenuItemCommand(StarFisherContext.Instance),
+                new RemoveNominationMenuItemCommand(StarFisherContext.Instance),
+                new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory,
+                    AwardType.StarValues),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory,
+                    AwardType.RisingStar),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory,
+                    AwardType.StarValues),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory,
+                    AwardType.RisingStar),
+                new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new InitializeApplicationMenuItemCommand(StarFisherContext.Instance, globalAddressList,
+                    configurationStorage),
+                new ExitCommand(StarFisherContext.Instance)
             };
 
-            var topLevelMenu = new TopLevelMenuCommand(StarFisherContext.Current, menuItemCommands);
+            var topLevelMenu = new TopLevelMenuCommand(StarFisherContext.Instance, menuItemCommands);
             topLevelMenu.Run();
         }
 
@@ -102,36 +80,38 @@ namespace StarFisher.Console
             return globalAddressList;
         }
 
-        private static void InitializeApplication(ConfigurationStorage configurationStorage, IGlobalAddressList globalAddressList)
+        private static void InitializeApplication(ConfigurationStorage configurationStorage,
+            IGlobalAddressList globalAddressList)
         {
-            if (!TryInitializeContextFromSavedConfiguration(configurationStorage))
-            {
-                do
-                {
-                    System.Console.WriteLine();
-                    System.Console.WriteLine(@"You must complete StarFisher's initial set-up to continue.");
-                    System.Console.WriteLine();
+            if (TryInitializeContextFromSavedConfiguration(configurationStorage))
+                return;
 
-                    var initializationCommand = new InitializeApplicationMenuItemCommand(StarFisherContext.Current, globalAddressList, configurationStorage);
-                    initializationCommand.Run();
-                } while (!StarFisherContext.Current.IsInitialized);
-            }
+            do
+            {
+                System.Console.WriteLine();
+                System.Console.WriteLine(@"You must complete StarFisher's initial set-up to continue.");
+                System.Console.WriteLine();
+
+                var initializationCommand = new InitializeApplicationMenuItemCommand(StarFisherContext.Instance,
+                    globalAddressList, configurationStorage);
+                initializationCommand.Run();
+            } while (!StarFisherContext.Instance.IsInitialized);
         }
 
         private static bool TryInitializeContextFromSavedConfiguration(ConfigurationStorage configurationStorage)
         {
             var initialized = configurationStorage.InitializeFromConfiguration(out Exception exception);
 
-            if (!initialized && exception != null)
-            {
-                System.Console.WriteLine();
-                System.Console.WriteLine(
-                    @"Failed to load saved configuration. You will need to re-run the initialization workflow.");
-                System.Console.WriteLine(exception.ToString());
-                System.Console.WriteLine();
-            }
+            if (initialized || exception == null)
+                return initialized;
 
-            return initialized;
+            System.Console.WriteLine();
+            System.Console.WriteLine(
+                @"Failed to load saved configuration. You will need to re-run the initialization workflow.");
+            System.Console.WriteLine(exception.ToString());
+            System.Console.WriteLine();
+
+            return false;
         }
     }
 }

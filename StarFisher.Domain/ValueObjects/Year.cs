@@ -12,9 +12,11 @@ namespace StarFisher.Domain.ValueObjects
             Value = value;
         }
 
+        public int Value { get; }
+
         public static Year Create(int value)
         {
-            if(!IsValid(value))
+            if (!IsValid(value))
                 throw new ArgumentOutOfRangeException(nameof(value));
 
             return new Year(value);
@@ -24,8 +26,6 @@ namespace StarFisher.Domain.ValueObjects
         {
             return value >= 2017 && value <= DateTime.Now.Year;
         }
-
-        public int Value { get; }
 
         protected override bool EqualsCore(Year other)
         {

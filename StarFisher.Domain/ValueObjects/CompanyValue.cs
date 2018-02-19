@@ -28,13 +28,13 @@ namespace StarFisher.Domain.ValueObjects
             Value = value;
         }
 
+        public string Value { get; }
+
         internal static CompanyValue Create(string companyValueText)
         {
             var companyValue = ValidCompanyValues.FirstOrDefault(cv => cv.ToString() == companyValueText);
             return companyValue ?? Invalid;
         }
-
-        public string Value { get; }
 
         protected override bool EqualsCore(CompanyValue other)
         {

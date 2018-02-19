@@ -12,10 +12,11 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
 {
     public class FixNomineeNamesAndEmailAddressesMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IGlobalAddressList _globalAddressList;
         private const string CommandTitle = @"Fix nominee names and email addresses";
+        private readonly IGlobalAddressList _globalAddressList;
 
-        public FixNomineeNamesAndEmailAddressesMenuItemCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) :
+        public FixNomineeNamesAndEmailAddressesMenuItemCommand(IStarFisherContext context,
+            IGlobalAddressList globalAddressList) :
             base(context, CommandTitle)
         {
             _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
@@ -39,19 +40,22 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             return CommandOutput.None.Success;
         }
 
-        private bool FixNomineeNames(IGlobalAddressList globalAddressList, NominationList nominationList, out Exception exception)
+        private bool FixNomineeNames(IGlobalAddressList globalAddressList, NominationList nominationList,
+            out Exception exception)
         {
             var unrecognizedNomineeNames = GetUnrecognizedNomineeNames(globalAddressList, nominationList.Nominees);
             return FixNomineeNames(nominationList, unrecognizedNomineeNames, out exception);
         }
 
-        private bool FixNomineeEmailAddresses(IGlobalAddressList globalAddressList, NominationList nominationList, out Exception exception)
+        private bool FixNomineeEmailAddresses(IGlobalAddressList globalAddressList, NominationList nominationList,
+            out Exception exception)
         {
             var unrecognizedEmailAddresses = GetUnrecognizedEmailAddresses(globalAddressList, nominationList.Nominees);
             return FixNomineeEmailAddresses(nominationList, unrecognizedEmailAddresses, out exception);
         }
 
-        private bool FixNomineeNames(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames, out Exception exception)
+        private bool FixNomineeNames(NominationList nominationList,
+            IReadOnlyCollection<PersonName> unrecognizedNomineeNames, out Exception exception)
         {
             var fixNomineeNamesCommand = new FixNomineeNamesCommand(Context, _globalAddressList);
             var input = new FixNomineeNamesCommand.Input(nominationList, unrecognizedNomineeNames);
@@ -67,7 +71,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             return true;
         }
 
-        private bool FixNomineeEmailAddresses(NominationList nominationList, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
+        private bool FixNomineeEmailAddresses(NominationList nominationList,
+            IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
         {
             var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand(Context, _globalAddressList);
             var input = new FixNomineeEmailAddressesCommand.Input(nominationList, unrecognizedEmailAddresses);
@@ -83,7 +88,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
             return true;
         }
 
-        private static List<PersonName> GetUnrecognizedNomineeNames(IGlobalAddressList globalAddressList, IEnumerable<Person> nominees)
+        private static List<PersonName> GetUnrecognizedNomineeNames(IGlobalAddressList globalAddressList,
+            IEnumerable<Person> nominees)
         {
             return nominees
                 .Select(nominee => nominee.Name)
@@ -92,7 +98,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses
                 .ToList();
         }
 
-        private static List<EmailAddress> GetUnrecognizedEmailAddresses(IGlobalAddressList globalAddressList, IEnumerable<Person> nominees)
+        private static List<EmailAddress> GetUnrecognizedEmailAddresses(IGlobalAddressList globalAddressList,
+            IEnumerable<Person> nominees)
         {
             return nominees
                 .Select(nominee => nominee.EmailAddress)

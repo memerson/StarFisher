@@ -9,10 +9,11 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
 {
     public class CreateAwardVotingKeyMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IExcelFileFactory _excelFileFactory;
         private readonly AwardType _awardType;
+        private readonly IExcelFileFactory _excelFileFactory;
 
-        public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory, AwardType awardType)
+        public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory,
+            AwardType awardType)
             : base(context, GetCommandTitle(awardType), GetSuccessMessage(context, awardType))
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
@@ -26,20 +27,23 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
             var nominationList = Context.NominationListContext.NominationList;
             var fileName = GetVotingKeyFileName();
 
-            if(!Context.WorkingDirectoryPath.TryGetFilePathForFileInDirectory(fileName, false, false, out FilePath filePath))
+            if (!Context.WorkingDirectoryPath.TryGetFilePathForFileInDirectory(fileName, false, false,
+                out FilePath filePath))
                 throw InvalidFilePathException.WorkingDirectoryFilePathInvalid(fileName);
 
             using (var excelFile = _excelFileFactory.GetVotingKeyExcelFile(_awardType, nominationList))
+            {
                 excelFile.Save(filePath);
+            }
 
             return CommandOutput.None.Success;
         }
 
         public override bool GetCanRun()
         {
-            return Context.IsInitialized 
-                && Context.NominationListContext.HasNominationListLoaded
-                && Context.NominationListContext.NominationList.HasNominationsForAward(_awardType);
+            return Context.IsInitialized
+                   && Context.NominationListContext.HasNominationListLoaded
+                   && Context.NominationListContext.NominationList.HasNominationsForAward(_awardType);
         }
 
         private static string GetCommandTitle(AwardType awardType)
@@ -57,7 +61,9 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
 
-            return $@"Success! You can find {GetVotingKeyFileName(context, awardType)} saved in your working directory ({context.WorkingDirectoryPath.Value}).";
+            return $@"Success! You can find {
+                    GetVotingKeyFileName(context, awardType)
+                } saved in your working directory ({context.WorkingDirectoryPath.Value}).";
         }
 
         private string GetVotingKeyFileName()

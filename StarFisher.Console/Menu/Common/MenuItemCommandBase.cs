@@ -5,9 +5,8 @@ namespace StarFisher.Console.Menu.Common
 {
     public abstract class MenuItemCommandBase : CommandBase<CommandInput.None, CommandOutput.None>, IMenuItemCommand
     {
-        private readonly string _successMessage;
-
         private readonly IStarFisherConsole _console = StarFisherConsole.Instance;
+        private readonly string _successMessage;
 
         protected MenuItemCommandBase(IStarFisherContext context, string title,
             string successMessage = @"Operation completed successfully")
@@ -22,7 +21,9 @@ namespace StarFisher.Console.Menu.Common
             _successMessage = successMessage;
         }
 
-        protected MenuItemCommandBase(string title) : this(null, title) { }
+        protected MenuItemCommandBase(string title) : this(null, title)
+        {
+        }
 
         public string Title { get; }
 

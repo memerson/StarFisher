@@ -8,11 +8,13 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 {
     internal class NominationDto
     {
-        internal NominationDto() { }
+        internal NominationDto()
+        {
+        }
 
         internal NominationDto(Nomination nomination)
         {
-            if(nomination == null)
+            if (nomination == null)
                 throw new ArgumentNullException(nameof(nomination));
 
             Id = nomination.Id;

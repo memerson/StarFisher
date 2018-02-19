@@ -30,8 +30,8 @@ namespace StarFisher.Console
     public class StarFisherConsole : IStarFisherConsole
     {
         private string _currentCommandTitle;
-        private string _successMessage;
         private string _errorMessage;
+        private string _successMessage;
 
         static StarFisherConsole()
         {
@@ -44,7 +44,9 @@ namespace StarFisher.Console
             System.Console.ForegroundColor = ConsoleColor.Black;
         }
 
-        private StarFisherConsole() { }
+        private StarFisherConsole()
+        {
+        }
 
         public static StarFisherConsole Instance { get; }
 
@@ -84,13 +86,20 @@ namespace StarFisher.Console
             System.Console.WriteLine(@"       ,O,");
             System.Console.WriteLine(@"      ,OOO,");
             System.Console.WriteLine(@"'oooooOOOOOooooo'     _________ __              ___________.__       .__");
-            System.Console.WriteLine(@"  `OOOOOOOOOOO`      /   _____//  |______ ______\_   _____/|__| _____|  |__   ___________  ");
-            System.Console.WriteLine(@"    `OOOOOOO`        \_____  \\   __\__  \\_  __ \    __)  |  |/  ___/  |  \_/ __ \_  __ \ ");
-            System.Console.WriteLine(@"    OOOO'OOOO        /        \|  |  / __ \|  | \/     \   |  |\___ \|   Y  \  ___/|  | \/ ");
-            System.Console.WriteLine(@"   OOO'   'OOO      /_______  /|__| (____  /__|  \___  /   |__/____  >___|  /\___  >__|    ");
-            System.Console.WriteLine(@"  O'         'O             \/           \/          \/            \/     \/     \/        ");
-            System.Console.WriteLine(@"                                                                         Nashville Edition ");
-            System.Console.WriteLine(@"                                                                         By Matt Emerson   ");
+            System.Console.WriteLine(
+                @"  `OOOOOOOOOOO`      /   _____//  |______ ______\_   _____/|__| _____|  |__   ___________  ");
+            System.Console.WriteLine(
+                @"    `OOOOOOO`        \_____  \\   __\__  \\_  __ \    __)  |  |/  ___/  |  \_/ __ \_  __ \ ");
+            System.Console.WriteLine(
+                @"    OOOO'OOOO        /        \|  |  / __ \|  | \/     \   |  |\___ \|   Y  \  ___/|  | \/ ");
+            System.Console.WriteLine(
+                @"   OOO'   'OOO      /_______  /|__| (____  /__|  \___  /   |__/____  >___|  /\___  >__|    ");
+            System.Console.WriteLine(
+                @"  O'         'O             \/           \/          \/            \/     \/     \/        ");
+            System.Console.WriteLine(
+                @"                                                                         Nashville Edition ");
+            System.Console.WriteLine(
+                @"                                                                         By Matt Emerson   ");
             System.Console.WriteLine();
             System.Console.WriteLine();
         }
@@ -107,12 +116,17 @@ namespace StarFisher.Console
             PrintErrorMessage();
         }
 
-        public void Write(string text) => System.Console.Write(text);
+        public void Write(string text)
+        {
+            System.Console.Write(text);
+        }
 
         public void WriteRed(string text)
         {
             using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+            {
                 Write(text);
+            }
         }
 
         public void WriteLine(string text, params string[] redTokens)
@@ -153,31 +167,49 @@ namespace StarFisher.Console
             WriteLine();
         }
 
-        public void WriteLine() => System.Console.WriteLine();
+        public void WriteLine()
+        {
+            System.Console.WriteLine();
+        }
 
         public void WriteLineRed(string text)
         {
             using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+            {
                 WriteLine(text);
+            }
         }
 
         public void WriteLineBlue(string text, params string[] redTokens)
         {
             using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkBlue))
+            {
                 WriteLine(text, redTokens);
+            }
         }
 
         public void WriteLineYellow(string text)
         {
             using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkYellow))
+            {
                 WriteLine(text);
+            }
         }
 
-        public void WriteInputPrompt() => Write(@"> ");
+        public void WriteInputPrompt()
+        {
+            Write(@"> ");
+        }
 
-        public void WaitForKeyPress() => System.Console.ReadKey();
+        public void WaitForKeyPress()
+        {
+            System.Console.ReadKey();
+        }
 
-        public string ReadLine() => System.Console.ReadLine()?.Trim();
+        public string ReadLine()
+        {
+            return System.Console.ReadLine()?.Trim();
+        }
 
         public void ClearLastLine()
         {

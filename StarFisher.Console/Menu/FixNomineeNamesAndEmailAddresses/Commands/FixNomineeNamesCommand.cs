@@ -26,7 +26,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             var nominationList = input.NominationList;
             var unrecognizedNomineeNames = input.UnrecognizedNomineeNames;
 
-            for (; ; )
+            for (;;)
             {
                 var nomineeParameter =
                     new NomineeToChangeNameParameter(nominationList.Nominees, unrecognizedNomineeNames);
@@ -49,7 +49,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             public Input(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
             {
                 NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
-                UnrecognizedNomineeNames = unrecognizedNomineeNames ?? throw new ArgumentNullException(nameof(unrecognizedNomineeNames));
+                UnrecognizedNomineeNames = unrecognizedNomineeNames ??
+                                           throw new ArgumentNullException(nameof(unrecognizedNomineeNames));
             }
 
             public NominationList NominationList { get; }

@@ -18,7 +18,8 @@ namespace StarFisher.Console.Menu.DisqualifyNominees.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction(@"Enter the number of the nominee you want to disqualify, or enter 'stop' to stop disqualifying nominees.");
+            WriteCallToAction(
+                @"Enter the number of the nominee you want to disqualify, or enter 'stop' to stop disqualifying nominees.");
         }
     }
 }

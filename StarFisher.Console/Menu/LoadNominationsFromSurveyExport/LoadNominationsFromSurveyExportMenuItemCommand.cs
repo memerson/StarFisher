@@ -9,7 +9,9 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
     {
         private const string CommandTitle = @"Load nominations from survey export";
 
-        public LoadNominationsFromSurveyExportMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+        public LoadNominationsFromSurveyExportMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle)
+        {
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {

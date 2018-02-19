@@ -12,13 +12,13 @@
             ArgumentType = argumentType;
         }
 
+        public T Value { get; }
+
+        public ArgumentType ArgumentType { get; }
+
         public static Argument<T> Valid(T value)
         {
             return new Argument<T>(ArgumentType.Valid, value);
         }
-
-        public T Value { get; }
-
-        public ArgumentType ArgumentType { get; }
     }
 }

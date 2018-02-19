@@ -1,5 +1,4 @@
-﻿
-namespace StarFisher.Console.Menu.Common.Parameters
+﻿namespace StarFisher.Console.Menu.Common.Parameters
 {
     public abstract class YesOrNoParameterBase : ParameterBase<bool>
     {

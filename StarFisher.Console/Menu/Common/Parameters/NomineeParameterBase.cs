@@ -8,6 +8,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
     {
         protected NomineeParameterBase(IReadOnlyCollection<Person> allNominees)
             : base(allNominees?.OrderBy(n => n.Name.FullName).ToList(), @"nominees")
-        { }
+        {
+        }
     }
 }

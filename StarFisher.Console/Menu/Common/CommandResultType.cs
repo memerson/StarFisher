@@ -1,5 +1,4 @@
-﻿
-namespace StarFisher.Console.Menu.Common
+﻿namespace StarFisher.Console.Menu.Common
 {
     public enum CommandResultType
     {

@@ -9,7 +9,9 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot
     {
         private const string CommandTitle = @"Recover nominations from your previous work";
 
-        public LoadNominationsFromSnapshotMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+        public LoadNominationsFromSnapshotMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle)
+        {
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
@@ -22,7 +24,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot
                 return CommandOutput.None.Success;
             }
 
-            if(!TryGetSnapshotToLoad(out SnapshotSummary snapshotSummary))
+            if (!TryGetSnapshotToLoad(out SnapshotSummary snapshotSummary))
                 return CommandOutput.None.Abort;
 
             Context.NominationListContext.LoadSnapshot(snapshotSummary);
@@ -35,7 +37,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot
             return TryGetArgumentValue(parameter, out useLatestSnapshot);
         }
 
-        private bool TryGetSnapshotToLoad( out SnapshotSummary snapshotSummary)
+        private bool TryGetSnapshotToLoad(out SnapshotSummary snapshotSummary)
         {
             var snapshotSummaries = Context.NominationListContext.ListSnapshotSummaries();
             var parameter = new SnapshotParameter(snapshotSummaries);

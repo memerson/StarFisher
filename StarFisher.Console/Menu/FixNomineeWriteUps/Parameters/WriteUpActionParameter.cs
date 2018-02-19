@@ -6,6 +6,12 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
 {
     public class WriteUpActionParameter : ParameterBase<WriteUpActionParameter.Action>
     {
+        public enum Action
+        {
+            Continue,
+            Edit
+        }
+
         private readonly PersonName _nomineeName;
         private readonly NominationWriteUp _writeUp;
 
@@ -26,7 +32,8 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
             WriteLine();
             WriteLine(_writeUp.Value, _nomineeName.FirstName, _nomineeName.LastName);
             WriteLine();
-            WriteCallToAction("Please enter 'edit' to edit the write-up, 'c' to continue to the next write-up, or 'stop' to stop reviewing write-ups.");
+            WriteCallToAction(
+                "Please enter 'edit' to edit the write-up, 'c' to continue to the next write-up, or 'stop' to stop reviewing write-ups.");
             WriteInputPrompt();
 
             return GetRegisteredValidInputArgument();
@@ -35,12 +42,6 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps.Parameters
         public override void PrintInvalidArgumentMessage()
         {
             PrintInvalidArgumentMessage(@"That's not a valid option.");
-        }
-
-        public enum Action
-        {
-            Continue,
-            Edit
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using Microsoft.Office.Interop.Excel;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
 using StarFisher.Domain.ValueObjects;
@@ -23,9 +24,9 @@ namespace StarFisher.Office.Excel
 
             try
             {
-                excel = Com.Get(() => new ExcelApplication { Visible = false });
+                excel = Com.Get(() => new ExcelApplication {Visible = false});
                 _workbook = Com.Get(() => excel.Workbooks.Add(XlWBATemplate.xlWBATWorksheet));
-                var worksheet = Com.Get(() =>(Worksheet)_workbook.Worksheets[1]);
+                var worksheet = Com.Get(() => (Worksheet) _workbook.Worksheets[1]);
 
                 buildWorksheet(Com, worksheet);
             }
@@ -62,7 +63,7 @@ namespace StarFisher.Office.Excel
             if (File.Exists(filePath.Value))
                 File.Delete(filePath.Value);
 
-            var missing = System.Reflection.Missing.Value;
+            var missing = Missing.Value;
 
             _workbook.SaveAs(filePath.Value, XlFileFormat.xlOpenXMLWorkbook, missing, missing, false, false,
                 XlSaveAsAccessMode.xlNoChange, missing, missing, missing, missing, missing);

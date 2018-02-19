@@ -9,11 +9,15 @@ namespace StarFisher.Console.Menu.Common
     {
         protected CommandBase(IStarFisherContext context)
         {
-            Context = context ?? StarFisherContext.Current;
+            Context = context ?? StarFisherContext.Instance;
         }
 
         protected CommandBase()
-            : this(null) { }
+            : this(null)
+        {
+        }
+
+        protected IStarFisherContext Context { get; }
 
         public CommandResult<TOutput> Run(TInput input)
         {
@@ -35,8 +39,6 @@ namespace StarFisher.Console.Menu.Common
                 return CommandResult<TOutput>.Failure(e);
             }
         }
-
-        protected IStarFisherContext Context { get; }
 
         protected static bool TryGetArgumentValue<T>(IParameter<T> parameter, out T argumentValue)
         {

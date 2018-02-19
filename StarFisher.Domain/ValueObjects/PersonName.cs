@@ -19,7 +19,7 @@ namespace StarFisher.Domain.ValueObjects
                 return;
             }
 
-            var nameParts = RawNameText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var nameParts = RawNameText.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             switch (nameParts.Length)
             {
@@ -71,7 +71,7 @@ namespace StarFisher.Domain.ValueObjects
             if (string.IsNullOrWhiteSpace(nameText))
                 return false;
 
-            var nameParts = nameText.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var nameParts = nameText.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             return nameParts.Length >= 2 && nameParts.Length <= 3;
         }
 

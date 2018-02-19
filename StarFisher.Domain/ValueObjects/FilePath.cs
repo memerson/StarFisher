@@ -15,7 +15,7 @@ namespace StarFisher.Domain.ValueObjects
 
         public static FilePath Create(string filePath, bool shouldExist)
         {
-            if(!IsValid(filePath, shouldExist))
+            if (!IsValid(filePath, shouldExist))
                 throw new ArgumentException(nameof(filePath));
 
             return new FilePath(filePath);

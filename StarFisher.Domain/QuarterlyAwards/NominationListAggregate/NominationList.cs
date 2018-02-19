@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.Utilities;
+using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
     public class NominationList : AggregateRoot
     {
+        private readonly List<AwardWinner> _awardWinners;
         private readonly List<Nomination> _nominations;
-        private readonly List<AwardWinnerBase> _awardWinners;
 
-        internal NominationList(Year year, Quarter quarter, IEnumerable<Nomination> nominations, IEnumerable<AwardWinnerBase> awardWinners = null)
+        internal NominationList(Year year, Quarter quarter, IEnumerable<Nomination> nominations,
+            IEnumerable<AwardWinner> awardWinners = null)
             : base(CreateKey(year, quarter))
         {
             Quarter = quarter;
             Year = year;
             _nominations = nominations?.ToList() ?? throw new ArgumentNullException(nameof(nominations));
-            _awardWinners = awardWinners?.ToList() ?? new List<AwardWinnerBase>();
+            _awardWinners = awardWinners?.ToList() ?? new List<AwardWinner>();
 
             SetNomineeIdentifiers();
         }
@@ -27,6 +28,16 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
         public Quarter Quarter { get; }
 
         public Year Year { get; }
+
+        private static int CreateKey(Year year, Quarter quarter)
+        {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
+
+            return year.Value * 10 + quarter.NumericValue;
+        }
 
         #region Nominations
 
@@ -42,9 +53,11 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             .Distinct()
             .ToList();
 
-        public IReadOnlyCollection<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues).ToList();
+        public IReadOnlyCollection<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues)
+            .ToList();
 
-        public IReadOnlyCollection<Nomination> RisingStarNominations => GetNominationsByAwardType(AwardType.RisingStar).ToList();
+        public IReadOnlyCollection<Nomination> RisingStarNominations => GetNominationsByAwardType(AwardType.RisingStar)
+            .ToList();
 
         public IReadOnlyCollection<Nomination> GetNominationsForNominee(AwardType awardType, Person nominee)
         {
@@ -93,7 +106,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == nominee);
 
             if (awardWinner != null)
-                awardWinner.UpdateWinnerName(newNomineeName);
+                awardWinner.UpdateAwardWinnerName(newNomineeName);
 
             MarkAsDirty($@"Updated nominee name from {nominee.Name.FullName} to {newNomineeName.FullName}");
         }
@@ -125,7 +138,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == nominee);
 
             if (awardWinner != null)
-                awardWinner.UpdateWinnerEmailAddress(newEmailAddress);
+                awardWinner.UpdateAwardWinnerEmailAddress(newEmailAddress);
 
             MarkAsDirty($@"Updated nominee email address from {nominee.EmailAddress.Value} to {newEmailAddress.Value}");
         }
@@ -144,9 +157,6 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
             nomination.UpdateWriteUp(newWriteUp);
             MarkAsDirty($@"Updated a nomination write-up for {nomination.NomineeName}");
-
-            if(GetIsWinner(nomination.AwardType, nomination.Nominee))
-                SyncWinnerWithUpdatedNomination(nomination);
         }
 
         public void DisqualifyNominee(AwardType awardType, Person nominee)
@@ -162,28 +172,28 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 MarkAsDirty($@"Disqualified nominee {nominee.Name.FullName}");
             }
 
-            RemoveWinner(awardType, nominee);
+            RemoveAwardWinner(awardType, nominee);
         }
 
         public void RemoveNomination(int nominationId)
-        {// TODO: Warn if removing only nomination
+        {
+// TODO: Warn if removing only nomination
             var nomination = Nominations.FirstOrDefault(n => n.Id == nominationId);
 
             if (nomination == null)
                 throw new ArgumentException(nameof(nominationId));
 
-            var removedNomination = _nominations.Remove(nomination);
+            var removed = _nominations.Remove(nomination);
 
-            if (!removedNomination)
+            if (!removed)
                 return;
 
             SetNomineeIdentifiers();
-            MarkAsDirty($@"Removed {nomination.NominatorName.RawNameText}'s nomination for {nomination.NomineeName.FullName}");
+            MarkAsDirty(
+                $@"Removed {nomination.NominatorName.RawNameText}'s nomination for {nomination.NomineeName.FullName}");
 
-            if (GetNominationsForNominee(nomination.AwardType, nomination.Nominee).Any())
-                SyncWinnerWithUpdatedNomination(nomination);
-            else
-                RemoveWinner(nomination.AwardType, nomination.Nominee);
+            if (!GetNominationsForNominee(nomination.AwardType, nomination.Nominee).Any())
+                RemoveAwardWinner(nomination.AwardType, nomination.Nominee);
         }
 
         private IEnumerable<Nomination> GetNominationsByAwardType(AwardType awardType)
@@ -219,96 +229,72 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         #region Award Winners
 
-        public IReadOnlyCollection<AwardWinnerBase> AwardWinners => _awardWinners;
+        public IReadOnlyCollection<AwardWinner> AwardWinners => _awardWinners;
 
-        public IReadOnlyCollection<RisingStarAwardWinner> RisingStarAwardWinners => GetAwardWinnersOfType<RisingStarAwardWinner>();
+        public IReadOnlyCollection<AwardWinner> RisingStarAwardWinners => AwardWinners
+            .Where(w => w.AwardType == AwardType.RisingStar).ToList();
 
-        public IReadOnlyCollection<StarValuesAwardWinner> StarValuesAwardWinners => GetAwardWinnersOfType<StarValuesAwardWinner>();
+        public IReadOnlyCollection<AwardWinner> StarValuesAwardWinners => AwardWinners
+            .Where(w => w.AwardType == AwardType.StarValues).ToList();
 
-        public bool GetIsWinner(AwardType awardType, Person person)
+        public bool GetIsAwardWinner(AwardType awardType, Person person)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
             if (person == null)
                 throw new ArgumentNullException(nameof(person));
 
-            return AwardWinners.Any(w => w.AwardType == awardType && w.Person == person);
+            var awardWinner = new AwardWinner(awardType, person);
+
+            return AwardWinners.Contains(awardWinner);
         }
 
-        public void RemoveWinner(AwardType awardType, Person winner)
+        public void RemoveAwardWinner(AwardType awardType, Person person)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
-            if (winner == null)
-                throw new ArgumentNullException(nameof(winner));
+            if (person == null)
+                throw new ArgumentNullException(nameof(person));
 
-            var removedCount = _awardWinners.RemoveAll(w => w.AwardType == awardType && w.Person == winner);
+            var awardWinner = new AwardWinner(awardType, person);
+            var removed = _awardWinners.Remove(awardWinner);
 
-            if (removedCount > 0)
-                MarkAsDirty($@"Removed {winner.Name.FullName} from winner list");
+            if (removed)
+                MarkAsDirty($@"Removed {person.Name.FullName} from winner list for {awardType.PrettyName}");
         }
 
-        public void UpsertNomineeToWinners(AwardType awardType, Person nominee)
+        public void AddNomineeToAwardWinners(AwardType awardType, Person nominee)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
             if (nominee == null)
                 throw new ArgumentNullException(nameof(nominee));
 
+            if (GetIsAwardWinner(awardType, nominee))
+                return;
+
             var nominations = GetNominationsForNominee(awardType, nominee);
             if (nominations.Count == 0)
                 throw new ArgumentException(nameof(nominee));
 
-            var companyValues = nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
-            var nominationWriteUps = nominations.Select(n => n.WriteUp).ToList();
+            var awardWinner = new AwardWinner(awardType, nominee);
 
-            var id = GetNextAwardWinnerId();
-
-            AwardWinnerBase winner;
-            if (awardType == AwardType.StarValues)
-                winner = new StarValuesAwardWinner(id, nominee, companyValues, nominationWriteUps);
-            else if (awardType == AwardType.RisingStar)
-                winner = new RisingStarAwardWinner(id, nominee);
-            else
-                throw new NotSupportedException(awardType.Value);
-
-            _awardWinners.RemoveAll(w => w.Person == nominee);
-            _awardWinners.Add(winner);
+            _awardWinners.Add(awardWinner);
             MarkAsDirty($@"Upserted winner {nominee.Name.FullName}");
         }
 
-        private void SyncWinnerWithUpdatedNomination(Nomination nomination)
+        public IReadOnlyCollection<CompanyValue> GetCompanyValuesForAwardWinner(AwardWinner awardWinner)
         {
-            if (nomination == null)
-                throw new ArgumentNullException(nameof(nomination));
-
-            var awardType = nomination.AwardType;
-            var nominee = nomination.Nominee;
-            if (GetIsWinner(awardType, nominee))
-                UpsertNomineeToWinners(awardType, nominee);
+            var nominations = GetNominationsForNominee(awardWinner.AwardType, awardWinner.Person);
+            return nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
         }
 
-        private int GetNextAwardWinnerId()
+        public IReadOnlyCollection<NominationWriteUp> GetNominationWriteUpsForAwardWinner(AwardWinner awardWinner)
         {
-            return AwardWinners.SafeMax(w => w.Id) + 1;
-        }
-
-        private List<T> GetAwardWinnersOfType<T>()
-            where T : AwardWinnerBase
-        {
-            return _awardWinners.Where(w => w is T).Cast<T>().ToList();
+            var nominations = GetNominationsForNominee(awardWinner.AwardType, awardWinner.Person);
+            return nominations.Select(n => n.WriteUp).ToList();
         }
 
         #endregion Award Winners
-
-        private static int CreateKey(Year year, Quarter quarter)
-        {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
-
-            return year.Value * 10 + quarter.NumericValue;
-        }
     }
 }

@@ -20,7 +20,8 @@ namespace StarFisher.Office.Outlook
         private readonly IExcelFileFactory _excelFileFactory;
         private readonly IMailMergeFactory _mailMergeFactory;
 
-        public EmailFactory(IEmailConfiguration emailConfiguration, IExcelFileFactory excelFileFactory, IMailMergeFactory mailMergeFactory)
+        public EmailFactory(IEmailConfiguration emailConfiguration, IExcelFileFactory excelFileFactory,
+            IMailMergeFactory mailMergeFactory)
         {
             _emailConfiguration = emailConfiguration ?? throw new ArgumentNullException(nameof(emailConfiguration));
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
@@ -34,7 +35,8 @@ namespace StarFisher.Office.Outlook
 
         public IEmail GetVotingSurveyReviewEmail(NominationList nominationList, string votingSurveyWebLink)
         {
-            return new VotingSurveyReviewEmail(_emailConfiguration, _mailMergeFactory, nominationList, votingSurveyWebLink);
+            return new VotingSurveyReviewEmail(_emailConfiguration, _mailMergeFactory, nominationList,
+                votingSurveyWebLink);
         }
 
         public IEmail GetVotingKeyEmail(NominationList nominationList)
@@ -52,5 +54,4 @@ namespace StarFisher.Office.Outlook
             return new CertificatesEmail(_emailConfiguration, _mailMergeFactory, nominationList);
         }
     }
-
 }

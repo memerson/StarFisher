@@ -19,7 +19,8 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteLine(@"Enter the number of the snapshot you want to load, or enter 'stop' to stop loading nominations.");
+            WriteLine(
+                @"Enter the number of the snapshot you want to load, or enter 'stop' to stop loading nominations.");
         }
     }
 }

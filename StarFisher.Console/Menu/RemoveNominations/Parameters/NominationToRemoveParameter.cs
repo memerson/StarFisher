@@ -6,7 +6,7 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
 {
     public class NominationToRemoveParameter : ListItemSelectionParameterBase<Nomination>
     {
-        public NominationToRemoveParameter(IReadOnlyList<Nomination> nominations) 
+        public NominationToRemoveParameter(IReadOnlyList<Nomination> nominations)
             : base(nominations, @"nominations")
         {
             RegisterAbortInput(@"stop");
@@ -23,7 +23,8 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction(@"Enter the number of the nomination you want to remove, or enter 'stop' to stop removing nominations.");
+            WriteCallToAction(
+                @"Enter the number of the nomination you want to remove, or enter 'stop' to stop removing nominations.");
         }
     }
 }

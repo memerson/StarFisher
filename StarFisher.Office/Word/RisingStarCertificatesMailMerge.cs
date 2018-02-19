@@ -12,7 +12,8 @@ namespace StarFisher.Office.Word
         private readonly NominationList _nominationList;
 
         public RisingStarCertificatesMailMerge(IExcelFileFactory excelFileFactory, NominationList nominationList)
-            : base(@"StarFisher.Office.Word.MailMergeTemplates.RisingStarCertificatesMailMergeTemplate.docx", WdMailMergeMainDocType.wdFormLetters)
+            : base(@"StarFisher.Office.Word.MailMergeTemplates.RisingStarCertificatesMailMergeTemplate.docx",
+                WdMailMergeMainDocType.wdFormLetters)
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
             _nominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));

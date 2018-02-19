@@ -1,5 +1,4 @@
-﻿
-using StarFisher.Domain.Common;
+﻿using StarFisher.Domain.Common;
 
 namespace StarFisher.Domain.ValueObjects
 {
@@ -12,6 +11,8 @@ namespace StarFisher.Domain.ValueObjects
             Value = value;
         }
 
+        public string Value { get; }
+
         internal static NominationWriteUpSummary Create(string nominationWriteUpSummaryText)
         {
             if (string.IsNullOrWhiteSpace(nominationWriteUpSummaryText))
@@ -20,7 +21,6 @@ namespace StarFisher.Domain.ValueObjects
             return new NominationWriteUpSummary(nominationWriteUpSummaryText);
         }
 
-        public string Value { get; }
         protected override bool EqualsCore(NominationWriteUpSummary other)
         {
             return string.Equals(Value, other.Value);

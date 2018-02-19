@@ -22,7 +22,7 @@ namespace StarFisher.Office.Outlook
                 nominationList ?? throw new ArgumentNullException(nameof(nominationList)),
                 votingSurveyWebLink))
         {
-            if(string.IsNullOrWhiteSpace(votingSurveyWebLink))
+            if (string.IsNullOrWhiteSpace(votingSurveyWebLink))
                 throw new ArgumentException(votingSurveyWebLink);
         }
 
@@ -63,14 +63,15 @@ namespace StarFisher.Office.Outlook
             mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
-        private static void AddVotingGuideAttachment(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
+        private static void AddVotingGuideAttachment(ComObjectManager com, MailItem mailItem,
+            IMailMergeFactory mailMergeFactory,
             NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
             var fileName = awardType.GetVotingGuideFileName(nominationList.Year, nominationList.Quarter);
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
-            if(File.Exists(filePath.Value))
+            if (File.Exists(filePath.Value))
                 File.Delete(filePath.Value);
 
             var mailMerge = mailMergeFactory.GetVotingGuideMailMerge(awardType, nominationList);
@@ -99,15 +100,19 @@ namespace StarFisher.Office.Outlook
                 $@"<p class=MsoNormal>We had no eligible {awardType.PrettyName} nominees for {quarter}.</p>"));
         }
 
-        private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content, Person eiaChairPerson,
+        private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
+            Person eiaChairPerson,
             string quarter)
         {
             var guideOrGuides = hasRisingStar && hasStarValues ? @"guides" : "guide";
 
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
+            content.ChildNodes.Append(
+                HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Could you please review and approve the attached voting {guideOrGuides} and below-linked survey for the {quarter} Star Awards?</p>"));
+                $@"<p class=MsoNormal>Could you please review and approve the attached voting {
+                        guideOrGuides
+                    } and below-linked survey for the {quarter} Star Awards?</p>"));
         }
     }
 }

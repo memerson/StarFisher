@@ -48,7 +48,6 @@
     <Compile Include="Context\ConfigurationStorage.cs" />
     <Compile Include="Context\IConfiguration.cs" />
     <Compile Include="Context\NominationListContext.cs" />
-    <Compile Include="Context\QuarterlyAwardsAggregateContext.cs" />
     <Compile Include="Context\StarFisherContext.cs" />
     <Compile Include="Faults\InvalidFilePathException.cs" />
     <Compile Include="Menu\Common\Argument.cs" />

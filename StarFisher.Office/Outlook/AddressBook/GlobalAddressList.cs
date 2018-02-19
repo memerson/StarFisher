@@ -17,12 +17,13 @@ namespace StarFisher.Office.Outlook.AddressBook
 
     public class GlobalAddressList : IGlobalAddressList
     {
-        private static readonly Dictionary<string, List<Person>> PeopleByLastName = new Dictionary<string, List<Person>>(3000);
-        private static readonly Dictionary<string, List<Person>> PeopleByEmailAddress = new Dictionary<string, List<Person>>(3000);
-        private static bool _isInitialized;
+        private static readonly Dictionary<string, List<Person>> PeopleByLastName =
+            new Dictionary<string, List<Person>>(3000);
 
-        public event EventHandler InitializationStarted;
-        public event EventHandler InitializationCompleted;
+        private static readonly Dictionary<string, List<Person>> PeopleByEmailAddress =
+            new Dictionary<string, List<Person>>(3000);
+
+        private static bool _isInitialized;
 
         public bool GetPersonExists(PersonName name)
         {
@@ -31,8 +32,8 @@ namespace StarFisher.Office.Outlook.AddressBook
 
             Initialize();
 
-            return PeopleByLastName.TryGetValue(name.LastName, out List<Person> lastNameMatches) && 
-                lastNameMatches.Any(p => p.FirstName.StartsWith(name.FirstName));
+            return PeopleByLastName.TryGetValue(name.LastName, out List<Person> lastNameMatches) &&
+                   lastNameMatches.Any(p => p.FirstName.StartsWith(name.FirstName));
         }
 
         public bool GetPersonExists(EmailAddress emailAddress)
@@ -44,6 +45,9 @@ namespace StarFisher.Office.Outlook.AddressBook
 
             return PeopleByEmailAddress.ContainsKey(emailAddress.Value.ToLower());
         }
+
+        public event EventHandler InitializationStarted;
+        public event EventHandler InitializationCompleted;
 
         private void Initialize()
         {
@@ -82,9 +86,7 @@ namespace StarFisher.Office.Outlook.AddressBook
         {
             if (addressEntry.AddressEntryUserType != OlAddressEntryUserType.olExchangeUserAddressEntry &&
                 addressEntry.AddressEntryUserType != OlAddressEntryUserType.olExchangeRemoteUserAddressEntry)
-            {
                 return null;
-            }
 
             var exchangeUser = com.Get(addressEntry.GetExchangeUser);
 

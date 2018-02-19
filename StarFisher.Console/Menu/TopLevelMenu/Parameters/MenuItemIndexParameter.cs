@@ -7,7 +7,9 @@ namespace StarFisher.Console.Menu.TopLevelMenu.Parameters
     public class MenuItemIndexParameter : ListItemSelectionParameterBase<IMenuItemCommand>
     {
         public MenuItemIndexParameter(IReadOnlyList<IMenuItemCommand> menuItemCommands)
-         : base(menuItemCommands, @"menu items", false) { }
+            : base(menuItemCommands, @"menu items", false)
+        {
+        }
 
         protected override string GetListItemLabel(IMenuItemCommand listItem)
         {

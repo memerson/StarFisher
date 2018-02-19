@@ -8,11 +8,18 @@ namespace StarFisher.Console.Menu.Exit
     {
         private const string CommandTitle = @"Exit";
 
-        public ExitCommand() : base(CommandTitle) { }
+        public ExitCommand() : base(CommandTitle)
+        {
+        }
 
-        public ExitCommand(IStarFisherContext context) : base(context, CommandTitle) { }
+        public ExitCommand(IStarFisherContext context) : base(context, CommandTitle)
+        {
+        }
 
-        public override bool GetCanRun() => true;
+        public override bool GetCanRun()
+        {
+            return true;
+        }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {

@@ -16,7 +16,7 @@ namespace StarFisher.Console.Context
     {
         public void SaveConfiguration()
         {
-            if (!StarFisherContext.Current.IsInitialized)
+            if (!StarFisherContext.Instance.IsInitialized)
                 return;
 
             var filePath = GetStarFisherConfigurationFilePath(true);
@@ -24,7 +24,7 @@ namespace StarFisher.Console.Context
             using (var file = File.CreateText(filePath))
             {
                 var serializer = new JsonSerializer();
-                serializer.Serialize(file, new Configuration(StarFisherContext.Current));
+                serializer.Serialize(file, new Configuration(StarFisherContext.Instance));
             }
         }
 
@@ -58,7 +58,7 @@ namespace StarFisher.Console.Context
             var appDataDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var starFisherAppDataDirectoryPath = Path.Combine(appDataDirectoryPath, @"StarFisher");
 
-            if(create)
+            if (create)
                 Directory.CreateDirectory(starFisherAppDataDirectoryPath);
 
             return starFisherAppDataDirectoryPath;
@@ -71,7 +71,9 @@ namespace StarFisher.Console.Context
 
         private class Configuration
         {
-            public Configuration() { }
+            public Configuration()
+            {
+            }
 
             public Configuration(IStarFisherContext context) : this()
             {
@@ -87,9 +89,23 @@ namespace StarFisher.Console.Context
                 CertificatePrinterPerson = Convert(context.CertificatePrinterPerson);
             }
 
+            public string WorkingDirectoryPath { get; }
+
+            public int Year { get; }
+
+            public int Quarter { get; }
+
+            public Person EiaChairPerson { get; }
+
+            public List<Person> HrPeople { get; }
+
+            public List<Person> LuncheonPlannerPeople { get; }
+
+            public Person CertificatePrinterPerson { get; }
+
             public void InitializeContext()
             {
-                StarFisherContext.Current.Initialize(
+                StarFisherContext.Instance.Initialize(
                     DirectoryPath.Create(WorkingDirectoryPath),
                     Domain.ValueObjects.Year.Create(Year),
                     Domain.ValueObjects.Quarter.Create(Quarter),
@@ -121,20 +137,6 @@ namespace StarFisher.Console.Context
             {
                 return people.Select(Convert).ToList();
             }
-
-            public string WorkingDirectoryPath { get; set; }
-
-            public int Year { get; set; }
-
-            public int Quarter { get; set; }
-
-            public Person EiaChairPerson { get; set; }
-
-            public List<Person> HrPeople { get; set; }
-
-            public List<Person> LuncheonPlannerPeople { get; set; }
-
-            public Person CertificatePrinterPerson { get; set; }
 
             public class Person
             {

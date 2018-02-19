@@ -1,5 +1,4 @@
-﻿
-namespace StarFisher.Domain.Common
+﻿namespace StarFisher.Domain.Common
 {
     public abstract class ValueObject<T>
         where T : ValueObject<T>

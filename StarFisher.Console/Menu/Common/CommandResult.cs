@@ -2,7 +2,7 @@
 
 namespace StarFisher.Console.Menu.Common
 {
-    public class CommandResult<T> 
+    public class CommandResult<T>
         where T : CommandOutput
     {
         private CommandResult(CommandResultType resultType, T output, Exception exception)
@@ -11,6 +11,12 @@ namespace StarFisher.Console.Menu.Common
             Output = output;
             Exception = exception;
         }
+
+        public CommandResultType ResultType { get; }
+
+        public T Output { get; }
+
+        public Exception Exception { get; }
 
         public static CommandResult<T> Failure(Exception exception)
         {
@@ -26,11 +32,5 @@ namespace StarFisher.Console.Menu.Common
         {
             return new CommandResult<T>(CommandResultType.Abort, default(T), null);
         }
-
-        public CommandResultType ResultType { get; }
-
-        public T Output { get; }
-
-        public Exception Exception { get; }
     }
 }

@@ -10,6 +10,7 @@ namespace StarFisher.Console.Menu.Initialize.Commands
     public class GetPersonNameCommand : InitializeCommandBase<GetPersonNameCommand.Input, PersonName>
     {
         private readonly IGlobalAddressList _globalAddressList;
+
         public GetPersonNameCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) : base(context)
         {
             _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));

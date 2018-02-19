@@ -6,11 +6,10 @@ namespace StarFisher.Domain.ValueObjects
 {
     public class EmailAddress : ValueObject<EmailAddress>
     {
+        private const string EmailAddressFromNameFormat = @"{0}.{1}@healthstream.com";
         public static readonly EmailAddress Invalid = new EmailAddress(@"INVALID");
 
         public static readonly EmailAddress None = new EmailAddress(string.Empty);
-
-        private const string EmailAddressFromNameFormat = @"{0}.{1}@healthstream.com";
 
         private static readonly Regex ValidationRegex = new Regex(@"^\w+([-+.']\w+)*@healthstream\.com$",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -19,6 +18,10 @@ namespace StarFisher.Domain.ValueObjects
         {
             Value = emailAddressText ?? string.Empty;
         }
+
+        public string Value { get; }
+
+        public bool IsValid => GetIsValid(Value);
 
         public static EmailAddress Create(string emailAddressText)
         {
@@ -37,10 +40,6 @@ namespace StarFisher.Domain.ValueObjects
         {
             return !string.IsNullOrWhiteSpace(emailAddressText) && ValidationRegex.IsMatch(emailAddressText);
         }
-
-        public string Value { get; }
-
-        public bool IsValid => GetIsValid(Value);
 
         protected override bool EqualsCore(EmailAddress other)
         {

@@ -9,12 +9,13 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
     {
         private readonly HashSet<EmailAddress> _unrecognizedEmailAddresses;
 
-        public NomineeToChangeEmailAddressParameter(IReadOnlyCollection<Person> allNominees, IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses)
+        public NomineeToChangeEmailAddressParameter(IReadOnlyCollection<Person> allNominees,
+            IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses)
             : base(allNominees)
         {
             _unrecognizedEmailAddresses =
                 new HashSet<EmailAddress>(unrecognizedEmailAddresses ??
-                                        throw new ArgumentNullException(nameof(unrecognizedEmailAddresses)));
+                                          throw new ArgumentNullException(nameof(unrecognizedEmailAddresses)));
 
             RegisterAbortInput(@"done");
         }
@@ -28,7 +29,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.EmailAddress, -45} {listItem.Name.FullName} from {listItem.OfficeLocation.ConciseName}";
+            return $@"{listItem.EmailAddress,-45} {listItem.Name.FullName} from {listItem.OfficeLocation.ConciseName}";
         }
 
         protected override void WriteListItem(Person listItem, string listItemText)
@@ -41,7 +42,8 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction(@"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.");
+            WriteCallToAction(
+                @"Enter the number of the email address you want to change, or enter 'done' if you don't want to modify any email addresses.");
         }
     }
 }

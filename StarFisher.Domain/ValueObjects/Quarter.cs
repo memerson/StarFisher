@@ -26,17 +26,6 @@ namespace StarFisher.Domain.ValueObjects
             NumericValue = numericValue;
         }
 
-        public static Quarter Create(int numericValue)
-        {
-            var quarter = ValidQuarters.FirstOrDefault(q => q.NumericValue == numericValue);
-            return quarter ?? Invalid;
-        }
-
-        public static bool IsValid(int numericValue)
-        {
-            return ValidQuarters.Any(q => q.NumericValue == numericValue);
-        }
-
         public int NumericValue { get; }
 
         public string Abbreviation => "Q" + NumericValue;
@@ -59,6 +48,17 @@ namespace StarFisher.Domain.ValueObjects
                         return @"UNKNOWN";
                 }
             }
+        }
+
+        public static Quarter Create(int numericValue)
+        {
+            var quarter = ValidQuarters.FirstOrDefault(q => q.NumericValue == numericValue);
+            return quarter ?? Invalid;
+        }
+
+        public static bool IsValid(int numericValue)
+        {
+            return ValidQuarters.Any(q => q.NumericValue == numericValue);
         }
 
         protected override bool EqualsCore(Quarter other)

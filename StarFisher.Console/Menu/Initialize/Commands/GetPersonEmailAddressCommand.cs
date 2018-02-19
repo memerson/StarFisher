@@ -11,7 +11,8 @@ namespace StarFisher.Console.Menu.Initialize.Commands
     {
         private readonly IGlobalAddressList _globalAddressList;
 
-        public GetPersonEmailAddressCommand(IStarFisherContext context, IGlobalAddressList globalAddressList) : base(context)
+        public GetPersonEmailAddressCommand(IStarFisherContext context,
+            IGlobalAddressList globalAddressList) : base(context)
         {
             _globalAddressList = globalAddressList ?? throw new ArgumentNullException(nameof(globalAddressList));
         }

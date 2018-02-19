@@ -11,6 +11,8 @@ namespace StarFisher.Domain.ValueObjects
             Value = directoryPath;
         }
 
+        public string Value { get; }
+
         public static DirectoryPath Create(string directoryPath)
         {
             if (!IsValid(directoryPath))
@@ -42,18 +44,17 @@ namespace StarFisher.Domain.ValueObjects
             }
         }
 
-        public string Value { get; }
-
         public void CreateIfDoesNotExist()
         {
             Directory.CreateDirectory(Value);
         }
 
-        public bool TryGetFilePathForFileInDirectory(string fileName, bool createDirectory, bool fileShouldExist, out FilePath filePath)
+        public bool TryGetFilePathForFileInDirectory(string fileName, bool createDirectory, bool fileShouldExist,
+            out FilePath filePath)
         {
             filePath = null;
 
-            if(createDirectory)
+            if (createDirectory)
                 CreateIfDoesNotExist();
 
             var path = Path.Combine(Value, fileName);

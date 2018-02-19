@@ -1,5 +1,4 @@
-﻿
-//namespace StarFisher.Office.Outlook.AddressBook
+﻿//namespace StarFisher.Office.Outlook.AddressBook
 //{
 //    public enum PersonQueryResult
 //    {
@@ -9,3 +8,4 @@
 //        MultipleNameMatchesFound
 //    }
 //}
+
