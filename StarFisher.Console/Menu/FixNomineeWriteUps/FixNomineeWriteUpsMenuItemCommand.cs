@@ -12,10 +12,6 @@ namespace StarFisher.Console.Menu.FixNomineeWriteUps
     {
         private const string CommandTitle = @"Fix nomination write-ups";
 
-        public FixNomineeWriteUpsMenuItemCommand() : base(CommandTitle)
-        {
-        }
-
         public FixNomineeWriteUpsMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle)
         {
         }

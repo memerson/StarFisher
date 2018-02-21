@@ -16,7 +16,9 @@ using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
+using StarFisher.Console.Menu.SelectAwardWinner;
 using StarFisher.Console.Menu.TopLevelMenu;
+using StarFisher.Console.Menu.UnselectAwardWinner;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
@@ -58,6 +60,8 @@ namespace StarFisher.Console
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new SelectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
+                new UnselectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Instance, globalAddressList,
                     configurationStorage),
                 new ExitCommand(StarFisherContext.Instance)

@@ -6,8 +6,8 @@ namespace StarFisher.Console.Menu.Common.Parameters
 {
     public abstract class NomineeParameterBase : ListItemSelectionParameterBase<Person>
     {
-        protected NomineeParameterBase(IReadOnlyCollection<Person> allNominees)
-            : base(allNominees?.OrderBy(n => n.Name.FullName).ToList(), @"nominees")
+        protected NomineeParameterBase(IReadOnlyCollection<Person> nominees)
+            : base(nominees?.OrderBy(n => n.Name.FullName).ToList(), @"nominees")
         {
         }
     }

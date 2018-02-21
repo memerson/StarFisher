@@ -18,10 +18,10 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
         {
             do
             {
-                if (!GetAwardType(out AwardType awardType))
+                if (!TryGetAwardType(out AwardType awardType))
                     return CommandOutput.None.Success;
 
-                if (!DisqualifyNominee(awardType))
+                if (!TryDisqualifyNominee(awardType))
                     return CommandOutput.None.Success;
 
             } while (GetDisqualifyAnotherNominee());
@@ -29,16 +29,16 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
             return CommandOutput.None.Success;
         }
 
-        private bool GetAwardType(out AwardType awardType)
+        private bool TryGetAwardType(out AwardType awardType)
         {
             var parameter = new AwardTypeParameter();
             return TryGetArgumentValue(parameter, out awardType);
         }
 
-        private bool DisqualifyNominee(AwardType awardType)
+        private bool TryDisqualifyNominee(AwardType awardType)
         {
             var nominationList = Context.NominationListContext.NominationList;
-            var nominees = nominationList.GetNomineesForAward(awardType);
+            var nominees = nominationList.GetNomineesForAward(awardType, false);
             var parameter = new NomineeToDisqualifyParameter(nominees);
 
             if (!TryGetArgumentValue(parameter, out Person nomineeToDisqualify))

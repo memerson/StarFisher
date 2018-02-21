@@ -8,10 +8,6 @@ namespace StarFisher.Console.Menu.Exit
     {
         private const string CommandTitle = @"Exit";
 
-        public ExitCommand() : base(CommandTitle)
-        {
-        }
-
         public ExitCommand(IStarFisherContext context) : base(context, CommandTitle)
         {
         }

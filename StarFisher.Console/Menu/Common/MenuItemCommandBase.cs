@@ -21,10 +21,6 @@ namespace StarFisher.Console.Menu.Common
             _successMessage = successMessage;
         }
 
-        protected MenuItemCommandBase(string title) : this(null, title)
-        {
-        }
-
         public string Title { get; }
 
         public void Run()

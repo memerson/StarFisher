@@ -6,7 +6,7 @@ namespace StarFisher.Console.Menu.DisqualifyNominees.Parameters
 {
     public class NomineeToDisqualifyParameter : NomineeParameterBase
     {
-        public NomineeToDisqualifyParameter(IReadOnlyCollection<Person> allNominees) : base(allNominees)
+        public NomineeToDisqualifyParameter(IReadOnlyCollection<Person> nominees) : base(nominees)
         {
             RegisterAbortInput(@"stop");
         }
