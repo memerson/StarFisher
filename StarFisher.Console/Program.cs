@@ -18,6 +18,7 @@ using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
 using StarFisher.Console.Menu.SelectAwardWinner;
+using StarFisher.Console.Menu.SendNominationNotificationEmails;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Console.Menu.UnselectAwardWinner;
 using StarFisher.Domain.ValueObjects;
@@ -61,6 +62,7 @@ namespace StarFisher.Console
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new SendNominationNotificationEmailsMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
                 new SelectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new UnselectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new CreateCertificateEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),

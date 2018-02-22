@@ -74,9 +74,14 @@
     <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\ComObjectManager.cs" />
+    <Compile Include="Word\EmailMailMergeBase.cs" />
+    <Compile Include="Word\CatalogMailMergeBase.cs" />
+    <Compile Include="Word\FormLetterMailMergeBase.cs" />
     <Compile Include="Word\IMailMerge.cs" />
     <Compile Include="Word\MailMergeBase.cs" />
     <Compile Include="Word\MailMergeFactory.cs" />
+    <Compile Include="Word\RisingStarNominationNotificationsMailMerge.cs" />
+    <Compile Include="Word\StarValuesNominationNotificationsMailMerge.cs" />
     <Compile Include="Word\StarValuesCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarVotingGuideMailMerge.cs" />
@@ -153,6 +158,8 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarCertificatesMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesCertificatesMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarCertificatesMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesNominationNotificationsMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarNominationNotificationsMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

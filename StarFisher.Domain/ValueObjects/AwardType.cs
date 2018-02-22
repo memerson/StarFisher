@@ -13,7 +13,7 @@ namespace StarFisher.Domain.ValueObjects
         public static readonly AwardType RisingStar = new AwardType(
             @"Intern - Rising Star Award Nominee", @"RisingStar", @"Rising Star Award", AwardAmount.RisingStar);
 
-        private static readonly List<AwardType> ValidAwardTypes = new List<AwardType>
+        public static IReadOnlyCollection<AwardType> ValidAwardTypes { get; } = new List<AwardType>
         {
             StarValues,
             RisingStar

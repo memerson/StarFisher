@@ -11,7 +11,7 @@ namespace StarFisher.Office.Outlook
 {
     internal class HumanResourcesNomineeValidationEmail : EmailBase
     {
-        internal HumanResourcesNomineeValidationEmail(IEmailConfiguration emailConfiguration,
+        public HumanResourcesNomineeValidationEmail(IEmailConfiguration emailConfiguration,
             NominationList nominationList)
             : base((com, mailItem) => BuildEmail(
                 mailItem,

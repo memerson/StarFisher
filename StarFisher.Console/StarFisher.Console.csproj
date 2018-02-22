@@ -116,6 +116,8 @@
     <Compile Include="Menu\SelectAwardWinner\Parameters\SelectAnotherAwardWinnerParameter.cs" />
     <Compile Include="Menu\SelectAwardWinner\Parameters\NomineeToSelectAsAwardWinnerParameter.cs" />
     <Compile Include="Menu\SelectAwardWinner\SelectAwardWinnerMenuItemCommand.cs" />
+    <Compile Include="Menu\SendNominationNotificationEmails\Parameters\ReadyParameter.cs" />
+    <Compile Include="Menu\SendNominationNotificationEmails\SendNominationNotificationEmailsMenuItemCommand.cs" />
     <Compile Include="Menu\TopLevelMenu\Parameters\MenuItemIndexParameter.cs" />
     <Compile Include="Menu\TopLevelMenu\TopLevelMenuCommand.cs" />
     <Compile Include="Menu\CreateHumanResourceNomineeValidationEmail\CreateHumanResourceNomineeValidationEmailMenuItemCommand.cs" />

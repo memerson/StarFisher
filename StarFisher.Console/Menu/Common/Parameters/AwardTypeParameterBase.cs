@@ -19,5 +19,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
         {
             return listItem.PrettyName;
         }
+
+        protected abstract override void WriteCallToAction();
     }
 }

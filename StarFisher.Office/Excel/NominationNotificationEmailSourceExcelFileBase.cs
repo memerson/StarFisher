@@ -34,7 +34,7 @@ namespace StarFisher.Office.Excel
             SetCellValue(cells, 1, 8, @"Individual Integrity");
             SetCellValue(cells, 1, 9, @"Performance");
             SetCellValue(cells, 1, 10, @"WRITE-UP");
-            SetCellValue(cells, 1, 11, @"E-mail Address");
+            SetCellValue(cells, 1, 11, @"Email");
 
             var rowNumber = 2;
             foreach (var nomination in nominations)

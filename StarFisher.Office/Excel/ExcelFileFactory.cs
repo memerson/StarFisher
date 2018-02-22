@@ -10,13 +10,11 @@ namespace StarFisher.Office.Excel
 
         IExcelFile GetVotingKeyExcelFile(AwardType awardType, NominationList nominationList);
 
-        IExcelFile GetStarValuesNominationNotificationEmailSourceExcelFile(NominationList nominationList);
+        IExcelFile GetNominationNotificationEmailSourceExcelFile(AwardType awardType, NominationList nominationList);
 
         IExcelFile GetStarValuesWinnersMemoSourceExcelFile(NominationList nominationList);
 
         IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, NominationList nominationList);
-
-        IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList);
 
         IExcelFile GetAwardsLuncheonInviteeListExcelFile(NominationList nominationList);
     }
@@ -49,9 +47,17 @@ namespace StarFisher.Office.Excel
             throw new NotSupportedException(awardType.Value);
         }
 
-        public IExcelFile GetStarValuesNominationNotificationEmailSourceExcelFile(NominationList nominationList)
+        public IExcelFile GetNominationNotificationEmailSourceExcelFile(AwardType awardType, NominationList nominationList)
         {
-            return new StarValuesNominationNotificationEmailSourceExcelFile(nominationList);
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            if (awardType == AwardType.StarValues)
+                return new StarValuesNominationNotificationEmailSourceExcelFile(nominationList);
+            if (awardType == AwardType.RisingStar)
+                return new RisingStarNominationNotificationEmailSourceExcelFile(nominationList);
+
+            throw new NotSupportedException(awardType.Value);
         }
 
         public IExcelFile GetStarValuesWinnersMemoSourceExcelFile(NominationList nominationList)
