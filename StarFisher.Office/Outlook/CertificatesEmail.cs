@@ -27,8 +27,8 @@ namespace StarFisher.Office.Outlook
         {
             var certificatePrinter = emailConfiguration.CertificatePrinterPerson;
             var quarter = nominationList.Quarter.Abbreviation;
-            var hasStarValues = nominationList.RisingStarAwardWinners.Count > 0;
-            var hasRisingStar = nominationList.StarValuesAwardWinners.Count > 0;
+            var hasStarValues = nominationList.StarValuesAwardWinners.Count > 0;
+            var hasRisingStar = nominationList.RisingStarAwardWinners.Count > 0;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
@@ -42,12 +42,12 @@ namespace StarFisher.Office.Outlook
             WriteRequest(content, certificatePrinter, quarter);
 
             if (!hasStarValues)
-                WriteNoNomineesCaveat(content, AwardType.StarValues, quarter);
+                WriteNoWinnersCaveat(content, AwardType.StarValues, quarter);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
 
             if (!hasRisingStar)
-                WriteNoNomineesCaveat(content, AwardType.RisingStar, quarter);
+                WriteNoWinnersCaveat(content, AwardType.RisingStar, quarter);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
 
@@ -82,7 +82,7 @@ namespace StarFisher.Office.Outlook
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
         }
 
-        private static void WriteNoNomineesCaveat(HtmlNode content, AwardType awardType, string quarter)
+        private static void WriteNoWinnersCaveat(HtmlNode content, AwardType awardType, string quarter)
         {
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(

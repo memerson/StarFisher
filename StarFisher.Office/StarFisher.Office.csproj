@@ -69,6 +69,7 @@
     <Compile Include="Outlook\IEmailConfiguration.cs" />
     <Compile Include="Outlook\CertificatesEmail.cs" />
     <Compile Include="Outlook\LuncheonInviteeListEmail.cs" />
+    <Compile Include="Outlook\OutlookExtensions.cs" />
     <Compile Include="Outlook\VotingKeyEmail.cs" />
     <Compile Include="Outlook\VotingSurveyReviewEmail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -149,9 +150,9 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesVotingGuideMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesWinnersMemoMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarVotingGuideMailMergeTemplate.docx" />
-    <None Include="Word\MailMergeTemplates\RisingStarCertificatesMailMergeTemplate.docx" />
-    <None Include="Word\MailMergeTemplates\StarValuesCertificatesMailMergeTemplate.docx" />
-    <None Include="Word\MailMergeTemplates\SuperStarCertificatesMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarCertificatesMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesCertificatesMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarCertificatesMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

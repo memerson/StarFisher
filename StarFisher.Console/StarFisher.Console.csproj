@@ -70,6 +70,7 @@
     <Compile Include="Menu\Common\WorkflowBase.cs" />
     <Compile Include="Menu\CreateAwardVotingGuide\CreateAwardVotingGuideMenuItemCommand.cs" />
     <Compile Include="Menu\CreateAwardVotingKey\CreateAwardVotingKeyMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateCertificateEmail\CreateCertificateEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateLuncheonInviteeListEmail\CreateLuncheonInviteeListEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingKeyEmail\CreateVotingKeyEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingSurveyReviewEmail\CreateVotingSurveyReviewEmailMenuItemCommand.cs" />

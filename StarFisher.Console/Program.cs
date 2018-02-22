@@ -4,6 +4,7 @@ using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.CreateAwardVotingGuide;
 using StarFisher.Console.Menu.CreateAwardVotingKey;
+using StarFisher.Console.Menu.CreateCertificateEmail;
 using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
 using StarFisher.Console.Menu.CreateLuncheonInviteeListEmail;
 using StarFisher.Console.Menu.CreateVotingKeyEmail;
@@ -62,6 +63,7 @@ namespace StarFisher.Console
                 new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new SelectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new UnselectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
+                new CreateCertificateEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Instance, globalAddressList,
                     configurationStorage),
                 new ExitCommand(StarFisherContext.Instance)
