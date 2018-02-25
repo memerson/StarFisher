@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel\StarValuesNomineeListExcelFile.cs" />
     <Compile Include="Excel\AwardsLuncheonInviteeListExcelFile.cs" />
     <Compile Include="Excel\ExcelFileBase.cs" />
     <Compile Include="Excel\CertificatesSourceExcelFileBase.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Excel\StarValuesNominationNotificationEmailSourceExcelFile.cs" />
     <Compile Include="Excel\StarValuesVotingKeyExcelFile.cs" />
     <Compile Include="Excel\StarValuesVotingGuideSourceExcelFile.cs" />
+    <Compile Include="Excel\RisingStarWinnersMemoSourceExcelFile.cs" />
     <Compile Include="Excel\StarValuesWinnersMemoSourceExcelFile.cs" />
     <Compile Include="Excel\VotingGuideSourceExcelFileBase.cs" />
     <Compile Include="Excel\ExcelFileFactory.cs" />
@@ -85,8 +87,10 @@
     <Compile Include="Word\StarValuesCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarVotingGuideMailMerge.cs" />
+    <Compile Include="Word\RisingStarWinnersMemoMailMerge.cs" />
     <Compile Include="Word\StarValuesWinnersMemoMailMerge.cs" />
     <Compile Include="Word\StarValuesVotingGuideMailMerge.cs" />
+    <Compile Include="Word\StarAwardsMemoHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
@@ -160,6 +164,8 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarCertificatesMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarNominationNotificationsMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\Documents\StarAwardWinnersAndNomineesForDistribution.docx" />
+    <None Include="Word\MailMergeTemplates\RisingStarWinnersMemoMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

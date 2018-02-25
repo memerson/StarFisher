@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using StarFisher.Domain.Common;
+using StarFisher.Domain.Faults;
 
 namespace StarFisher.Domain.ValueObjects
 {
@@ -47,6 +48,14 @@ namespace StarFisher.Domain.ValueObjects
         public void CreateIfDoesNotExist()
         {
             Directory.CreateDirectory(Value);
+        }
+
+        public FilePath GetFilePathForFileInDirectory(string fileName, bool createDirectory, bool fileShouldExist)
+        {
+            if(!TryGetFilePathForFileInDirectory(fileName, createDirectory, fileShouldExist, out FilePath filePath))
+                throw InvalidFilePathException.WorkingDirectoryFilePathInvalid(fileName);
+
+            return filePath;
         }
 
         public bool TryGetFilePathForFileInDirectory(string fileName, bool createDirectory, bool fileShouldExist,

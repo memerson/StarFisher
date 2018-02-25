@@ -23,7 +23,7 @@ namespace StarFisher.Console.Menu.SendNominationNotificationEmails
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             if (!GetReady())
-                return CommandOutput.None.Success;
+                return CommandOutput.None.Abort;
 
             var nominationList = Context.NominationListContext.NominationList;
 

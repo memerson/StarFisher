@@ -25,7 +25,7 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             if (!TryGetArgumentValue(new VotingSurveyWebLinkParameter(), out string votingSurveyWebLink))
-                return CommandOutput.None.Success;
+                return CommandOutput.None.Abort;
 
             var nominationList = Context.NominationListContext.NominationList;
             using (var email = _emailFactory.GetVotingSurveyReviewEmail(nominationList, votingSurveyWebLink))

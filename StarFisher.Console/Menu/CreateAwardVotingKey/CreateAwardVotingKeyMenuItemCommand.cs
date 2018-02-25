@@ -1,7 +1,7 @@
 ﻿using System;
 using StarFisher.Console.Context;
-using StarFisher.Console.Faults;
 using StarFisher.Console.Menu.Common;
+using StarFisher.Domain.Faults;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 
@@ -25,10 +25,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
             var nominationList = Context.NominationListContext.NominationList;
             var fileName = GetVotingKeyFileName();
 
-            if (!Context.WorkingDirectoryPath.TryGetFilePathForFileInDirectory(fileName, false, false,
-                out FilePath filePath))
-                throw InvalidFilePathException.WorkingDirectoryFilePathInvalid(fileName);
-
+            var filePath = Context.WorkingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
             using (var excelFile = _excelFileFactory.GetVotingKeyExcelFile(_awardType, nominationList))
             {
                 excelFile.Save(filePath);

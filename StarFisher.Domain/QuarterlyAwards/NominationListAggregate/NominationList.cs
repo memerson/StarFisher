@@ -247,11 +247,15 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public IReadOnlyList<AwardWinner> AwardWinners => _awardWinners;
 
-        public IReadOnlyCollection<AwardWinner> RisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar);
+        public IReadOnlyList<AwardWinner> RisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar);
 
-        public IReadOnlyCollection<AwardWinner> StarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues);
+        public IReadOnlyList<AwardWinner> StarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues);
 
         public bool HasAwardWinners => AwardWinners.Count > 0;
+
+        public bool HasRisingStarAwardWinners => RisingStarAwardWinners.Count > 0;
+
+        public bool HasStarValuesAwardWinners => StarValuesAwardWinners.Count > 0;
 
         public bool GetIsAwardWinner(AwardType awardType, Person person)
         {
@@ -314,7 +318,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             UnselectAwardWinner(awardWinner);
         }
 
-        private IReadOnlyCollection<AwardWinner> GetWinnersForAwardType(AwardType awardType)
+        private IReadOnlyList<AwardWinner> GetWinnersForAwardType(AwardType awardType)
         {
             return AwardWinners.Where(w => w.AwardType == awardType).ToList();
         }

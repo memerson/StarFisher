@@ -17,6 +17,7 @@ using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
+using StarFisher.Console.Menu.SaveStarAwardsWinnersMemoArtifacts;
 using StarFisher.Console.Menu.SelectAwardWinner;
 using StarFisher.Console.Menu.SendNominationNotificationEmails;
 using StarFisher.Console.Menu.TopLevelMenu;
@@ -41,6 +42,7 @@ namespace StarFisher.Console
             InitializeApplication(configurationStorage, globalAddressList);
 
             var emailFactory = new EmailFactory(StarFisherContext.Instance, excelFileFactory, mailMergeFactory);
+            var memoHelper = new StarAwardsMemoHelper(excelFileFactory, mailMergeFactory);
 
             var menuItemCommands = new List<IMenuItemCommand>
             {
@@ -66,6 +68,7 @@ namespace StarFisher.Console
                 new SelectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new UnselectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new CreateCertificateEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new SaveStarAwardsWinnersMemoArtifactsMenuItemCommand(StarFisherContext.Instance, memoHelper),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Instance, globalAddressList,
                     configurationStorage),
                 new ExitCommand(StarFisherContext.Instance)

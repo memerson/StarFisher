@@ -58,6 +58,7 @@
     <Compile Include="Common\AggregateRoot.cs" />
     <Compile Include="Common\Entity.cs" />
     <Compile Include="Common\ValueObject.cs" />
+    <Compile Include="Faults\InvalidFilePathException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\Persistence\AwardWinnerDto.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\Entities\Nomination.cs" />

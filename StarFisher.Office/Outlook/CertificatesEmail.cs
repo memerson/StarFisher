@@ -27,8 +27,8 @@ namespace StarFisher.Office.Outlook
         {
             var certificatePrinter = emailConfiguration.CertificatePrinterPerson;
             var quarter = nominationList.Quarter.Abbreviation;
-            var hasStarValues = nominationList.StarValuesAwardWinners.Count > 0;
-            var hasRisingStar = nominationList.RisingStarAwardWinners.Count > 0;
+            var hasStarValues = nominationList.HasStarValuesAwardWinners;
+            var hasRisingStar = nominationList.HasRisingStarAwardWinners;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;

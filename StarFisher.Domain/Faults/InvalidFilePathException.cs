@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace StarFisher.Console.Faults
+namespace StarFisher.Domain.Faults
 {
     [Serializable]
     public class InvalidFilePathException : ApplicationException

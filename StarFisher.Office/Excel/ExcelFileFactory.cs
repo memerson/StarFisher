@@ -7,16 +7,13 @@ namespace StarFisher.Office.Excel
     public interface IExcelFileFactory
     {
         IExcelFile GetVotingGuideSourceExcelFile(AwardType awardType, NominationList nominationList);
-
         IExcelFile GetVotingKeyExcelFile(AwardType awardType, NominationList nominationList);
-
         IExcelFile GetNominationNotificationEmailSourceExcelFile(AwardType awardType, NominationList nominationList);
-
         IExcelFile GetStarValuesWinnersMemoSourceExcelFile(NominationList nominationList);
-
+        IExcelFile GetRisingStarWinnersMemoSourceExcelFile(NominationList nominationList);
         IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, NominationList nominationList);
-
         IExcelFile GetAwardsLuncheonInviteeListExcelFile(NominationList nominationList);
+        IExcelFile GetStarValuesNomineeListExcelFile(NominationList nominationList);
     }
 
     public class ExcelFileFactory : IExcelFileFactory
@@ -65,6 +62,11 @@ namespace StarFisher.Office.Excel
             return new StarValuesWinnersMemoSourceExcelFile(nominationList);
         }
 
+        public IExcelFile GetRisingStarWinnersMemoSourceExcelFile(NominationList nominationList)
+        {
+            return new RisingStarWinnersMemoSourceExcelFile(nominationList);
+        }
+
         public IExcelFile GetCertificatesSourceExcelFile(AwardType awardType, NominationList nominationList)
         {
             if (awardType == null)
@@ -78,14 +80,14 @@ namespace StarFisher.Office.Excel
             throw new NotSupportedException(awardType.Value);
         }
 
-        public IExcelFile GetRisingStarNominationNotificationEmailSourceExcelFile(NominationList nominationList)
-        {
-            return new RisingStarNominationNotificationEmailSourceExcelFile(nominationList);
-        }
-
         public IExcelFile GetAwardsLuncheonInviteeListExcelFile(NominationList nominationList)
         {
             return new AwardsLuncheonInviteeListExcelFile(nominationList);
+        }
+
+        public IExcelFile GetStarValuesNomineeListExcelFile(NominationList nominationList)
+        {
+            return new StarValuesNomineeListExcelFile(nominationList);
         }
     }
 }

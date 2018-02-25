@@ -9,6 +9,7 @@ namespace StarFisher.Office.Word
     {
         IMailMerge GetVotingGuideMailMerge(AwardType awardType, NominationList nominationList);
         IMailMerge GetStarValuesWinnersMemoMailMerge(NominationList nominationList);
+        IMailMerge GetRisingStarWinnersMemoMailMerge(NominationList nominationList);
         IMailMerge GetCertificatesMailMerge(AwardType awardType, NominationList nominationList);
         IMailMerge GetNominationNotificationsMailMerge(AwardType awardType, NominationList nominationList);
     }
@@ -38,6 +39,11 @@ namespace StarFisher.Office.Word
         public IMailMerge GetStarValuesWinnersMemoMailMerge(NominationList nominationList)
         {
             return new StarValuesWinnersMemoMailMerge(_excelFileFactory, nominationList);
+        }
+
+        public IMailMerge GetRisingStarWinnersMemoMailMerge(NominationList nominationList)
+        {
+            return new RisingStarWinnersMemoMailMerge(_excelFileFactory, nominationList);
         }
 
         public IMailMerge GetCertificatesMailMerge(AwardType awardType, NominationList nominationList)
