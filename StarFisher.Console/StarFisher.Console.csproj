@@ -89,7 +89,7 @@
     <Compile Include="Menu\FixNomineeWriteUps\Parameters\WriteUpActionParameter.cs" />
     <Compile Include="Menu\Initialize\Commands\GetPersonEmailAddressCommand.cs" />
     <Compile Include="Menu\Initialize\Commands\GetPersonNameCommand.cs" />
-    <Compile Include="Menu\Initialize\Commands\GetWorkingDirectoryCommand.cs" />
+    <Compile Include="Menu\Initialize\Commands\GetStarAwardsDirectoryPathCommand.cs" />
     <Compile Include="Menu\Initialize\Commands\GetQuarterCommand.cs" />
     <Compile Include="Menu\Initialize\Commands\GetYearCommand.cs" />
     <Compile Include="Menu\Initialize\Commands\InitializeCommandBase.cs" />
@@ -97,7 +97,7 @@
     <Compile Include="Menu\Initialize\Parameters\EmailAddressParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\PersonNameParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\UseCurrentValueParameter.cs" />
-    <Compile Include="Menu\Initialize\Parameters\WorkingDirectoryParameter.cs" />
+    <Compile Include="Menu\Initialize\Parameters\StarAwardsDirectoryPathParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\QuarterParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\YearParameter.cs" />
     <Compile Include="Menu\LoadNominationsFromSnapshot\LoadNominationsFromSnapshotMenuItemCommand.cs" />
@@ -111,7 +111,7 @@
     <Compile Include="Menu\RemoveNominations\RemoveNominationMenuItemCommand.cs" />
     <Compile Include="Menu\RemoveNominations\Parameters\NominationToRemoveParameter.cs" />
     <Compile Include="Menu\RemoveNominations\Parameters\RemoveAnotherNominationParameter.cs" />
-    <Compile Include="Menu\SaveStarAwardsWinnersMemoArtifacts\SaveStarAwardsWinnersMemoArtifactsMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateStarAwardsMemoArtifacts\CreateStarAwardsMemoArtifactsMenuItemCommand.cs" />
     <Compile Include="Menu\SelectAwardWinner\Parameters\AwardTypeParameter.cs" />
     <Compile Include="Menu\SelectAwardWinner\Parameters\SelectAnotherAwardWinnerParameter.cs" />
     <Compile Include="Menu\SelectAwardWinner\Parameters\NomineeToSelectAsAwardWinnerParameter.cs" />

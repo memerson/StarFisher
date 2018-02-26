@@ -27,17 +27,13 @@ namespace StarFisher.Console.Context
 
     public class NominationListContext : INominationListContext
     {
-        private readonly Quarter _quarter;
         private readonly INominationListRepository _repository;
-        private readonly Year _year;
 
         private NominationList _nominationList;
 
-        public NominationListContext(INominationListRepository nominationListRepository, Year year, Quarter quarter)
+        public NominationListContext(INominationListRepository nominationListRepository)
         {
             _repository = nominationListRepository ?? throw new ArgumentNullException(nameof(nominationListRepository));
-            _year = year ?? throw new ArgumentNullException(nameof(year));
-            _quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
         }
 
         public bool HasNominationListLoaded => _nominationList != null;
@@ -57,27 +53,27 @@ namespace StarFisher.Console.Context
 
         public void LoadSurveyExport(FilePath filePath)
         {
-            NominationList = _repository.LoadSurveyExport(filePath, _year, _quarter);
+            NominationList = _repository.LoadSurveyExport(filePath);
         }
 
         public int GetSnapshotCount()
         {
-            return _repository.GetSnapshotCount(_year, _quarter);
+            return _repository.GetSnapshotCount();
         }
 
         public IReadOnlyList<SnapshotSummary> ListSnapshotSummaries()
         {
-            return _repository.ListSnapshotSummaries(_year, _quarter);
+            return _repository.ListSnapshotSummaries();
         }
 
         public void LoadSnapshot(SnapshotSummary snapshotSummary)
         {
-            NominationList = _repository.GetSnapshot(_year, _quarter, snapshotSummary);
+            NominationList = _repository.GetSnapshot(snapshotSummary);
         }
 
         public void LoadLatestSnapshot()
         {
-            NominationList = _repository.GetLatestSnapshot(_year, _quarter);
+            NominationList = _repository.GetLatestSnapshot();
         }
 
         public void SaveSnapshot()

@@ -7,7 +7,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot
 {
     public class LoadNominationsFromSnapshotMenuItemCommand : MenuItemCommandBase
     {
-        private const string CommandTitle = @"Recover nominations from your previous work";
+        private const string CommandTitle = @"Recover data from your previous work";
 
         public LoadNominationsFromSnapshotMenuItemCommand(IStarFisherContext context) : base(context, CommandTitle)
         {

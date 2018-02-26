@@ -80,7 +80,7 @@ namespace StarFisher.Console.Context
                 if (context == null)
                     throw new ArgumentNullException(nameof(context));
 
-                WorkingDirectoryPath = context.WorkingDirectoryPath.Value;
+                StarAwardsDirectoryPath = context.StarAwardsDirectoryPath.Value;
                 Year = context.Year.Value;
                 Quarter = context.Quarter.NumericValue;
                 EiaChairPerson = Convert(context.EiaChairPerson);
@@ -89,7 +89,7 @@ namespace StarFisher.Console.Context
                 CertificatePrinterPerson = Convert(context.CertificatePrinterPerson);
             }
 
-            public string WorkingDirectoryPath { get; set; }
+            public string StarAwardsDirectoryPath { get; set; }
 
             public int Year { get; set; }
 
@@ -106,7 +106,7 @@ namespace StarFisher.Console.Context
             public void InitializeContext()
             {
                 StarFisherContext.Instance.Initialize(
-                    DirectoryPath.Create(WorkingDirectoryPath),
+                    DirectoryPath.Create(StarAwardsDirectoryPath),
                     Domain.ValueObjects.Year.Create(Year),
                     Domain.ValueObjects.Quarter.Create(Quarter),
                     Convert(EiaChairPerson),

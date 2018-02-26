@@ -13,25 +13,25 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 {
     public interface INominationListRepository
     {
-        NominationList LoadSurveyExport(FilePath filePath, Year year, Quarter quarter);
+        NominationList LoadSurveyExport(FilePath filePath);
         void SaveSnapshot(NominationList nominationList);
-        int GetSnapshotCount(Year year, Quarter quarter);
-        IReadOnlyList<SnapshotSummary> ListSnapshotSummaries(Year year, Quarter quarter);
-        NominationList GetSnapshot(Year year, Quarter quarter, SnapshotSummary snapshotSummary);
-        NominationList GetLatestSnapshot(Year year, Quarter quarter);
+        int GetSnapshotCount();
+        IReadOnlyList<SnapshotSummary> ListSnapshotSummaries();
+        NominationList GetSnapshot(SnapshotSummary snapshotSummary);
+        NominationList GetLatestSnapshot();
     }
 
     public class NominationListRepository : INominationListRepository
     {
-        private readonly DirectoryPath _workingDirectoryPath;
+        private readonly WorkingDirectoryPath _workingDirectoryPath;
 
-        public NominationListRepository(DirectoryPath workingDirectoryPath)
+        public NominationListRepository(WorkingDirectoryPath workingDirectoryPath)
         {
             _workingDirectoryPath = workingDirectoryPath ??
                                     throw new ArgumentNullException(nameof(workingDirectoryPath));
         }
 
-        public NominationList LoadSurveyExport(FilePath filePath, Year year, Quarter quarter)
+        public NominationList LoadSurveyExport(FilePath filePath)
         {
             var excel = new ExcelQueryFactory(filePath.Value);
             excel.ReadOnly = true;
@@ -49,7 +49,9 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 nominations.Add(LoadNominationFromSurveyExport(row, rowNumber));
             }
 
-            var nominationList = new NominationList(year, quarter, nominations);
+            var nominationList = new NominationList(_workingDirectoryPath.Year, _workingDirectoryPath.Quarter,
+                nominations);
+
             SaveSnapshot(nominationList);
             return nominationList;
         }
@@ -62,7 +64,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             if (!nominationList.IsDirty)
                 return;
 
-            var directoryPath = GetDirectoryPath(nominationList.Year, nominationList.Quarter);
+            var directoryPath = GetDirectoryPath();
 
             Directory.CreateDirectory(directoryPath);
 
@@ -77,9 +79,9 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             nominationList.SetCurrent();
         }
 
-        public int GetSnapshotCount(Year year, Quarter quarter)
+        public int GetSnapshotCount()
         {
-            var directoryPath = GetDirectoryPath(year, quarter);
+            var directoryPath = GetDirectoryPath();
 
             if (!Directory.Exists(directoryPath))
                 return 0;
@@ -89,10 +91,10 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 .Count(fn => long.TryParse(fn, out long unused));
         }
 
-        public IReadOnlyList<SnapshotSummary> ListSnapshotSummaries(Year year, Quarter quarter)
+        public IReadOnlyList<SnapshotSummary> ListSnapshotSummaries()
         {
             var snapshotSummaries = new List<SnapshotSummary>();
-            var directoryPath = GetDirectoryPath(year, quarter);
+            var directoryPath = GetDirectoryPath();
 
             if (!Directory.Exists(directoryPath))
                 return snapshotSummaries;
@@ -105,7 +107,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                     continue;
 
                 var snapshotDateTime = new DateTime(snapshotTicks);
-                var dto = GetSnapshotDto(year, quarter, snapshotDateTime);
+                var dto = GetSnapshotDto(snapshotDateTime);
                 var lastChangeSummary = dto.LastChangeSummary;
                 snapshotSummaries.Add(new SnapshotSummary(snapshotDateTime, lastChangeSummary));
             }
@@ -113,29 +115,20 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return snapshotSummaries;
         }
 
-        public NominationList GetSnapshot(Year year, Quarter quarter, SnapshotSummary snapshotSummary)
+        public NominationList GetSnapshot(SnapshotSummary snapshotSummary)
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
             if (snapshotSummary == null)
                 throw new ArgumentNullException(nameof(snapshotSummary));
 
-            return GetSnapshotDto(year, quarter, snapshotSummary.DateTime).ToNominationList();
+            return GetSnapshotDto(snapshotSummary.DateTime).ToNominationList();
         }
 
-        public NominationList GetLatestSnapshot(Year year, Quarter quarter)
+        public NominationList GetLatestSnapshot()
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
-
-            var snapshotDateTimes = ListSnapshotSummaries(year, quarter);
+            var snapshotDateTimes = ListSnapshotSummaries();
             var latestSnapshotDateTime = snapshotDateTimes.SafeMax(v => v);
 
-            return GetSnapshot(year, quarter, latestSnapshotDateTime);
+            return GetSnapshot(latestSnapshotDateTime);
         }
 
         private static Nomination LoadNominationFromSurveyExport(Row row, int rowNumber)
@@ -182,14 +175,14 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return companyValues;
         }
 
-        private string GetDirectoryPath(Year year, Quarter quarter)
+        private string GetDirectoryPath()
         {
-            return Path.Combine(_workingDirectoryPath.Value, year.ToString(), quarter.ToString(), @"Snapshots");
+            return Path.Combine(_workingDirectoryPath.Value, @"Snapshots");
         }
 
-        private NominationListDto GetSnapshotDto(Year year, Quarter quarter, DateTime snapshotDateTime)
+        private NominationListDto GetSnapshotDto(DateTime snapshotDateTime)
         {
-            var directoryPath = GetDirectoryPath(year, quarter);
+            var directoryPath = GetDirectoryPath();
             var filePath = Path.Combine(directoryPath, snapshotDateTime.Ticks + ".json");
 
             if (!File.Exists(filePath))

@@ -3,11 +3,11 @@ using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Console.Menu.Initialize.Parameters
 {
-    public class WorkingDirectoryParameter : ParameterBase<DirectoryPath>
+    public class StarAwardsDirectoryPathParameter : ParameterBase<DirectoryPath>
     {
-        private static readonly DirectoryPath DefaultWorkingDirectoryPath = DirectoryPath.Create(@"C:\EIA\StarFisher");
+        private static readonly DirectoryPath DefaultWorkingDirectoryPath = DirectoryPath.Create(@"C:\EIA\StarAwards");
 
-        public WorkingDirectoryParameter()
+        public StarAwardsDirectoryPathParameter()
         {
             RegisterValidInput(@"default", DefaultWorkingDirectoryPath);
             RegisterAbortInput(@"stop");
@@ -17,7 +17,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
         {
             WriteLine();
             WriteCallToAction(
-                $@"Enter the full path of a directory you want to use as your working directory for StarFisher. Alternatively, you can enter 'default' to use the default directory of {
+                $@"Enter the full path of a directory you want to use for storing files related to the Star Awards. Alternatively, you can enter 'default' to use the default directory of {
                         DefaultWorkingDirectoryPath.Value
                     }. You can also enter 'stop' to stop the initialization workflow.");
             WriteInputPrompt();

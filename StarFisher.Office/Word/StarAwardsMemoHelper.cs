@@ -9,7 +9,7 @@ namespace StarFisher.Office.Word
 {
     public interface IStarAwardsMemoHelper
     {
-        void SaveArtifacts(DirectoryPath workingDirectoryPath, NominationList nominationList);
+        void SaveArtifacts(WorkingDirectoryPath workingDirectoryPath, NominationList nominationList);
     }
 
     public class StarAwardsMemoHelper : IStarAwardsMemoHelper
@@ -23,7 +23,7 @@ namespace StarFisher.Office.Word
             _mailMergeFactory = mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory));
         }
 
-        public void SaveArtifacts(DirectoryPath workingDirectoryPath, NominationList nominationList)
+        public void SaveArtifacts(WorkingDirectoryPath workingDirectoryPath, NominationList nominationList)
         {
             if (workingDirectoryPath == null)
                 throw new ArgumentNullException(nameof(workingDirectoryPath));
@@ -36,7 +36,7 @@ namespace StarFisher.Office.Word
             SaveRisingStarWinnerMemoMailMerge(workingDirectoryPath, nominationList);
         }
 
-        private static void SaveMemoSkeleton(DirectoryPath workingDirectoryPath)
+        private static void SaveMemoSkeleton(WorkingDirectoryPath workingDirectoryPath)
         {
             const string memoSkeletonFileName = @"StarAwardWinnersAndNomineesForDistribution.docx";
             var memoSkeletonResourceName = $@"StarFisher.Office.Word.Documents.{memoSkeletonFileName}";
@@ -52,7 +52,7 @@ namespace StarFisher.Office.Word
             }
         }
 
-        private void SaveStarValuesWinnersMemoMailMerge(DirectoryPath workingDirectoryPath, NominationList nominationList)
+        private void SaveStarValuesWinnersMemoMailMerge(WorkingDirectoryPath workingDirectoryPath, NominationList nominationList)
         {
             if (!nominationList.HasStarValuesAwardWinners)
                 return;
@@ -63,7 +63,7 @@ namespace StarFisher.Office.Word
             mailMerge.Execute(filePath);
         }
 
-        private void SaveStarValuesNomineeListExcelFile(DirectoryPath workingDirectoryPath, NominationList nominationList)
+        private void SaveStarValuesNomineeListExcelFile(WorkingDirectoryPath workingDirectoryPath, NominationList nominationList)
         {
             if (!nominationList.HasStarValuesAwardWinners)
                 return;
@@ -74,7 +74,7 @@ namespace StarFisher.Office.Word
                 excelFile.Save(filePath);
         }
 
-        private void SaveRisingStarWinnerMemoMailMerge(DirectoryPath workingDirectoryPath,
+        private void SaveRisingStarWinnerMemoMailMerge(WorkingDirectoryPath workingDirectoryPath,
             NominationList nominationList)
         {
             if (!nominationList.HasRisingStarAwardWinners)

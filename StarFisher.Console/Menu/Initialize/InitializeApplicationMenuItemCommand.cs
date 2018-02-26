@@ -30,9 +30,9 @@ namespace StarFisher.Console.Menu.Initialize
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
-            var workingDirectoryPath = GetCommandResult(new GetWorkingDirectoryCommand(Context),
+            var starAwardsDirectoryPath = GetCommandResult(new GetStarAwardsDirectoryPathCommand(Context),
                 out CommandResult<CommandOutput.None> unsuccessfulResult);
-            if (workingDirectoryPath == null)
+            if (starAwardsDirectoryPath == null)
                 return unsuccessfulResult;
 
             var year = GetCommandResult(new GetYearCommand(Context), out unsuccessfulResult);
@@ -59,7 +59,7 @@ namespace StarFisher.Console.Menu.Initialize
             if (certificatePrinterPerson == null)
                 return unsuccessfulResult;
 
-            Context.Initialize(workingDirectoryPath, year, quarter, eiaChairPerson, hrPeople, luncheonPlannerPeople,
+            Context.Initialize(starAwardsDirectoryPath, year, quarter, eiaChairPerson, hrPeople, luncheonPlannerPeople,
                 certificatePrinterPerson);
 
             _configurationStorage.SaveConfiguration();

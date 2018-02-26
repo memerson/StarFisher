@@ -5,7 +5,7 @@ namespace StarFisher.Console.Context
 {
     public interface IConfiguration : IEmailConfiguration
     {
-        DirectoryPath WorkingDirectoryPath { get; }
+        WorkingDirectoryPath WorkingDirectoryPath { get; }
 
         Year Year { get; }
 

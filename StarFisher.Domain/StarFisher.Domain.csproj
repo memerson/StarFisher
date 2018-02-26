@@ -68,6 +68,7 @@
     <Compile Include="QuarterlyAwards\NominationListAggregate\Persistence\NominationListDto.cs" />
     <Compile Include="QuarterlyAwards\NominationListAggregate\ValueObjects\AwardWinner.cs" />
     <Compile Include="QuarterlyAwards\SnapshotSummary.cs" />
+    <Compile Include="ValueObjects\WorkingDirectoryPath.cs" />
     <Compile Include="ValueObjects\Person.cs" />
     <Compile Include="ValueObjects\AwardAmount.cs" />
     <Compile Include="ValueObjects\AwardType.cs" />

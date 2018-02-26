@@ -1,7 +1,6 @@
 ﻿using System;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
-using StarFisher.Domain.Faults;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 
@@ -9,26 +8,32 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
 {
     public class CreateAwardVotingKeyMenuItemCommand : MenuItemCommandBase
     {
-        private readonly AwardType _awardType;
         private readonly IExcelFileFactory _excelFileFactory;
 
-        public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory,
-            AwardType awardType)
-            : base(context, GetCommandTitle(awardType), GetSuccessMessage(context, awardType))
+        private const string CommandTitle = @"Create Super Star Awards voting key(s)";
+
+        public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory)
+            : base(context, CommandTitle, GetSuccessMessage(context))
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
-            _awardType = awardType ?? throw new ArgumentNullException(nameof(awardType));
         }
 
         protected override CommandResult<CommandOutput.None> RunCore(CommandInput.None input)
         {
             var nominationList = Context.NominationListContext.NominationList;
-            var fileName = GetVotingKeyFileName();
 
-            var filePath = Context.WorkingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
-            using (var excelFile = _excelFileFactory.GetVotingKeyExcelFile(_awardType, nominationList))
+            foreach (var awardType in AwardType.ValidAwardTypes)
             {
-                excelFile.Save(filePath);
+                if (!nominationList.HasNominationsForAward(awardType))
+                    continue;
+
+                var fileName = awardType.GetVotingKeyFileName(Context.Year, Context.Quarter);
+
+                var filePath = Context.WorkingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
+                using (var excelFile = _excelFileFactory.GetVotingKeyExcelFile(awardType, nominationList))
+                {
+                    excelFile.Save(filePath);
+                }
             }
 
             return CommandOutput.None.Success;
@@ -38,37 +43,16 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && Context.NominationListContext.NominationList.HasNominationsForAward(_awardType);
+                   && (Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.StarValues) ||
+                       Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.RisingStar));
         }
 
-        private static string GetCommandTitle(AwardType awardType)
-        {
-            if (awardType == null)
-                throw new ArgumentNullException(nameof(awardType));
-
-            return $@"Create {awardType.PrettyName} voting key";
-        }
-
-        private static string GetSuccessMessage(IConfiguration context, AwardType awardType)
+        private static string GetSuccessMessage(IConfiguration context)
         {
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
-            if (awardType == null)
-                throw new ArgumentNullException(nameof(awardType));
 
-            return $@"Success! You can find {
-                    GetVotingKeyFileName(context, awardType)
-                } saved in your working directory ({context.WorkingDirectoryPath.Value}).";
-        }
-
-        private string GetVotingKeyFileName()
-        {
-            return GetVotingKeyFileName(Context, _awardType);
-        }
-
-        private static string GetVotingKeyFileName(IConfiguration context, AwardType awardType)
-        {
-            return awardType.GetVotingKeyFileName(context.Year, context.Quarter);
+            return $@"Success! You can find the voting key spreadsheets saved in your working directory ({context.WorkingDirectoryPath.Value}).";
         }
     }
 }

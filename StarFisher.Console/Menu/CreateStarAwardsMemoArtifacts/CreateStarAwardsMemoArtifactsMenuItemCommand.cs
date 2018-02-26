@@ -3,21 +3,18 @@ using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Office.Word;
 
-namespace StarFisher.Console.Menu.SaveStarAwardsWinnersMemoArtifacts
+namespace StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts
 {
-    public class SaveStarAwardsWinnersMemoArtifactsMenuItemCommand : MenuItemCommandBase
+    public class CreateStarAwardsMemoArtifactsMenuItemCommand : MenuItemCommandBase
     {
         private readonly IStarAwardsMemoHelper _memoHelper;
 
         private const string CommandTitle =
-            @"Save artifacts used to create the Star Awards memo for the Communications team";
+            @"Create artifacts used to create the Star Awards memo for the Communications team";
 
-        private const string SuccessMessage =
-            @"Success! Your working directory now contains all relevant artifacts for creating the memo.";
-
-        public SaveStarAwardsWinnersMemoArtifactsMenuItemCommand(IStarFisherContext context,
+        public CreateStarAwardsMemoArtifactsMenuItemCommand(IStarFisherContext context,
             IStarAwardsMemoHelper memoHelper)
-            : base(context, CommandTitle, SuccessMessage)
+            : base(context, CommandTitle, GetSuccessMessage(context))
         {
             _memoHelper = memoHelper ?? throw new ArgumentNullException(nameof(memoHelper));
         }
@@ -37,6 +34,14 @@ namespace StarFisher.Console.Menu.SaveStarAwardsWinnersMemoArtifacts
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
                    && Context.NominationListContext.NominationList.HasAwardWinners;
+        }
+
+        private static string GetSuccessMessage(IConfiguration context)
+        {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
+            return $@"Success! You can find the items used to create the Star Awards memo saved in your working directory ({context.WorkingDirectoryPath.Value}).";
         }
     }
 }

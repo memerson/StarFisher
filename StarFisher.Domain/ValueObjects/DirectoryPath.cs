@@ -7,7 +7,7 @@ namespace StarFisher.Domain.ValueObjects
 {
     public class DirectoryPath : ValueObject<DirectoryPath>
     {
-        private DirectoryPath(string directoryPath)
+        protected DirectoryPath(string directoryPath)
         {
             Value = directoryPath;
         }
@@ -20,6 +20,16 @@ namespace StarFisher.Domain.ValueObjects
                 throw new ArgumentException(nameof(directoryPath));
 
             return new DirectoryPath(directoryPath);
+        }
+
+        public WorkingDirectoryPath GetWorkingDirectory(Year year, Quarter quarter)
+        {
+            if (year == null)
+                throw new ArgumentNullException(nameof(year));
+            if (quarter == null)
+                throw new ArgumentNullException(nameof(quarter));
+
+            return WorkingDirectoryPath.Create(this, year, quarter);
         }
 
         public static bool IsValid(string directoryPath)

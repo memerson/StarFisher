@@ -7,6 +7,7 @@ using StarFisher.Console.Menu.CreateAwardVotingKey;
 using StarFisher.Console.Menu.CreateCertificateEmail;
 using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
 using StarFisher.Console.Menu.CreateLuncheonInviteeListEmail;
+using StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts;
 using StarFisher.Console.Menu.CreateVotingKeyEmail;
 using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
 using StarFisher.Console.Menu.DisqualifyNominees;
@@ -17,12 +18,10 @@ using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport;
 using StarFisher.Console.Menu.RemoveNominations;
-using StarFisher.Console.Menu.SaveStarAwardsWinnersMemoArtifacts;
 using StarFisher.Console.Menu.SelectAwardWinner;
 using StarFisher.Console.Menu.SendNominationNotificationEmails;
 using StarFisher.Console.Menu.TopLevelMenu;
 using StarFisher.Console.Menu.UnselectAwardWinner;
-using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Outlook;
 using StarFisher.Office.Outlook.AddressBook;
@@ -34,6 +33,11 @@ namespace StarFisher.Console
     {
         private static void Main(string[] args)
         {
+            /* TODO:
+             * 1. SuperStar functionality
+             * 2. Changes from PX and Verity fallout
+             */
+
             var excelFileFactory = new ExcelFileFactory();
             var mailMergeFactory = new MailMergeFactory(excelFileFactory);
             var globalAddressList = GetGlobalAddressList();
@@ -53,14 +57,10 @@ namespace StarFisher.Console
                 new DisqualifyNomineesMenuItemCommand(StarFisherContext.Instance),
                 new RemoveNominationMenuItemCommand(StarFisherContext.Instance),
                 new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
-                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory,
-                    AwardType.StarValues),
-                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory,
-                    AwardType.RisingStar),
-                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory,
-                    AwardType.StarValues),
-                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory,
-                    AwardType.RisingStar),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory),
+                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
+                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
@@ -68,7 +68,7 @@ namespace StarFisher.Console
                 new SelectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new UnselectAwardWinnerMenuItemCommand(StarFisherContext.Instance),
                 new CreateCertificateEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
-                new SaveStarAwardsWinnersMemoArtifactsMenuItemCommand(StarFisherContext.Instance, memoHelper),
+                new CreateStarAwardsMemoArtifactsMenuItemCommand(StarFisherContext.Instance, memoHelper),
                 new InitializeApplicationMenuItemCommand(StarFisherContext.Instance, globalAddressList,
                     configurationStorage),
                 new ExitCommand(StarFisherContext.Instance)
