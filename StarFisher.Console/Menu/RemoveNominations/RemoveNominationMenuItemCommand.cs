@@ -31,9 +31,19 @@ namespace StarFisher.Console.Menu.RemoveNominations
             if (!TryGetArgumentValue(parameter, out Nomination nominationToRemove))
                 return false;
 
-            nominationList.RemoveNomination(nominationToRemove.Id);
+            if (!nominationList.GetIsOnlyNominationForAwardAndNominee(nominationToRemove) ||
+                RemoveOnlyNomination(nominationToRemove))
+            {
+                nominationList.RemoveNomination(nominationToRemove.Id);
+            }
 
             return true;
+        }
+
+        private bool RemoveOnlyNomination(Nomination nomination)
+        {
+            var parameter = new RemoveOnlyNominationParameter(nomination);
+            return TryGetArgumentValue(parameter, out bool removeNomination) && removeNomination;
         }
 
         private static bool GetRemoveAnotherNomination()

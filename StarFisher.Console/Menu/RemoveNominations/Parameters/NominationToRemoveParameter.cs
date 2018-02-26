@@ -14,11 +14,12 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
 
         protected override string GetListItemLabel(Nomination listItem)
         {
+            var awardType = listItem.AwardType;
             var nomineeName = listItem.NomineeName.FullName;
             var officeLocation = listItem.NomineeOfficeLocation.ConciseName;
             var nominatorName = listItem.NominatorName.FullName;
 
-            return $@"For {nomineeName} ({officeLocation}) nominated by {nominatorName}";
+            return $@"{awardType.PrettyName} nomination for {nomineeName} ({officeLocation}) nominated by {nominatorName}";
         }
 
         protected override void WriteCallToAction()

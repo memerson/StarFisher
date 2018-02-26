@@ -108,6 +108,7 @@
     <Compile Include="Menu\DisqualifyNominees\Parameters\NomineeToDisqualifyParameter.cs" />
     <Compile Include="Menu\DisqualifyNominees\Parameters\DisqualifyAnotherNomineeParameter.cs" />
     <Compile Include="Menu\DisqualifyNominees\DisqualifyNomineesMenuItemCommand.cs" />
+    <Compile Include="Menu\RemoveNominations\Parameters\RemoveOnlyNominationParameter.cs" />
     <Compile Include="Menu\RemoveNominations\RemoveNominationMenuItemCommand.cs" />
     <Compile Include="Menu\RemoveNominations\Parameters\NominationToRemoveParameter.cs" />
     <Compile Include="Menu\RemoveNominations\Parameters\RemoveAnotherNominationParameter.cs" />

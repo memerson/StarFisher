@@ -93,6 +93,16 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                 .ToList();
         }
 
+        public bool GetIsOnlyNominationForAwardAndNominee(Nomination nomination)
+        {
+            if (nomination == null)
+                throw new ArgumentNullException(nameof(nomination));
+            if (!_nominations.Contains(nomination))
+                throw new ArgumentException(nameof(nomination));
+
+            return _nominations.Count(n => n.AwardType == nomination.AwardType && n.Nominee == nomination.Nominee) < 2;
+        }
+
         public void UpdateNomineeName(Person nominee, PersonName newNomineeName)
         {
             if (nominee == null)
@@ -193,7 +203,6 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
 
         public void RemoveNomination(int nominationId)
         {
-// TODO: Warn if removing only nomination
             var nomination = Nominations.FirstOrDefault(n => n.Id == nominationId);
 
             if (nomination == null)
