@@ -25,7 +25,7 @@ namespace StarFisher.Domain.ValueObjects
 
         public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote - Home Office and HEI", @"Remote");
 
-        private static readonly List<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
+        public static readonly IReadOnlyList<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
             Columbia,
             EchoBoulder,

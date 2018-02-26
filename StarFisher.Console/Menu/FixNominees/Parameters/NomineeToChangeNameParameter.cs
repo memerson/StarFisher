@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using StarFisher.Console.Menu.Common.Parameters;
 using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
+namespace StarFisher.Console.Menu.FixNominees.Parameters
 {
     public class NomineeToChangeNameParameter : NomineeParameterBase
     {
@@ -43,7 +43,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
         protected override void WriteCallToAction()
         {
             WriteCallToAction(
-                @"Enter the number of the name you want to change, or enter 'done' if you don't want to modify any names.");
+                @"Enter the number of the name you want to change, or enter 'done' if you don't want to change any names.");
         }
     }
 }

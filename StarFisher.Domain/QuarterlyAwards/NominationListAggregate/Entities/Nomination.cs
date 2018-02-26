@@ -47,6 +47,11 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
             Nominee = Nominee.UpdateName(newNomineeName);
         }
 
+        internal void UpdateNomineeOfficeLocation(OfficeLocation newOfficeLocation)
+        {
+            Nominee = Nominee.UpdateOfficeLocation(newOfficeLocation);
+        }
+
         internal void UpdateNomineeEmailAddress(EmailAddress newEmailAddress)
         {
             Nominee = Nominee.UpdateEmailAddress(newEmailAddress);

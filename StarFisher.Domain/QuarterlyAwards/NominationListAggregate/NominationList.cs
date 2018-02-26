@@ -137,6 +137,37 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             MarkAsDirty($@"Updated nominee name from {nominee.Name.FullName} to {newNomineeName.FullName}");
         }
 
+        public void UpdateNomineeOfficeLocation(Person nominee, OfficeLocation newOfficeLocation)
+        {
+            if (nominee == null)
+                throw new ArgumentNullException(nameof(nominee));
+            if (newOfficeLocation == null)
+                throw new ArgumentNullException(nameof(newOfficeLocation));
+            if (!OfficeLocation.ValidEmployeeOfficeLocations.Contains(newOfficeLocation))
+                throw new ArgumentException(nameof(newOfficeLocation));
+
+            var nominations = Nominations.Where(n => n.Nominee == nominee);
+            var updated = false;
+
+            foreach (var nomination in nominations)
+            {
+                nomination.UpdateNomineeOfficeLocation(newOfficeLocation);
+                updated = true;
+            }
+
+            if (!updated)
+                return;
+
+            SetNomineeIdentifiers();
+
+            var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == nominee);
+
+            if (awardWinner != null)
+                awardWinner.UpdateAwardWinnerOfficeLocation(newOfficeLocation);
+
+            MarkAsDirty($@"Updated nominee {nominee.Name.FullName}'s office location from {nominee.OfficeLocation.ConciseName} to {newOfficeLocation.ConciseName}");
+        }
+
         public void UpdateNomineeEmailAddress(Person nominee, EmailAddress newEmailAddress)
         {
             if (nominee == null)

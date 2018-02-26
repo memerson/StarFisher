@@ -42,7 +42,7 @@ namespace StarFisher.Console.Context
                                     throw new ArgumentNullException(nameof(starAwardsDirectoryPath));
             _year = year ?? throw new ArgumentNullException(nameof(year));
             _quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
-            _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(Year, Quarter);
+            _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(year, quarter);
             _eiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
             _hrPeople = hrPeople?.ToList() ?? throw new ArgumentNullException(nameof(hrPeople));
             _luncheonPlannerPeople = luncheonPlannerPeople?.ToList() ??

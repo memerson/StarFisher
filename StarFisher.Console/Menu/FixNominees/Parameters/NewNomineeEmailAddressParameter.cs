@@ -3,7 +3,7 @@ using StarFisher.Console.Menu.Common.Parameters;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
-namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters
+namespace StarFisher.Console.Menu.FixNominees.Parameters
 {
     public class NewNomineeEmailAddressParameter : EmailAddressParameterBase
     {

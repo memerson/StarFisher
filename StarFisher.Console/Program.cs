@@ -12,7 +12,7 @@ using StarFisher.Console.Menu.CreateVotingKeyEmail;
 using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
 using StarFisher.Console.Menu.DisqualifyNominees;
 using StarFisher.Console.Menu.Exit;
-using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses;
+using StarFisher.Console.Menu.FixNominees;
 using StarFisher.Console.Menu.FixNomineeWriteUps;
 using StarFisher.Console.Menu.Initialize;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot;
@@ -52,7 +52,7 @@ namespace StarFisher.Console
             {
                 new LoadNominationsFromSnapshotMenuItemCommand(StarFisherContext.Instance),
                 new LoadNominationsFromSurveyExportMenuItemCommand(StarFisherContext.Instance),
-                new FixNomineeNamesAndEmailAddressesMenuItemCommand(StarFisherContext.Instance, globalAddressList),
+                new FixNomineesMenuItemCommand(StarFisherContext.Instance, globalAddressList),
                 new FixNomineeWriteUpsMenuItemCommand(StarFisherContext.Instance),
                 new DisqualifyNomineesMenuItemCommand(StarFisherContext.Instance),
                 new RemoveNominationMenuItemCommand(StarFisherContext.Instance),

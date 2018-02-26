@@ -31,6 +31,11 @@ namespace StarFisher.Domain.ValueObjects
             return Create(newName, OfficeLocation, newName?.DerivedEmailAddress);
         }
 
+        public Person UpdateOfficeLocation(OfficeLocation newOfficeLocation)
+        {
+            return Create(Name, newOfficeLocation, EmailAddress);
+        }
+
         public Person UpdateEmailAddress(EmailAddress newEmailAddress)
         {
             return Create(Name, OfficeLocation, newEmailAddress);

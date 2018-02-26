@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
-using StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Console.Menu.FixNominees.Parameters;
 using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
-namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
+namespace StarFisher.Console.Menu.FixNominees.Commands
 {
     public class FixNomineeNamesCommand : CommandBase<FixNomineeNamesCommand.Input, CommandOutput.None>
     {
@@ -23,7 +22,7 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
             if (input == null)
                 throw new ArgumentNullException(nameof(input));
 
-            var nominationList = input.NominationList;
+            var nominationList = Context.NominationListContext.NominationList;
             var unrecognizedNomineeNames = input.UnrecognizedNomineeNames;
 
             for (;;)
@@ -46,14 +45,11 @@ namespace StarFisher.Console.Menu.FixNomineeNamesAndEmailAddresses.Commands
 
         public class Input : CommandInput
         {
-            public Input(NominationList nominationList, IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
+            public Input(IReadOnlyCollection<PersonName> unrecognizedNomineeNames)
             {
-                NominationList = nominationList ?? throw new ArgumentNullException(nameof(nominationList));
                 UnrecognizedNomineeNames = unrecognizedNomineeNames ??
                                            throw new ArgumentNullException(nameof(unrecognizedNomineeNames));
             }
-
-            public NominationList NominationList { get; }
 
             public IReadOnlyCollection<PersonName> UnrecognizedNomineeNames { get; }
         }
