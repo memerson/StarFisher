@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using StarFisher.Domain.QuarterlyAwards;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Context
 {
@@ -28,12 +27,14 @@ namespace StarFisher.Console.Context
     public class NominationListContext : INominationListContext
     {
         private readonly INominationListRepository _repository;
+        private readonly AwardCategory _awardCategory;
 
         private NominationList _nominationList;
 
-        public NominationListContext(INominationListRepository nominationListRepository)
+        public NominationListContext(INominationListRepository nominationListRepository, AwardCategory awardCategory)
         {
             _repository = nominationListRepository ?? throw new ArgumentNullException(nameof(nominationListRepository));
+            _awardCategory = awardCategory ?? throw new ArgumentNullException(nameof(awardCategory));
         }
 
         public bool HasNominationListLoaded => _nominationList != null;
@@ -53,7 +54,7 @@ namespace StarFisher.Console.Context
 
         public void LoadSurveyExport(FilePath filePath)
         {
-            NominationList = _repository.LoadSurveyExport(filePath);
+            NominationList = _repository.LoadSurveyExport(_awardCategory, filePath);
         }
 
         public int GetSnapshotCount()

@@ -4,8 +4,8 @@ using System.Linq;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNominees.Commands;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNominees

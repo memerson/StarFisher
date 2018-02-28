@@ -98,6 +98,7 @@
     <Compile Include="Menu\Initialize\Commands\InitializeCommandBase.cs" />
     <Compile Include="Menu\Initialize\InitializeApplicationMenuItemCommand.cs" />
     <Compile Include="Menu\Initialize\Parameters\EmailAddressParameter.cs" />
+    <Compile Include="Menu\Initialize\Parameters\AwardCategoryParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\PersonNameParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\UseCurrentValueParameter.cs" />
     <Compile Include="Menu\Initialize\Parameters\StarAwardsDirectoryPathParameter.cs" />

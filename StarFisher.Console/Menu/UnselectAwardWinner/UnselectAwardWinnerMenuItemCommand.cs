@@ -1,7 +1,7 @@
 ﻿using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.UnselectAwardWinner.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.UnselectAwardWinner
 {

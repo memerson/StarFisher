@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.Utilities;
-using StarFisher.Domain.ValueObjects;
 
 namespace StarFisher.Office.Outlook
 {
@@ -27,15 +27,16 @@ namespace StarFisher.Office.Outlook
             mailItem.CC = string.Join(";", emailConfiguration.EiaChairPerson.EmailAddress);
             var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
             var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
+            var awardsName = nominationList.AwardsPeriod.AwardsName;
 
-            mailItem.Subject = $@"Need: {nominationList.Quarter} Star Awards nominee eligibility check";
+            mailItem.Subject = $@"Need: {awardsName} nominee eligibility check";
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);
 
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
-            WriteInstructions(emailConfiguration.HrPeople, nominationList.Quarter, content, hasStarValues,
+            WriteInstructions(emailConfiguration.HrPeople, awardsName, content, hasStarValues,
                 hasRisingStar);
 
             if (hasStarValues)
@@ -50,7 +51,7 @@ namespace StarFisher.Office.Outlook
             mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
-        private static void WriteInstructions(IReadOnlyList<Person> hrPeople, Quarter quarter,
+        private static void WriteInstructions(IReadOnlyList<Person> hrPeople, string awardsName,
             HtmlNode content, bool hasStarValues, bool hasRisingStar)
         {
             var hrFirstNames = hrPeople.Select(n => n.Name.FirstName).PrettyPrint();
@@ -59,8 +60,8 @@ namespace StarFisher.Office.Outlook
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
                 $@"<p class=MsoNormal>Could you please check the list of nominees for the {
-                        quarter
-                    } Star Awards and let us know if any are not eligible?</p>"));
+                        awardsName
+                    } and let us know if any are not eligible?</p>"));
 
             if (hasStarValues)
             {

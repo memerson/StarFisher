@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Context
 {
@@ -81,8 +81,7 @@ namespace StarFisher.Console.Context
                     throw new ArgumentNullException(nameof(context));
 
                 StarAwardsDirectoryPath = context.StarAwardsDirectoryPath.Value;
-                Year = context.Year.Value;
-                Quarter = context.Quarter.NumericValue;
+                AwardsPeriod = context.AwardsPeriod.Value;
                 EiaChairPerson = Convert(context.EiaChairPerson);
                 HrPeople = Convert(context.HrPeople);
                 LuncheonPlannerPeople = Convert(context.LuncheonPlannerPeople);
@@ -91,9 +90,7 @@ namespace StarFisher.Console.Context
 
             public string StarAwardsDirectoryPath { get; set; }
 
-            public int Year { get; set; }
-
-            public int Quarter { get; set; }
+            public int AwardsPeriod { get; set; }
 
             public Person EiaChairPerson { get; set; }
 
@@ -107,33 +104,32 @@ namespace StarFisher.Console.Context
             {
                 StarFisherContext.Instance.Initialize(
                     DirectoryPath.Create(StarAwardsDirectoryPath),
-                    Domain.ValueObjects.Year.Create(Year),
-                    Domain.ValueObjects.Quarter.Create(Quarter),
+                    Domain.NominationListAggregate.ValueObjects.AwardsPeriod.CreateFromValue(AwardsPeriod), 
                     Convert(EiaChairPerson),
                     Convert(HrPeople),
                     Convert(LuncheonPlannerPeople),
                     Convert(CertificatePrinterPerson));
             }
 
-            private static Person Convert(Domain.ValueObjects.Person person)
+            private static Person Convert(Domain.NominationListAggregate.ValueObjects.Person person)
             {
                 return new Person {Name = person.Name.FullName, EmailAddress = person.EmailAddress.Value};
             }
 
-            private static Domain.ValueObjects.Person Convert(Person person)
+            private static Domain.NominationListAggregate.ValueObjects.Person Convert(Person person)
             {
-                return Domain.ValueObjects.Person.Create(PersonName.Create(person.Name), OfficeLocation.EiaTeamMember,
+                return Domain.NominationListAggregate.ValueObjects.Person.Create(PersonName.Create(person.Name), OfficeLocation.EiaTeamMember,
                     EmailAddress.Create(person.EmailAddress));
             }
 
-            private static List<Person> Convert(IEnumerable<Domain.ValueObjects.Person> people)
+            private static List<Person> Convert(IEnumerable<Domain.NominationListAggregate.ValueObjects.Person> people)
             {
                 return people
                     .Select(Convert)
                     .ToList();
             }
 
-            private static List<Domain.ValueObjects.Person> Convert(IEnumerable<Person> people)
+            private static List<Domain.NominationListAggregate.ValueObjects.Person> Convert(IEnumerable<Person> people)
             {
                 return people.Select(Convert).ToList();
             }

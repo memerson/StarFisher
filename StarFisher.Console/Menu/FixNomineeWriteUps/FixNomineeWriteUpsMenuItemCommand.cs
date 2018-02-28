@@ -2,9 +2,9 @@
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNomineeWriteUps.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.FixNomineeWriteUps
 {

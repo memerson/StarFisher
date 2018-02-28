@@ -1,4 +1,4 @@
-﻿using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+﻿using StarFisher.Domain.NominationListAggregate;
 
 namespace StarFisher.Office.Excel
 {

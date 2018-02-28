@@ -2,7 +2,7 @@
 using System.Linq;
 using StarFisher.Domain.Common;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
@@ -53,7 +53,7 @@ namespace StarFisher.Domain.ValueObjects
 
         public string ConciseName { get; }
 
-        public static IReadOnlyCollection<OfficeLocation> OfficeLocationsForCertificatePrinting =>
+        public static IReadOnlyList<OfficeLocation> OfficeLocationsForCertificatePrinting =>
             new List<OfficeLocation>
             {
                 NashvilleCorporate,

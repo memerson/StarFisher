@@ -2,50 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
+namespace StarFisher.Domain.NominationListAggregate
 {
     public class NominationList : AggregateRoot
     {
         private readonly List<AwardWinner> _awardWinners;
         private readonly List<Nomination> _nominations;
 
-        internal NominationList(Year year, Quarter quarter, IEnumerable<Nomination> nominations,
+        internal NominationList(AwardsPeriod awardsPeriod, IEnumerable<Nomination> nominations,
             IEnumerable<AwardWinner> awardWinners = null)
-            : base(CreateKey(year, quarter))
+            : base(awardsPeriod?.Value ?? -1)
         {
-            Quarter = quarter;
-            Year = year;
+            AwardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
             _nominations = nominations?.ToList() ?? throw new ArgumentNullException(nameof(nominations));
             _awardWinners = awardWinners?.ToList() ?? new List<AwardWinner>();
 
             SetNomineeIdentifiers();
         }
 
-        public Quarter Quarter { get; }
-
-        public Year Year { get; }
-
-        private static int CreateKey(Year year, Quarter quarter)
-        {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
-
-            return year.Value * 10 + quarter.NumericValue;
-        }
+        public AwardsPeriod AwardsPeriod { get; }
 
         #region Nominations
 
         public IReadOnlyList<Nomination> Nominations => _nominations;
 
-        public IReadOnlyCollection<Person> Nominees => Nominations.Select(n => n.Nominee).Distinct().ToList();
+        public IReadOnlyList<Person> Nominees => Nominations.Select(n => n.Nominee).Distinct().ToList();
 
-        public IReadOnlyCollection<Person> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues)
+        public IReadOnlyList<Person> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues)
             .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
                         n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
                         n.NomineeOfficeLocation == OfficeLocation.EchoBrentwood)
@@ -53,13 +39,15 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             .Distinct()
             .ToList();
 
-        public IReadOnlyCollection<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues)
+        public IReadOnlyList<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues)
             .ToList();
 
-        public IReadOnlyCollection<Nomination> RisingStarNominations => GetNominationsByAwardType(AwardType.RisingStar)
+        public IReadOnlyList<Nomination> RisingStarNominations => GetNominationsByAwardType(AwardType.RisingStar)
             .ToList();
 
-        public IReadOnlyCollection<Nomination> GetNominationsForNominee(AwardType awardType, Person nominee)
+        public bool HasNominations => _nominations.Count > 0;
+
+        public IReadOnlyList<Nomination> GetNominationsForNominee(AwardType awardType, Person nominee)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
@@ -77,7 +65,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return Nominations.Any(n => n.AwardType == awardType);
         }
 
-        public IReadOnlyCollection<Person> GetNomineesForAward(AwardType awardType, bool excludeWinners)
+        public IReadOnlyList<Person> GetNomineesForAward(AwardType awardType, bool excludeWinners)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));
@@ -165,7 +153,10 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             if (awardWinner != null)
                 awardWinner.UpdateAwardWinnerOfficeLocation(newOfficeLocation);
 
-            MarkAsDirty($@"Updated nominee {nominee.Name.FullName}'s office location from {nominee.OfficeLocation.ConciseName} to {newOfficeLocation.ConciseName}");
+            MarkAsDirty(
+                $@"Updated nominee {nominee.Name.FullName}'s office location from {
+                        nominee.OfficeLocation.ConciseName
+                    } to {newOfficeLocation.ConciseName}");
         }
 
         public void UpdateNomineeEmailAddress(Person nominee, EmailAddress newEmailAddress)
@@ -317,7 +308,8 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             var removed = _awardWinners.Remove(awardWinner);
 
             if (removed)
-                MarkAsDirty($@"Removed {awardWinner.Name.FullName} from winner list for {awardWinner.AwardType.PrettyName}");
+                MarkAsDirty(
+                    $@"Removed {awardWinner.Name.FullName} from winner list for {awardWinner.AwardType.PrettyName}");
         }
 
         public void SelectNomineeAsAwardWinner(AwardType awardType, Person nominee)
@@ -340,13 +332,13 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             MarkAsDirty($@"Upserted winner {nominee.Name.FullName}");
         }
 
-        public IReadOnlyCollection<CompanyValue> GetCompanyValuesForAwardWinner(AwardWinner awardWinner)
+        public IReadOnlyList<CompanyValue> GetCompanyValuesForAwardWinner(AwardWinner awardWinner)
         {
             var nominations = GetNominationsForNominee(awardWinner.AwardType, awardWinner.Person);
             return nominations.SelectMany(n => n.CompanyValues).Distinct().OrderBy(cv => cv.Value).ToList();
         }
 
-        public IReadOnlyCollection<NominationWriteUp> GetNominationWriteUpsForAwardWinner(AwardWinner awardWinner)
+        public IReadOnlyList<NominationWriteUp> GetNominationWriteUpsForAwardWinner(AwardWinner awardWinner)
         {
             var nominations = GetNominationsForNominee(awardWinner.AwardType, awardWinner.Person);
             return nominations.Select(n => n.WriteUp).ToList();

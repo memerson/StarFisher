@@ -1,4 +1,4 @@
-﻿using StarFisher.Domain.ValueObjects;
+﻿using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Outlook;
 
 namespace StarFisher.Console.Context
@@ -7,8 +7,6 @@ namespace StarFisher.Console.Context
     {
         WorkingDirectoryPath WorkingDirectoryPath { get; }
 
-        Year Year { get; }
-
-        Quarter Quarter { get; }
+        AwardsPeriod AwardsPeriod { get; }
     }
 }

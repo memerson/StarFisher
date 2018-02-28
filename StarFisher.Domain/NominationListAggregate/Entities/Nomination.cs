@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities
+namespace StarFisher.Domain.NominationListAggregate.Entities
 {
     public class Nomination : Entity
     {

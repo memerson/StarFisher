@@ -1,7 +1,6 @@
 ﻿using System;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
-using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Outlook;
 
 namespace StarFisher.Console.Menu.CreateLuncheonInviteeListEmail
@@ -36,8 +35,7 @@ namespace StarFisher.Console.Menu.CreateLuncheonInviteeListEmail
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && (Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.StarValues) ||
-                       Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.RisingStar));
+                   && Context.NominationListContext.NominationList.HasNominations;
         }
     }
 }

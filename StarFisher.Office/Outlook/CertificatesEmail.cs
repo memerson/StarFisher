@@ -2,8 +2,8 @@
 using System.IO;
 using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Utilities;
 using StarFisher.Office.Word;
 
@@ -26,28 +26,28 @@ namespace StarFisher.Office.Outlook
             IMailMergeFactory mailMergeFactory, NominationList nominationList)
         {
             var certificatePrinter = emailConfiguration.CertificatePrinterPerson;
-            var quarter = nominationList.Quarter.Abbreviation;
+            var awardsName = nominationList.AwardsPeriod.AwardsName;
             var hasStarValues = nominationList.HasStarValuesAwardWinners;
             var hasRisingStar = nominationList.HasRisingStarAwardWinners;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
-            mailItem.Subject = $@"EIA: {quarter} Star Awards winner certificates";
+            mailItem.Subject = $@"EIA: {awardsName} winner certificates";
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);
 
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
-            WriteRequest(content, certificatePrinter, quarter);
+            WriteRequest(content, certificatePrinter, awardsName);
 
             if (!hasStarValues)
-                WriteNoWinnersCaveat(content, AwardType.StarValues, quarter);
+                WriteNoWinnersCaveat(content, AwardType.StarValues);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
 
             if (!hasRisingStar)
-                WriteNoWinnersCaveat(content, AwardType.RisingStar, quarter);
+                WriteNoWinnersCaveat(content, AwardType.RisingStar);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
 
@@ -64,7 +64,7 @@ namespace StarFisher.Office.Outlook
             NominationList nominationList, AwardType awardType)
         {
             var attachments = com.Get(() => mailItem.Attachments);
-            var fileName = awardType.GetCertificatesFileName(nominationList.Year, nominationList.Quarter);
+            var fileName = awardType.GetCertificatesFileName(nominationList.AwardsPeriod);
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
             if (File.Exists(filePath.Value))
@@ -82,20 +82,20 @@ namespace StarFisher.Office.Outlook
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
         }
 
-        private static void WriteNoWinnersCaveat(HtmlNode content, AwardType awardType, string quarter)
+        private static void WriteNoWinnersCaveat(HtmlNode content, AwardType awardType)
         {
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>We had no {awardType.PrettyName} winners for {quarter}.</p>"));
+                $@"<p class=MsoNormal>We had no {awardType.PrettyName} winners this time.</p>"));
         }
 
-        private static void WriteRequest(HtmlNode content, Person certificatePrinter, string quarter)
+        private static void WriteRequest(HtmlNode content, Person certificatePrinter, string awardsName)
         {
             content.ChildNodes.Append(
                 HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {certificatePrinter.Name.FirstName},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Please find attached the {quarter} Star Awards winners certificates.</p>"));
+                $@"<p class=MsoNormal>Please find attached the {awardsName} winners certificates.</p>"));
         }
     }
 }

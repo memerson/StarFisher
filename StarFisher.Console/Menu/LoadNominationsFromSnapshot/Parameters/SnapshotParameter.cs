@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using StarFisher.Console.Menu.Common.Parameters;
-using StarFisher.Domain.QuarterlyAwards;
+using StarFisher.Domain.NominationListAggregate;
 
 namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot.Parameters
 {

@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
 {
     internal abstract class NominationNotificationEmailSourceExcelFileBase : ExcelFileBase
     {
-        protected NominationNotificationEmailSourceExcelFileBase(Year year, Quarter quarter, IEnumerable<Nomination> nominations)
+        protected NominationNotificationEmailSourceExcelFileBase(AwardsPeriod awardsPeriod, IEnumerable<Nomination> nominations)
             : base((com, worksheet) => BuildWorksheet(com,
-                year ?? throw new ArgumentNullException(nameof(year)),
-                quarter ?? throw new ArgumentNullException(nameof(quarter)),
+                awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod)),
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),
                 worksheet))
         {
         }
 
-        private static void BuildWorksheet(ComObjectManager com, Year year, Quarter quarter,
+        private static void BuildWorksheet(ComObjectManager com, AwardsPeriod awardsPeriod,
             IEnumerable<Nomination> nominations, Worksheet worksheet)
         {
             var cells = com.Get(() => worksheet.Cells);
@@ -41,8 +40,8 @@ namespace StarFisher.Office.Excel
             var rowNumber = 2;
             foreach (var nomination in nominations)
             {
-                SetCellValue(cells, rowNumber, 1, year);
-                SetCellValue(cells, rowNumber, 2, quarter.Abbreviation);
+                SetCellValue(cells, rowNumber, 1, awardsPeriod.Year);
+                SetCellValue(cells, rowNumber, 2, awardsPeriod.Quarter.Abbreviation);
                 SetCellValue(cells, rowNumber, 3, nomination.NominatorName.FullName);
                 SetCellValue(cells, rowNumber, 4, nomination.NomineeName.FullName);
                 SetCellValue(cells, rowNumber, 5, nomination.NomineeOfficeLocation.ToString());

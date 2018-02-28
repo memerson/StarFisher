@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarFisher.Domain.QuarterlyAwards
+namespace StarFisher.Domain.NominationListAggregate
 {
     public class SnapshotSummary : IComparable<SnapshotSummary>
     {

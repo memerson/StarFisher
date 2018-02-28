@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel
@@ -37,7 +37,7 @@ namespace StarFisher.Office.Excel
                     nominationList.GetCompanyValuesForAwardWinner(awardWinner).Select(cv => cv.ToString()));
                 var writeUps = CompileWriteUps(nominationList.GetNominationWriteUpsForAwardWinner(awardWinner));
 
-                SetCellValue(cells, rowNumber, 1, nominationList.Quarter.Abbreviation);
+                SetCellValue(cells, rowNumber, 1, nominationList.AwardsPeriod.Quarter.Abbreviation);
                 SetCellValue(cells, rowNumber, 2, awardWinner.Name.FullName);
                 SetCellValue(cells, rowNumber, 3, awardWinner.OfficeLocation.ConciseName);
                 SetCellValue(cells, rowNumber, 4, companyValues);

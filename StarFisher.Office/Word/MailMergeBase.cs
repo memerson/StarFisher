@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 using Microsoft.Office.Interop.Word;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Utilities;
 

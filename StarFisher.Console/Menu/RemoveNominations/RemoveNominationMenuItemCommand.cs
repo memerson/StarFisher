@@ -1,7 +1,7 @@
 ﻿using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.RemoveNominations.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.Entities;
 
 namespace StarFisher.Console.Menu.RemoveNominations
 {

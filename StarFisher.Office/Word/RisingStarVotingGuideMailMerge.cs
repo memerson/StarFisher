@@ -1,6 +1,6 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Excel;
 
 namespace StarFisher.Office.Word

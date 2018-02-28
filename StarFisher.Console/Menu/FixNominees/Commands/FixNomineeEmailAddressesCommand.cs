@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.FixNominees.Parameters;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNominees.Commands

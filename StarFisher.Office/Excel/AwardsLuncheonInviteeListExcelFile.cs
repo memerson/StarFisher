@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate;
 using StarFisher.Office.Utilities;
 
 namespace StarFisher.Office.Excel

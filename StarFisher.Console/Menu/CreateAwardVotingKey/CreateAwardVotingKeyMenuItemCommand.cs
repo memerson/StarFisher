@@ -1,7 +1,7 @@
 ﻿using System;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Excel;
 
 namespace StarFisher.Console.Menu.CreateAwardVotingKey
@@ -27,7 +27,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
                 if (!nominationList.HasNominationsForAward(awardType))
                     continue;
 
-                var fileName = awardType.GetVotingKeyFileName(Context.Year, Context.Quarter);
+                var fileName = awardType.GetVotingKeyFileName(Context.AwardsPeriod);
 
                 var filePath = Context.WorkingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
                 using (var excelFile = _excelFileFactory.GetVotingKeyExcelFile(awardType, nominationList))
@@ -43,8 +43,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && (Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.StarValues) ||
-                       Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.RisingStar));
+                   && Context.NominationListContext.NominationList.HasNominations;
         }
 
         private static string GetSuccessMessage(IConfiguration context)

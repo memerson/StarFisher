@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Domain.Common;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class AwardType : ValueObject<AwardType>
     {
@@ -13,11 +13,8 @@ namespace StarFisher.Domain.ValueObjects
         public static readonly AwardType RisingStar = new AwardType(
             @"Intern - Rising Star Award Nominee", @"RisingStar", @"Rising Star Award", AwardAmount.RisingStar);
 
-        public static IReadOnlyCollection<AwardType> ValidAwardTypes { get; } = new List<AwardType>
-        {
-            StarValues,
-            RisingStar
-        };
+        public static readonly AwardType SuperStar = new AwardType(
+            @"Employee - Super Star Award Nominee", @"SuperStar", @"Super Star Award", AwardAmount.SuperStar);
 
         public static readonly AwardType Invalid =
             new AwardType(@"INVALID", @"INVALID", @"INVALID", AwardAmount.Invalid);
@@ -29,6 +26,13 @@ namespace StarFisher.Domain.ValueObjects
             FileNameIdentifier = fileNameIdentifier;
             AwardAmount = awardAmount;
         }
+
+        public static IReadOnlyList<AwardType> ValidAwardTypes { get; } = new List<AwardType>
+        {
+            StarValues,
+            RisingStar,
+            SuperStar
+        };
 
         public string Value { get; }
 
@@ -46,34 +50,28 @@ namespace StarFisher.Domain.ValueObjects
             return ValidAwardTypes.FirstOrDefault(et => awardType.StartsWith(et.Value)) ?? Invalid;
         }
 
-        public string GetVotingGuideFileName(Year year, Quarter quarter)
+        public string GetVotingGuideFileName(AwardsPeriod awardsPeriod)
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
 
-            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingGuide.docx";
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_VotingGuide.docx";
         }
 
-        public string GetVotingKeyFileName(Year year, Quarter quarter)
+        public string GetVotingKeyFileName(AwardsPeriod awardsPeriod)
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
 
-            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_VotingKey.xlsx";
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_VotingKey.xlsx";
         }
 
-        public string GetCertificatesFileName(Year year, Quarter quarter)
+        public string GetCertificatesFileName(AwardsPeriod awardsPeriod)
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
 
-            return $@"{year}{quarter.Abbreviation}_{FileNameIdentifier}_Certificates.docx";
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_Certificates.docx";
         }
 
         protected override bool EqualsCore(AwardType other)

@@ -1,7 +1,7 @@
 ﻿using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.LoadNominationsFromSnapshot.Parameters;
-using StarFisher.Domain.QuarterlyAwards;
+using StarFisher.Domain.NominationListAggregate;
 
 namespace StarFisher.Console.Menu.LoadNominationsFromSnapshot
 {

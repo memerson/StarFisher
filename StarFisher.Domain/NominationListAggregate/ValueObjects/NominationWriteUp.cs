@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class NominationWriteUp
     {

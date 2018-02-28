@@ -1,7 +1,7 @@
 ﻿using System;
 using StarFisher.Domain.Common;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class Year : ValueObject<Year>
     {

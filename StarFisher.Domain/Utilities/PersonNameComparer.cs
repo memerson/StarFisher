@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Domain.Utilities
 {

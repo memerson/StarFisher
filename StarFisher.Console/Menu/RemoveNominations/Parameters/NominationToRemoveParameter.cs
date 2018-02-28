@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using StarFisher.Console.Menu.Common.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.Entities;
 
 namespace StarFisher.Console.Menu.RemoveNominations.Parameters
 {

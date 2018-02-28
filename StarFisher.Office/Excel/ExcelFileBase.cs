@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Office.Interop.Excel;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Utilities;
 using ExcelApplication = Microsoft.Office.Interop.Excel.Application;
 

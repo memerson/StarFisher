@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Context
 {
@@ -14,7 +14,7 @@ namespace StarFisher.Console.Context
 
         INominationListContext NominationListContext { get; }
 
-        void Initialize(DirectoryPath starAwardsDirectoryPath, Year year, Quarter quarter, Person eiaChairPerson,
+        void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaChairPerson,
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson);
     }
 
@@ -26,23 +26,21 @@ namespace StarFisher.Console.Context
         private IReadOnlyList<Person> _hrPeople;
         private IReadOnlyList<Person> _luncheonPlannerPeople;
         private NominationListContext _nominationListContext;
-        private Quarter _quarter;
         private DirectoryPath _starAwardsDirectoryPath;
         private WorkingDirectoryPath _workingDirectoryPath;
-        private Year _year;
+        private AwardsPeriod _awardsPeriod;
 
         private StarFisherContext()
         {
         }
 
-        public void Initialize(DirectoryPath starAwardsDirectoryPath, Year year, Quarter quarter, Person eiaChairPerson,
+        public void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaChairPerson,
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson)
         {
             _starAwardsDirectoryPath = starAwardsDirectoryPath ??
                                     throw new ArgumentNullException(nameof(starAwardsDirectoryPath));
-            _year = year ?? throw new ArgumentNullException(nameof(year));
-            _quarter = quarter ?? throw new ArgumentNullException(nameof(quarter));
-            _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(year, quarter);
+            _awardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
+            _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(_awardsPeriod);
             _eiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
             _hrPeople = hrPeople?.ToList() ?? throw new ArgumentNullException(nameof(hrPeople));
             _luncheonPlannerPeople = luncheonPlannerPeople?.ToList() ??
@@ -52,7 +50,7 @@ namespace StarFisher.Console.Context
 
             var nominationListRepository = new NominationListRepository(_workingDirectoryPath);
 
-            _nominationListContext = new NominationListContext(nominationListRepository);
+            _nominationListContext = new NominationListContext(nominationListRepository, awardsPeriod.AwardCategory);
 
             IsInitialized = true;
         }
@@ -77,21 +75,12 @@ namespace StarFisher.Console.Context
             }
         }
 
-        public Year Year
+        public AwardsPeriod AwardsPeriod
         {
             get
             {
                 CheckIsInitialized();
-                return _year;
-            }
-        }
-
-        public Quarter Quarter
-        {
-            get
-            {
-                CheckIsInitialized();
-                return _quarter;
+                return _awardsPeriod;
             }
         }
 

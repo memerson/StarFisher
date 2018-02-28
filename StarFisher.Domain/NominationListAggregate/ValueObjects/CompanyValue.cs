@@ -2,7 +2,7 @@
 using System.Linq;
 using StarFisher.Domain.Common;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class CompanyValue : ValueObject<CompanyValue>
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using StarFisher.Console.Menu.Common.Parameters;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.Initialize.Parameters

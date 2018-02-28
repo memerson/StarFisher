@@ -1,8 +1,7 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
+namespace StarFisher.Domain.NominationListAggregate.Persistence
 {
     internal class AwardWinnerDto
     {
@@ -31,11 +30,11 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
 
         internal AwardWinner ToAwardWinner()
         {
-            var awardType = Domain.ValueObjects.AwardType.Create(AwardType);
+            var awardType = ValueObjects.AwardType.Create(AwardType);
 
             var person = Person.Create(PersonName.Create(Name),
-                Domain.ValueObjects.OfficeLocation.Create(OfficeLocation),
-                Domain.ValueObjects.EmailAddress.Create(EmailAddress));
+                ValueObjects.OfficeLocation.Create(OfficeLocation),
+                ValueObjects.EmailAddress.Create(EmailAddress));
 
             return new AwardWinner(awardType, person);
         }

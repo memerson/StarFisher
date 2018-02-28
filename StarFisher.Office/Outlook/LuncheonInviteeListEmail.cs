@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.Utilities;
-using StarFisher.Domain.ValueObjects;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Utilities;
 
@@ -29,18 +29,18 @@ namespace StarFisher.Office.Outlook
             IExcelFileFactory excelFileFactory, NominationList nominationList)
         {
             var luncheonPlanners = emailConfiguration.LuncheonPlannerPeople;
-            var quarter = nominationList.Quarter.Abbreviation;
+            var awardsName = nominationList.AwardsPeriod.AwardsName;
 
             mailItem.To = string.Join(";", luncheonPlanners.Select(p => p.EmailAddress));
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
-            mailItem.Subject = $@"EIA: {quarter} Star Awards luncheon invite list";
+            mailItem.Subject = $@"EIA: {awardsName} luncheon invite list";
 
             var document = new HtmlDocument();
             document.LoadHtml(mailItem.HTMLBody);
 
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
-            WriteRequest(content, luncheonPlanners, quarter);
+            WriteRequest(content, luncheonPlanners, awardsName);
 
             WriteThanks(content);
 
@@ -57,7 +57,7 @@ namespace StarFisher.Office.Outlook
         {
             var attachments = com.Get(() => mailItem.Attachments);
             var fileName =
-                $@"{nominationList.Year}{nominationList.Quarter.Abbreviation}_StarAwards_LuncheonInvitees.xlsx";
+                $@"{nominationList.AwardsPeriod.FileNamePrefix}_StarAwards_LuncheonInvitees.xlsx";
             var filePath = FilePath.Create(Path.Combine(Path.GetTempPath(), fileName), false);
 
             if (File.Exists(filePath.Value))
@@ -77,15 +77,15 @@ namespace StarFisher.Office.Outlook
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
         }
 
-        private static void WriteRequest(HtmlNode content, IEnumerable<Person> luncheonPlanners, string quarter)
+        private static void WriteRequest(HtmlNode content, IEnumerable<Person> luncheonPlanners, string awardsName)
         {
             var luncheonPlannerFirstNames = luncheonPlanners.Select(n => n.Name.FirstName).PrettyPrint();
             content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {luncheonPlannerFirstNames},</p>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
             content.ChildNodes.Append(HtmlNode.CreateNode(
                 $@"<p class=MsoNormal>Please find attached the spreadsheet with the invite list for the {
-                        quarter
-                    } Star Awards luncheon.</p>"));
+                        awardsName
+                    } luncheon.</p>"));
         }
     }
 }

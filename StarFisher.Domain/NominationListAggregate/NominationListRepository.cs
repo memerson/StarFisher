@@ -4,16 +4,16 @@ using System.IO;
 using System.Linq;
 using LinqToExcel;
 using Newtonsoft.Json;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.Persistence;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Domain.Utilities;
-using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
+namespace StarFisher.Domain.NominationListAggregate
 {
     public interface INominationListRepository
     {
-        NominationList LoadSurveyExport(FilePath filePath);
+        NominationList LoadSurveyExport(AwardCategory awardCategory, FilePath filePath);
         void SaveSnapshot(NominationList nominationList);
         int GetSnapshotCount();
         IReadOnlyList<SnapshotSummary> ListSnapshotSummaries();
@@ -31,26 +31,19 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
                                     throw new ArgumentNullException(nameof(workingDirectoryPath));
         }
 
-        public NominationList LoadSurveyExport(FilePath filePath)
+        public NominationList LoadSurveyExport(AwardCategory awardCategory, FilePath filePath)
         {
-            var excel = new ExcelQueryFactory(filePath.Value);
-            excel.ReadOnly = true;
+            var excel = new ExcelQueryFactory(filePath.Value) {ReadOnly = true};
 
-            var worksheet = excel.Worksheet(0);
-            var nominations = new List<Nomination>(100);
-            var rowNumber = 0;
+            IEnumerable<Nomination> nominations;
 
-            // It can't handle the OrderBy until we read all the rows into memory.
-            var rows = worksheet.Skip(1).ToList().OrderBy(r => r[12].ToString());
+            if (awardCategory == AwardCategory.QuarterlyAwards)
+                nominations = LoadQuarterlyAwardsSurveyExport(excel);
+            //TODO: SuperStar load
+            else
+                throw new NotSupportedException($@"Unsupported award category: {awardCategory.Value}");
 
-            foreach (var row in rows)
-            {
-                ++rowNumber;
-                nominations.Add(LoadNominationFromSurveyExport(row, rowNumber));
-            }
-
-            var nominationList = new NominationList(_workingDirectoryPath.Year, _workingDirectoryPath.Quarter,
-                nominations);
+            var nominationList = new NominationList(_workingDirectoryPath.AwardsPeriod, nominations);
 
             SaveSnapshot(nominationList);
             return nominationList;
@@ -131,7 +124,24 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate
             return GetSnapshot(latestSnapshotDateTime);
         }
 
-        private static Nomination LoadNominationFromSurveyExport(Row row, int rowNumber)
+        private static IEnumerable<Nomination> LoadQuarterlyAwardsSurveyExport(ExcelQueryFactory excel)
+        {
+            var worksheet = excel.Worksheet(0);
+            var nominations = new List<Nomination>(100);
+            var rowNumber = 0;
+
+            // It can't handle the OrderBy until we read all the rows into memory.
+            var rows = worksheet.Skip(1).ToList().OrderBy(r => r[12].ToString());
+
+            foreach (var row in rows)
+            {
+                ++rowNumber;
+                nominations.Add(LoadQuarterlyAwardsNominationFromSurveyExport(row, rowNumber));
+            }
+            return nominations;
+        }
+
+        private static Nomination LoadQuarterlyAwardsNominationFromSurveyExport(Row row, int rowNumber)
         {
             var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
             var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);

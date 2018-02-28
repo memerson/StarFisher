@@ -1,7 +1,7 @@
 ﻿using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
 {

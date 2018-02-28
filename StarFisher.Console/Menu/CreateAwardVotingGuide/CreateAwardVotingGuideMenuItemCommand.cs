@@ -1,7 +1,7 @@
 ﻿using System;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Word;
 
 namespace StarFisher.Console.Menu.CreateAwardVotingGuide
@@ -27,7 +27,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
                 if (!nominationList.HasNominationsForAward(awardType))
                     continue;
 
-                var fileName = awardType.GetVotingGuideFileName(Context.Year, Context.Quarter);
+                var fileName = awardType.GetVotingGuideFileName(Context.AwardsPeriod);
                 var filePath = Context.WorkingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
                 var mailMerge = _mailMergeFactory.GetVotingGuideMailMerge(awardType, nominationList);
                 mailMerge.Execute(filePath);
@@ -40,8 +40,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && (Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.StarValues) ||
-                       Context.NominationListContext.NominationList.HasNominationsForAward(AwardType.RisingStar));
+                   && Context.NominationListContext.NominationList.HasNominations;
         }
 
         private static string GetSuccessMessage(IConfiguration context)

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using StarFisher.Console.Menu.Common.Parameters;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.UnselectAwardWinner.Parameters
 {

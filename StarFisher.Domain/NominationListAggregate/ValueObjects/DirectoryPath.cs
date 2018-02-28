@@ -3,7 +3,7 @@ using System.IO;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.Faults;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class DirectoryPath : ValueObject<DirectoryPath>
     {
@@ -22,14 +22,12 @@ namespace StarFisher.Domain.ValueObjects
             return new DirectoryPath(directoryPath);
         }
 
-        public WorkingDirectoryPath GetWorkingDirectory(Year year, Quarter quarter)
+        public WorkingDirectoryPath GetWorkingDirectory(AwardsPeriod awardsPeriod)
         {
-            if (year == null)
-                throw new ArgumentNullException(nameof(year));
-            if (quarter == null)
-                throw new ArgumentNullException(nameof(quarter));
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
 
-            return WorkingDirectoryPath.Create(this, year, quarter);
+            return WorkingDirectoryPath.Create(this, awardsPeriod);
         }
 
         public static bool IsValid(string directoryPath)
@@ -62,7 +60,7 @@ namespace StarFisher.Domain.ValueObjects
 
         public FilePath GetFilePathForFileInDirectory(string fileName, bool createDirectory, bool fileShouldExist)
         {
-            if(!TryGetFilePathForFileInDirectory(fileName, createDirectory, fileShouldExist, out FilePath filePath))
+            if (!TryGetFilePathForFileInDirectory(fileName, createDirectory, fileShouldExist, out FilePath filePath))
                 throw InvalidFilePathException.WorkingDirectoryFilePathInvalid(fileName);
 
             return filePath;

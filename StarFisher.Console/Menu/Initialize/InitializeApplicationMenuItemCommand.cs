@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.Initialize.Commands;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Console.Menu.Initialize.Parameters;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.Initialize
@@ -35,12 +36,8 @@ namespace StarFisher.Console.Menu.Initialize
             if (starAwardsDirectoryPath == null)
                 return unsuccessfulResult;
 
-            var year = GetCommandResult(new GetYearCommand(Context), out unsuccessfulResult);
-            if (year == null)
-                return unsuccessfulResult;
-
-            var quarter = GetCommandResult(new GetQuarterCommand(Context), out unsuccessfulResult);
-            if (quarter == null)
+            var awardPeriod = GetAwardPeriod(out unsuccessfulResult);
+            if (awardPeriod == null)
                 return unsuccessfulResult;
 
             var eiaChairPerson = GetEiaChairPerson(out unsuccessfulResult);
@@ -59,12 +56,49 @@ namespace StarFisher.Console.Menu.Initialize
             if (certificatePrinterPerson == null)
                 return unsuccessfulResult;
 
-            Context.Initialize(starAwardsDirectoryPath, year, quarter, eiaChairPerson, hrPeople, luncheonPlannerPeople,
+            Context.Initialize(starAwardsDirectoryPath, awardPeriod, eiaChairPerson, hrPeople, luncheonPlannerPeople,
                 certificatePrinterPerson);
 
             _configurationStorage.SaveConfiguration();
 
             return CommandOutput.None.Success;
+        }
+
+        private AwardsPeriod GetAwardPeriod(out CommandResult<CommandOutput.None> unsuccessfulResult)
+        {
+            var awardCategory = GetAwardCategory(out unsuccessfulResult);
+            if (awardCategory == null)
+                return null;
+
+            var year = GetCommandResult(new GetYearCommand(Context), out unsuccessfulResult);
+            if (year == null)
+                return null;
+
+            if(awardCategory == AwardCategory.SuperStarAwards)
+                return AwardsPeriod.CreateForSuperStarAwards(year);
+
+            if(awardCategory != AwardCategory.QuarterlyAwards)
+                throw new NotSupportedException($@"Unsupported award category: {awardCategory.Value}");
+
+            var quarter = GetCommandResult(new GetQuarterCommand(Context), out unsuccessfulResult);
+
+            return quarter == null 
+                ? null 
+                : AwardsPeriod.CreateForQuarterlyAwards(year, quarter);
+        }
+
+        private AwardCategory GetAwardCategory(out CommandResult<CommandOutput.None> unsuccessfulResult)
+        {
+            var parameter = new AwardCategoryParameter();
+
+            if (!TryGetArgumentValue(parameter, out AwardCategory awardCategory))
+            {
+                unsuccessfulResult = CommandOutput.None.Abort;
+                return null;
+            }
+
+            unsuccessfulResult = null;
+            return awardCategory;
         }
 
         private Person GetEiaChairPerson(out CommandResult<CommandOutput.None> unsuccessfulResult)

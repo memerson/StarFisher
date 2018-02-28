@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Office.Interop.Outlook;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Utilities;
 using OutlookApplication = Microsoft.Office.Interop.Outlook.Application;
 

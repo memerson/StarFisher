@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Excel;
 
 namespace StarFisher.Office.Word
@@ -57,7 +57,7 @@ namespace StarFisher.Office.Word
             if (!nominationList.HasStarValuesAwardWinners)
                 return;
 
-            var fileName = $@"{nominationList.Year}{nominationList.Quarter.Abbreviation}StarValuesWinnersForMemo.docx";
+            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_StarValuesWinnersForMemo.docx";
             var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
             var mailMerge = _mailMergeFactory.GetStarValuesWinnersMemoMailMerge(nominationList);
             mailMerge.Execute(filePath);
@@ -68,7 +68,7 @@ namespace StarFisher.Office.Word
             if (!nominationList.HasStarValuesAwardWinners)
                 return;
 
-            var fileName = $@"{nominationList.Year}{nominationList.Quarter.Abbreviation}StarValuesNomineesForMemo.xlsx";
+            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_StarValuesNomineesForMemo.xlsx";
             var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
             using (var excelFile = _excelFileFactory.GetStarValuesNomineeListExcelFile(nominationList))
                 excelFile.Save(filePath);
@@ -80,7 +80,7 @@ namespace StarFisher.Office.Word
             if (!nominationList.HasRisingStarAwardWinners)
                 return;
 
-            var fileName = $@"{nominationList.Year}{nominationList.Quarter.Abbreviation}RisingStarWinnersForMemo.docx";
+            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_RisingStarWinnersForMemo.docx";
             var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
             var mailMerge = _mailMergeFactory.GetRisingStarWinnersMemoMailMerge(nominationList);
             mailMerge.Execute(filePath);

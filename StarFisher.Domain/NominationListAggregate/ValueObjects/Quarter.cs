@@ -2,7 +2,7 @@
 using System.Linq;
 using StarFisher.Domain.Common;
 
-namespace StarFisher.Domain.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class Quarter : ValueObject<Quarter>
     {
@@ -19,7 +19,7 @@ namespace StarFisher.Domain.ValueObjects
             Fourth
         };
 
-        public static readonly Quarter Invalid = new Quarter(0);
+        public static readonly Quarter None = new Quarter(0);
 
         private Quarter(int numericValue)
         {
@@ -45,15 +45,15 @@ namespace StarFisher.Domain.ValueObjects
                     case 4:
                         return @"Fourth";
                     default:
-                        return @"UNKNOWN";
+                        return @"N/A";
                 }
             }
         }
 
-        public static Quarter Create(int numericValue)
+        public static Quarter GetByNumericValue(int numericValue)
         {
             var quarter = ValidQuarters.FirstOrDefault(q => q.NumericValue == numericValue);
-            return quarter ?? Invalid;
+            return quarter ?? None;
         }
 
         public static bool IsValid(int numericValue)

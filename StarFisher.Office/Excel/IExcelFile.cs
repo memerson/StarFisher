@@ -1,5 +1,5 @@
 ﻿using System;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Office.Excel
 {

@@ -1,11 +1,11 @@
-﻿using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+﻿using StarFisher.Domain.NominationListAggregate;
 
 namespace StarFisher.Office.Excel
 {
     internal class StarValuesCertificatesSourceExcelFile : CertificatesSourceExcelFileBase
     {
         public StarValuesCertificatesSourceExcelFile(NominationList nominationList)
-            : base(nominationList?.Year, nominationList?.Quarter, nominationList?.StarValuesAwardWinners)
+            : base(nominationList?.AwardsPeriod, nominationList?.StarValuesAwardWinners)
         {
         }
     }

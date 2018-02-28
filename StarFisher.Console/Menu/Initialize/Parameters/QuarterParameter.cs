@@ -1,5 +1,5 @@
 ﻿using StarFisher.Console.Menu.Common;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.Initialize.Parameters
 {
@@ -29,7 +29,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
         {
             if (int.TryParse(input, out int year) && Quarter.IsValid(year))
             {
-                argumentValue = Quarter.Create(year);
+                argumentValue = Quarter.GetByNumericValue(year);
                 return true;
             }
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Entities;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.Entities;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
+namespace StarFisher.Domain.NominationListAggregate.Persistence
 {
     internal class NominationDto
     {
@@ -64,7 +64,7 @@ namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.Persistence
             return new Nomination(Id,
                 NomineeVotingIdentifier.Create(NominationIds),
                 nominee,
-                Domain.ValueObjects.AwardType.Create(AwardType),
+                ValueObjects.AwardType.Create(AwardType),
                 PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),
                 companyValues,
                 NominationWriteUp.Create(nominee.Name, WriteUp),

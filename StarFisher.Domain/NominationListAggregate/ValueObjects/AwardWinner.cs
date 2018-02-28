@@ -1,8 +1,7 @@
 ﻿using System;
 using StarFisher.Domain.Common;
-using StarFisher.Domain.ValueObjects;
 
-namespace StarFisher.Domain.QuarterlyAwards.NominationListAggregate.ValueObjects
+namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class AwardWinner : ValueObject<AwardWinner>
     {

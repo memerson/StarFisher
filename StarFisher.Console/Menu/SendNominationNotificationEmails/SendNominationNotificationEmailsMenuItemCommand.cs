@@ -2,7 +2,7 @@
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
 using StarFisher.Console.Menu.SendNominationNotificationEmails.Parameters;
-using StarFisher.Domain.ValueObjects;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Word;
 
 namespace StarFisher.Console.Menu.SendNominationNotificationEmails

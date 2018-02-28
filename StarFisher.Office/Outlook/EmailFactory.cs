@@ -1,5 +1,5 @@
 ﻿using System;
-using StarFisher.Domain.QuarterlyAwards.NominationListAggregate;
+using StarFisher.Domain.NominationListAggregate;
 using StarFisher.Office.Excel;
 using StarFisher.Office.Word;
 
