@@ -35,19 +35,12 @@ namespace StarFisher.Office.Outlook
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
             mailItem.Subject = $@"EIA: {awardsName} luncheon invite list";
 
-            var document = new HtmlDocument();
-            document.LoadHtml(mailItem.HTMLBody);
+            var content = CreateContentNode();
 
-            var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
+            AppendRequest(content, luncheonPlanners, awardsName);
+            AppendThanks(content);
+            WriteMailItemBody(mailItem, content);
 
-            WriteRequest(content, luncheonPlanners, awardsName);
-
-            WriteThanks(content);
-
-            var body = document.DocumentNode.SelectSingleNode("//body");
-            body.ChildNodes.Prepend(content);
-
-            mailItem.HTMLBody = document.DocumentNode.OuterHtml;
             AddAwardLuncheonInviteeListAttachment(com, mailItem, excelFileFactory, nominationList);
         }
 
@@ -71,21 +64,12 @@ namespace StarFisher.Office.Outlook
             com.Get(() => attachments.Add(filePath.Value));
         }
 
-        private static void WriteThanks(HtmlNode content)
-        {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
-        }
-
-        private static void WriteRequest(HtmlNode content, IEnumerable<Person> luncheonPlanners, string awardsName)
+        private static void AppendRequest(HtmlNode content, IEnumerable<Person> luncheonPlanners, string awardsName)
         {
             var luncheonPlannerFirstNames = luncheonPlanners.Select(n => n.Name.FirstName).PrettyPrint();
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {luncheonPlannerFirstNames},</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Please find attached the spreadsheet with the invite list for the {
-                        awardsName
-                    } luncheon.</p>"));
+            AppendParagraph(content, $@"Hi {luncheonPlannerFirstNames},");
+            AppendSection(content,
+                $@"Please find attached the spreadsheet with the invite list for the {awardsName} luncheon.");
         }
     }
 }

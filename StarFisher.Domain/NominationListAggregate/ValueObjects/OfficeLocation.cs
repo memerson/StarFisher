@@ -60,7 +60,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
                 Remote
             };
 
-        internal static OfficeLocation Create(string officeLocationSurveyName)
+        internal static OfficeLocation FindByValue(string officeLocationSurveyName)
         {
             return ValidEmployeeOfficeLocations.FirstOrDefault(ol => ol.SurveyName == officeLocationSurveyName) ??
                    Invalid;

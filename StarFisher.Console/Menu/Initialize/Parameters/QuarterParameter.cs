@@ -29,7 +29,7 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
         {
             if (int.TryParse(input, out int year) && Quarter.IsValid(year))
             {
-                argumentValue = Quarter.GetByNumericValue(year);
+                argumentValue = Quarter.FindByNumericValue(year);
                 return true;
             }
 

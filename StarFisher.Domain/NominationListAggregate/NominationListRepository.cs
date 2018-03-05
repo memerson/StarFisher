@@ -146,8 +146,8 @@ namespace StarFisher.Domain.NominationListAggregate
             var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
             var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
             var nomineeName = PersonName.Create(row[12]);
-            var awardType = AwardType.Create(row[13]);
-            var nomineeOfficeLocation = OfficeLocation.Create(row[15]);
+            var awardType = AwardType.FindByAwardName(row[13]);
+            var nomineeOfficeLocation = OfficeLocation.FindByValue(row[15]);
             var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
             var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
             var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[18]);

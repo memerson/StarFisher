@@ -30,10 +30,10 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
 
         internal AwardWinner ToAwardWinner()
         {
-            var awardType = ValueObjects.AwardType.Create(AwardType);
+            var awardType = ValueObjects.AwardType.FindByAwardName(AwardType);
 
             var person = Person.Create(PersonName.Create(Name),
-                ValueObjects.OfficeLocation.Create(OfficeLocation),
+                ValueObjects.OfficeLocation.FindByValue(OfficeLocation),
                 ValueObjects.EmailAddress.Create(EmailAddress));
 
             return new AwardWinner(awardType, person);

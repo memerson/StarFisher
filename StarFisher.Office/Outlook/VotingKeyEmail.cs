@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using HtmlAgilityPack;
 using Microsoft.Office.Interop.Outlook;
 using StarFisher.Domain.NominationListAggregate;
@@ -32,32 +31,56 @@ namespace StarFisher.Office.Outlook
             mailItem.To = string.Join(";", eiaChairPerson.EmailAddress);
             mailItem.Subject = $@"EIA: {awardsName} voting key";
 
-            var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
-            var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
-
-            var document = new HtmlDocument();
-            document.LoadHtml(mailItem.HTMLBody);
+            var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
+            var hasRisingStar = nominationList.HasNominationsForAward(AwardType.RisingStar);
+            var hasSuperStar = nominationList.HasNominationsForAward(AwardType.SuperStar);
 
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
-            WriteRequest(hasRisingStar, hasStarValues, content, eiaChairPerson, awardsName);
+            AppendRequest(hasRisingStar, hasStarValues, content, eiaChairPerson, awardsName);
 
+            AddVotingKeyAttachments(com, mailItem, content, excelFileFactory, nominationList, hasStarValues,
+                hasRisingStar, hasSuperStar);
+
+            AppendThanks(content);
+            WriteMailItemBody(mailItem, content);
+        }
+
+        private static void AddVotingKeyAttachments(ComObjectManager com, MailItem mailItem, HtmlNode content,
+            IExcelFileFactory excelFileFactory, NominationList nominationList, bool hasStarValues, bool hasRisingStar,
+            bool hasSuperStar)
+        {
+            var awardCategory = nominationList.AwardsPeriod.AwardCategory;
+            if (awardCategory == AwardCategory.QuarterlyAwards)
+            {
+                AddQuarterlyVotingKeyAttachments(com, mailItem, content, excelFileFactory, nominationList,
+                    hasStarValues, hasRisingStar);
+            }
+            else if (awardCategory == AwardCategory.SuperStarAwards)
+            {
+                AddSuperStarVotingKeyAttachments(com, mailItem, excelFileFactory, nominationList, hasSuperStar);
+            }
+        }
+
+        private static void AddSuperStarVotingKeyAttachments(ComObjectManager com, MailItem mailItem,
+            IExcelFileFactory excelFileFactory, NominationList nominationList, bool hasSuperStar)
+        {
+            if (hasSuperStar)
+                AddVotingKeyAttachment(com, mailItem, excelFileFactory, nominationList, AwardType.SuperStar);
+        }
+
+        private static void AddQuarterlyVotingKeyAttachments(ComObjectManager com, MailItem mailItem, HtmlNode content,
+            IExcelFileFactory excelFileFactory, NominationList nominationList, bool hasStarValues, bool hasRisingStar)
+        {
             if (!hasStarValues)
-                WriteNoNomineesCaveat(content, AwardType.StarValues);
+                AppendNoNomineesCaveat(content, AwardType.StarValues);
             else
                 AddVotingKeyAttachment(com, mailItem, excelFileFactory, nominationList, AwardType.StarValues);
 
             if (!hasRisingStar)
-                WriteNoNomineesCaveat(content, AwardType.RisingStar);
+                AppendNoNomineesCaveat(content, AwardType.RisingStar);
             else
                 AddVotingKeyAttachment(com, mailItem, excelFileFactory, nominationList, AwardType.RisingStar);
-
-            WriteThanks(content);
-
-            var body = document.DocumentNode.SelectSingleNode("//body");
-            body.ChildNodes.Prepend(content);
-
-            mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
         private static void AddVotingKeyAttachment(ComObjectManager com, MailItem mailItem,
@@ -79,30 +102,18 @@ namespace StarFisher.Office.Outlook
             com.Get(() => attachments.Add(filePath.Value));
         }
 
-        private static void WriteThanks(HtmlNode content)
+        private static void AppendNoNomineesCaveat(HtmlNode content, AwardType awardType)
         {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
+            AppendSection(content, $@"We had no eligible {awardType.PrettyName} nominees this time.");
         }
 
-        private static void WriteNoNomineesCaveat(HtmlNode content, AwardType awardType)
-        {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>We had no eligible {awardType.PrettyName} nominees this time.</p>"));
-        }
-
-        private static void WriteRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
-            Person eiaChairPerson,
-            string awardsName)
+        private static void AppendRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
+            Person eiaChairPerson, string awardsName)
         {
             var keyorKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
 
-            content.ChildNodes.Append(
-                HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {eiaChairPerson.Name.FirstName},</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Please find attached the {awardsName} voting {keyorKeys}.</p>"));
+            AppendParagraph(content, $@"Hi {eiaChairPerson.Name.FirstName},");
+            AppendSection(content, $@">Please find attached the {awardsName} voting {keyorKeys}.");
         }
     }
 }

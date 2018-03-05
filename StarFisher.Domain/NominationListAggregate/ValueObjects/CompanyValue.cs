@@ -30,7 +30,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 
         public string Value { get; }
 
-        internal static CompanyValue Create(string companyValueText)
+        internal static CompanyValue FindByValue(string companyValueText)
         {
             var companyValue = ValidCompanyValues.FirstOrDefault(cv => cv.ToString() == companyValueText);
             return companyValue ?? Invalid;

@@ -18,7 +18,7 @@ namespace StarFisher.Office.Excel
         {
             var cells = com.Get(() => worksheet.Cells);
 
-            var awardWinners = nominationList.StarValuesAwardWinners;
+            var awardWinners = nominationList.RisingStarAwardWinners;
 
             cells.NumberFormat = "@"; // Format all cells as text.
 

@@ -25,24 +25,44 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public AwardsPeriod AwardsPeriod { get; }
 
+        public AwardCategory AwardCategory => AwardsPeriod.AwardCategory;
+
         #region Nominations
 
         public IReadOnlyList<Nomination> Nominations => _nominations;
 
         public IReadOnlyList<Person> Nominees => Nominations.Select(n => n.Nominee).Distinct().ToList();
 
-        public IReadOnlyList<Person> AwardsLuncheonInvitees => GetNominationsByAwardType(AwardType.StarValues)
-            .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
-                        n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
-                        n.NomineeOfficeLocation == OfficeLocation.EchoBrentwood)
-            .Select(n => n.Nominee)
-            .Distinct()
-            .ToList();
+        public IReadOnlyList<Person> AwardsLuncheonInvitees
+        {
+            get
+            {
+                AwardType awardType;
+
+                if(AwardCategory == AwardCategory.QuarterlyAwards)
+                    awardType = AwardType.StarValues;
+                else if (AwardCategory == AwardCategory.SuperStarAwards)
+                    awardType = AwardType.SuperStar;
+                else
+                    return new List<Person>();
+
+                return GetNominationsByAwardType(awardType)
+                    .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
+                                n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
+                                n.NomineeOfficeLocation == OfficeLocation.EchoBrentwood)
+                    .Select(n => n.Nominee)
+                    .Distinct()
+                    .ToList();
+            }
+        }
 
         public IReadOnlyList<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues)
             .ToList();
 
         public IReadOnlyList<Nomination> RisingStarNominations => GetNominationsByAwardType(AwardType.RisingStar)
+            .ToList();
+
+        public IReadOnlyList<Nomination> SuperStarNominations => GetNominationsByAwardType(AwardType.SuperStar)
             .ToList();
 
         public bool HasNominations => _nominations.Count > 0;
@@ -282,11 +302,15 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public IReadOnlyList<AwardWinner> StarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues);
 
+        public IReadOnlyList<AwardWinner> SuperStarAwardWinners => GetWinnersForAwardType(AwardType.SuperStar);
+
         public bool HasAwardWinners => AwardWinners.Count > 0;
 
         public bool HasRisingStarAwardWinners => RisingStarAwardWinners.Count > 0;
 
         public bool HasStarValuesAwardWinners => StarValuesAwardWinners.Count > 0;
+
+        public bool HasSuperStarAwardWinners => StarValuesAwardWinners.Count > 0;
 
         public bool GetIsAwardWinner(AwardType awardType, Person person)
         {
@@ -324,7 +348,7 @@ namespace StarFisher.Domain.NominationListAggregate
 
             var nominations = GetNominationsForNominee(awardType, nominee);
             if (nominations.Count == 0)
-                throw new ArgumentException(nameof(nominee));
+                throw new ArgumentException(@"There is no such nominee for that award type.", nameof(awardType));
 
             var awardWinner = new AwardWinner(awardType, nominee);
 

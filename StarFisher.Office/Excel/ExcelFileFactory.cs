@@ -27,6 +27,8 @@ namespace StarFisher.Office.Excel
                 return new StarValuesVotingGuideSourceExcelFile(nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarVotingGuideSourceExcelFile(nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarVotingGuideSourceExcelFile(nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
@@ -40,6 +42,8 @@ namespace StarFisher.Office.Excel
                 return new StarValuesVotingKeyExcelFile(nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarVotingKeyExcelFile(nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarVotingKeyExcelFile(nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
@@ -53,6 +57,8 @@ namespace StarFisher.Office.Excel
                 return new StarValuesNominationNotificationEmailSourceExcelFile(nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarNominationNotificationEmailSourceExcelFile(nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarNominationNotificationEmailSourceExcelFile(nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
@@ -76,6 +82,8 @@ namespace StarFisher.Office.Excel
                 return new StarValuesCertificatesSourceExcelFile(nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarCertificatesSourceExcelFile(nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarCertificatesSourceExcelFile(nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }

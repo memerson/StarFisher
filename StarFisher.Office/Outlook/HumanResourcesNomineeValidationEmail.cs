@@ -25,88 +25,113 @@ namespace StarFisher.Office.Outlook
         {
             mailItem.To = string.Join(";", emailConfiguration.HrPeople.Select(p => p.EmailAddress));
             mailItem.CC = string.Join(";", emailConfiguration.EiaChairPerson.EmailAddress);
-            var hasStarValues = nominationList.Nominations.Any(n => n.AwardType == AwardType.StarValues);
-            var hasRisingStar = nominationList.Nominations.Any(n => n.AwardType == AwardType.RisingStar);
+
+            var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
+            var hasRisingStar = nominationList.HasNominationsForAward(AwardType.RisingStar);
+            var hasSuperStar = nominationList.HasNominationsForAward(AwardType.SuperStar);
             var awardsName = nominationList.AwardsPeriod.AwardsName;
 
             mailItem.Subject = $@"Need: {awardsName} nominee eligibility check";
 
-            var document = new HtmlDocument();
-            document.LoadHtml(mailItem.HTMLBody);
+            var content = CreateContentNode();
 
-            var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
-
-            WriteInstructions(emailConfiguration.HrPeople, awardsName, content, hasStarValues,
-                hasRisingStar);
-
-            if (hasStarValues)
-                WriteNominees(nominationList, AwardType.StarValues, content);
-
-            if (hasRisingStar)
-                WriteNominees(nominationList, AwardType.RisingStar, content);
-
-            var body = document.DocumentNode.SelectSingleNode("//body");
-            body.ChildNodes.Prepend(content);
-
-            mailItem.HTMLBody = document.DocumentNode.OuterHtml;
+            AppendIntroduction(content, emailConfiguration.HrPeople, awardsName);
+            AppendNomineeCriteria(content, nominationList, hasStarValues, hasRisingStar, hasSuperStar);
+            AppendThanks(content);
+            AppendNominees(content, nominationList, hasStarValues, hasRisingStar, hasSuperStar);
+            WriteMailItemBody(mailItem, content);
         }
 
-        private static void WriteInstructions(IReadOnlyList<Person> hrPeople, string awardsName,
-            HtmlNode content, bool hasStarValues, bool hasRisingStar)
+        private static void AppendNominees(HtmlNode content, NominationList nominationList, bool hasStarValues,
+            bool hasRisingStar, bool hasSuperStar)
+        {
+            var awardCategory = nominationList.AwardsPeriod.AwardCategory;
+            if (awardCategory == AwardCategory.QuarterlyAwards)
+                AppendQuarterlyAwardNominees(content, nominationList, hasStarValues, hasRisingStar);
+            else if (awardCategory == AwardCategory.SuperStarAwards)
+                AppendSuperStarNominees(content, nominationList, hasSuperStar);
+        }
+
+        private static void AppendSuperStarNominees(HtmlNode content, NominationList nominationList, bool hasSuperStar)
+        {
+            if (hasSuperStar)
+                AppendNominees(content, nominationList, AwardType.SuperStar);
+        }
+
+        private static void AppendQuarterlyAwardNominees(HtmlNode content, NominationList nominationList, bool hasStarValues,
+            bool hasRisingStar)
+        {
+            if (hasStarValues)
+                AppendNominees(content, nominationList, AwardType.StarValues);
+
+            if (hasRisingStar)
+                AppendNominees(content, nominationList, AwardType.RisingStar);
+        }
+
+        private static void AppendNomineeCriteria(HtmlNode content, NominationList nominationList, bool hasStarValues,
+            bool hasRisingStar, bool hasSuperStar)
+        {
+            var awardCategory = nominationList.AwardsPeriod.AwardCategory;
+            if (awardCategory == AwardCategory.QuarterlyAwards)
+                AppendQuarterlyNomineeCriteria(content, hasStarValues, hasRisingStar);
+            else if (awardCategory == AwardCategory.SuperStarAwards)
+                AppendSuperStarNomineeCriteria(content, hasSuperStar);
+        }
+
+        private static void AppendSuperStarNomineeCriteria(HtmlNode content, bool hasSuperStar)
+        {
+            if (!hasSuperStar)
+                return;
+
+            AppendSection(content, @"Super Star nominees must be full-time employees in good standing. They must have been with HealthStream since January 1.");
+        }
+
+        private static void AppendQuarterlyNomineeCriteria(HtmlNode content, bool hasStarValues, bool hasRisingStar)
+        {
+            if (hasStarValues)
+            {
+                AppendSection(content, @"Star Values nominees must be full-time or part-time/20 employees in good standing. They must have been with HealthStream for at least one full quarter.");
+            }
+
+            if (hasRisingStar)
+            {
+                AppendSection(content, @"Rising Star nominees must be active interns in good standing who are either in school or within their first year after graduation.");
+            }
+        }
+
+        private static void AppendIntroduction(HtmlNode content, IReadOnlyList<Person> hrPeople, string awardsName)
         {
             var hrFirstNames = hrPeople.Select(n => n.Name.FirstName).PrettyPrint();
 
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {hrFirstNames},</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Could you please check the list of nominees for the {
+            AppendParagraph(content, $@"Hi {hrFirstNames},");
+            AppendSection(content,
+                $@">Could you please check the list of nominees for the {
                         awardsName
-                    } and let us know if any are not eligible?</p>"));
-
-            if (hasStarValues)
-            {
-                content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-                content.ChildNodes.Append(HtmlNode.CreateNode(
-                    @"<p class=MsoNormal>Star Values nominees must be full-time or part-time/20 employees in good standing. They must have been with HealthStream for at least one full quarter.</p>"));
-            }
-
-            if (hasRisingStar)
-            {
-                content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-                content.ChildNodes.Append(HtmlNode.CreateNode(
-                    @"<p class=MsoNormal>Rising Star nominees must be active interns in good standing who are either in school or within their first year after graduation.</p>"));
-            }
-
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
+                    } and let us know if any are not eligible?");
         }
 
-        private static void WriteNominees(NominationList nominationList, AwardType awardType, HtmlNode content)
+        private static void AppendNominees(HtmlNode content, NominationList nominationList, AwardType awardType)
         {
             var nominationGroups = nominationList.Nominations
                 .Where(n => n.AwardType == awardType)
-                .GroupBy(n => new {n.NomineeName, n.NomineeOfficeLocation})
+                .GroupBy(n => new { n.NomineeName, n.NomineeOfficeLocation })
                 .OrderBy(g => g.Key.NomineeName.FullNameLastNameFirst);
 
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode($@"<p class=MsoNormal>{awardType}s:</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
+            AppendLineBreak(content);
+            AppendSection(content, $@"{awardType}s:");
+            AppendLineBreak(content);
 
-            var nomineeTable = HtmlNode.CreateNode(@"<table class=MsoNormalTable>");
-            content.ChildNodes.Append(nomineeTable);
+            var nomineeTable = AppendTable(content);
 
             foreach (var group in nominationGroups)
             {
                 var nomineeName = group.Key.NomineeName.FullNameLastNameFirst;
                 var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.SurveyName;
 
-                var nomineeTableRow = HtmlNode.CreateNode(@"<tr>");
-                nomineeTable.AppendChild(nomineeTableRow);
+                var nomineeTableRow = AppendTableRow(nomineeTable);
 
-                nomineeTableRow.AppendChild(HtmlNode.CreateNode($@"<td><p class=MsoNormal>{nomineeName}</p></td>"));
-                nomineeTableRow.AppendChild(
-                    HtmlNode.CreateNode($@"<td><p class=MsoNormal>{nomineeOfficeLocation}</p></td>"));
+                AppendTableData(nomineeTableRow, nomineeName);
+                AppendTableData(nomineeTableRow, nomineeOfficeLocation);
             }
         }
     }

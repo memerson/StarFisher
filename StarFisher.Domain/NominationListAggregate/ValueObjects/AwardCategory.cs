@@ -19,6 +19,8 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             SuperStarAwards
         };
 
+        public static readonly AwardCategory Invalid = new AwardCategory(@"INVALID");
+
         public string Value { get; }
 
         protected override bool EqualsCore(AwardCategory other)

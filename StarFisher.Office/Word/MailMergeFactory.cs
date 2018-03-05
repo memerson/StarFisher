@@ -32,6 +32,8 @@ namespace StarFisher.Office.Word
                 return new StarValuesVotingGuideMailMerge(_excelFileFactory, nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarVotingGuideMailMerge(_excelFileFactory, nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarVotingGuideMailMerge(_excelFileFactory, nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
@@ -55,6 +57,8 @@ namespace StarFisher.Office.Word
                 return new StarValuesCertificatesMailMerge(_excelFileFactory, nominationList);
             if (awardType == AwardType.RisingStar)
                 return new RisingStarCertificatesMailMerge(_excelFileFactory, nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarCertificatesMailMerge(_excelFileFactory, nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }
@@ -66,6 +70,10 @@ namespace StarFisher.Office.Word
 
             if (awardType == AwardType.StarValues)
                 return new StarValuesNominationNotificationsMailMerge(_excelFileFactory, nominationList);
+            if (awardType == AwardType.RisingStar)
+                return new RisingStarNominationNotificationsMailMerge(_excelFileFactory, nominationList);
+            if (awardType == AwardType.SuperStar)
+                return new SuperStarNominationNotificationsMailMerge(_excelFileFactory, nominationList);
 
             throw new NotSupportedException(awardType.Value);
         }

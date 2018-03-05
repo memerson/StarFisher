@@ -86,7 +86,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             if (quarterValue < 1 || quarterValue > 4)
                 return CreateForSuperStarAwards(year);
 
-            var quarter = Quarter.GetByNumericValue(quarterValue);
+            var quarter = Quarter.FindByNumericValue(quarterValue);
 
             return CreateForQuarterlyAwards(year, quarter);
         }

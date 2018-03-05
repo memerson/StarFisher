@@ -50,7 +50,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             }
         }
 
-        public static Quarter GetByNumericValue(int numericValue)
+        public static Quarter FindByNumericValue(int numericValue)
         {
             var quarter = ValidQuarters.FirstOrDefault(q => q.NumericValue == numericValue);
             return quarter ?? None;

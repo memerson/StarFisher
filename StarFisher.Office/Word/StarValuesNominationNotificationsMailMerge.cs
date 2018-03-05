@@ -24,12 +24,12 @@ namespace StarFisher.Office.Word
 
         protected override string GetEmailAddresFieldName()
         {
-            return @"Name";
+            return @"Email";
         }
 
         protected override string GetEmailSubject()
         {
-            return $@"Star Values Award Nomination";
+            return @"Star Values Award Nomination";
         }
     }
 }

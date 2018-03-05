@@ -43,6 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel\SuperStarVotingGuideSourceExcelFile.cs" />
+    <Compile Include="Excel\SuperStarVotingKeyExcelFile.cs" />
+    <Compile Include="Excel\SuperStarNominationNotificationEmailSourceExcelFile.cs" />
+    <Compile Include="Excel\SuperStarCertificatesSourceExcelFile.cs" />
     <Compile Include="Excel\StarValuesNomineeListExcelFile.cs" />
     <Compile Include="Excel\AwardsLuncheonInviteeListExcelFile.cs" />
     <Compile Include="Excel\ExcelFileBase.cs" />
@@ -82,6 +86,9 @@
     <Compile Include="Word\IMailMerge.cs" />
     <Compile Include="Word\MailMergeBase.cs" />
     <Compile Include="Word\MailMergeFactory.cs" />
+    <Compile Include="Word\SuperStarVotingGuideMailMerge.cs" />
+    <Compile Include="Word\SuperStarNominationNotificationsMailMerge.cs" />
+    <Compile Include="Word\SuperStarCertificatesMailMerge.cs" />
     <Compile Include="Word\RisingStarNominationNotificationsMailMerge.cs" />
     <Compile Include="Word\StarValuesNominationNotificationsMailMerge.cs" />
     <Compile Include="Word\StarValuesCertificatesMailMerge.cs" />
@@ -166,6 +173,8 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\Documents\StarAwardWinnersAndNomineesForDistribution.docx" />
     <None Include="Word\MailMergeTemplates\RisingStarWinnersMemoMailMergeTemplate.docx" />
+    <None Include="Word\MailMergeTemplates\SuperStarNominationNotificationsMailMergeTemplate.docx" />
+    <None Include="Word\MailMergeTemplates\SuperStarVotingGuideMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

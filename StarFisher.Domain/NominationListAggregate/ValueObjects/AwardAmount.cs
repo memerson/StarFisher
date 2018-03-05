@@ -26,7 +26,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 
         public decimal ValueInDollars { get; }
 
-        internal static AwardAmount Create(decimal valueInDollars)
+        internal static AwardAmount FindByValue(decimal valueInDollars)
         {
             return ValidAwardAmounts.FirstOrDefault(aa => aa.ValueInDollars == valueInDollars) ?? Invalid;
         }

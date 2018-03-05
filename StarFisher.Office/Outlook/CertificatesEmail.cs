@@ -27,36 +27,52 @@ namespace StarFisher.Office.Outlook
         {
             var certificatePrinter = emailConfiguration.CertificatePrinterPerson;
             var awardsName = nominationList.AwardsPeriod.AwardsName;
-            var hasStarValues = nominationList.HasStarValuesAwardWinners;
-            var hasRisingStar = nominationList.HasRisingStarAwardWinners;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
             mailItem.Subject = $@"EIA: {awardsName} winner certificates";
 
-            var document = new HtmlDocument();
-            document.LoadHtml(mailItem.HTMLBody);
+            var content = CreateContentNode();
 
-            var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
+            AppendIntroduction(content, certificatePrinter, awardsName);
+            AddCertificatesAttachments(com, mailItem, mailMergeFactory, nominationList, content);
+            AppendThanks(content);
 
-            WriteRequest(content, certificatePrinter, awardsName);
+            WriteMailItemBody(mailItem, content);
+        }
 
-            if (!hasStarValues)
-                WriteNoWinnersCaveat(content, AwardType.StarValues);
+        private static void AddCertificatesAttachments(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
+            NominationList nominationList, HtmlNode content)
+        {
+            var awardCategory = nominationList.AwardsPeriod.AwardCategory;
+
+            if (awardCategory == AwardCategory.QuarterlyAwards)
+                AddQuarterlyCertificatesAttachments(com, mailItem, mailMergeFactory, nominationList, content);
+            else if (awardCategory == AwardCategory.SuperStarAwards)
+                AddSuperStarCertificatesAttachments(com, mailItem, mailMergeFactory, nominationList);
+        }
+
+        private static void AddSuperStarCertificatesAttachments(ComObjectManager com, MailItem mailItem,
+            IMailMergeFactory mailMergeFactory, NominationList nominationList)
+        {
+            if (!nominationList.HasSuperStarAwardWinners)
+                return; 
+
+            AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.SuperStar);
+        }
+
+        private static void AddQuarterlyCertificatesAttachments(ComObjectManager com, MailItem mailItem,
+            IMailMergeFactory mailMergeFactory, NominationList nominationList, HtmlNode content)
+        {
+            if (!nominationList.HasStarValuesAwardWinners)
+                AppendNoWinnersCaveat(content, AwardType.StarValues);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
 
-            if (!hasRisingStar)
-                WriteNoWinnersCaveat(content, AwardType.RisingStar);
+            if (!nominationList.HasRisingStarAwardWinners)
+                AppendNoWinnersCaveat(content, AwardType.RisingStar);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
-
-            WriteThanks(content);
-
-            var body = document.DocumentNode.SelectSingleNode("//body");
-            body.ChildNodes.Prepend(content);
-
-            mailItem.HTMLBody = document.DocumentNode.OuterHtml;
         }
 
         private static void AddCertificatesAttachment(ComObjectManager com, MailItem mailItem,
@@ -76,26 +92,15 @@ namespace StarFisher.Office.Outlook
             com.Get(() => attachments.Add(filePath.Value));
         }
 
-        private static void WriteThanks(HtmlNode content)
+        private static void AppendNoWinnersCaveat(HtmlNode content, AwardType awardType)
         {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<p class=MsoNormal>Thanks!</p>"));
+            AppendSection(content, $@"We had no {awardType.PrettyName} winners this time.");
         }
 
-        private static void WriteNoWinnersCaveat(HtmlNode content, AwardType awardType)
+        private static void AppendIntroduction(HtmlNode content, Person certificatePrinter, string awardsName)
         {
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>We had no {awardType.PrettyName} winners this time.</p>"));
-        }
-
-        private static void WriteRequest(HtmlNode content, Person certificatePrinter, string awardsName)
-        {
-            content.ChildNodes.Append(
-                HtmlNode.CreateNode($@"<p class=MsoNormal>Hi {certificatePrinter.Name.FirstName},</p>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(@"<br>"));
-            content.ChildNodes.Append(HtmlNode.CreateNode(
-                $@"<p class=MsoNormal>Please find attached the {awardsName} winners certificates.</p>"));
+            AppendParagraph(content, $@"Hi {certificatePrinter.Name.FirstName},");
+            AppendSection(content, $@"Please find attached the {awardsName} winners certificates.");
         }
     }
 }
