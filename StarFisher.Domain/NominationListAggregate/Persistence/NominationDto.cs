@@ -54,7 +54,7 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
 
         internal Nomination ToNomination()
         {
-            var nominee = Person.Create(PersonName.Create(NomineeName), OfficeLocation.FindByValue(NomineeOfficeLocation),
+            var nominee = Person.Create(PersonName.Create(NomineeName), OfficeLocation.FindByName(NomineeOfficeLocation),
                 EmailAddress.Create(NomineeEmailAddress));
 
             var companyValues = (CompanyValues ?? Enumerable.Empty<string>())

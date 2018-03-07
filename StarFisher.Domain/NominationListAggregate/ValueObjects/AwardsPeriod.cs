@@ -41,7 +41,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
                 if (AwardCategory == AwardCategory.QuarterlyAwards)
                     return $@"{Year}{Quarter.Abbreviation}";
                 if (AwardCategory == AwardCategory.SuperStarAwards)
-                    return $@"{Year}SuperStar";
+                    return $@"{Year}";
 
                 throw GetAwardCategoryNotSupportedException();
             }

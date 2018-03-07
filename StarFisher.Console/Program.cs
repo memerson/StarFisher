@@ -58,8 +58,6 @@ namespace StarFisher.Console
                 new RemoveNominationMenuItemCommand(StarFisherContext.Instance),
                 new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory),
-                new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory),
-                new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
                 new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
                 new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
@@ -99,9 +97,9 @@ namespace StarFisher.Console
 
             do
             {
-                System.Console.WriteLine();
-                System.Console.WriteLine(@"You must complete StarFisher's initial set-up to continue.");
-                System.Console.WriteLine();
+                StarFisherConsole.Instance.WriteLine();
+                StarFisherConsole.Instance.WriteLine(@"You must complete StarFisher's initial set-up to continue.");
+                StarFisherConsole.Instance.WriteLine();
 
                 var initializationCommand = new InitializeApplicationMenuItemCommand(StarFisherContext.Instance,
                     globalAddressList, configurationStorage);
@@ -116,11 +114,11 @@ namespace StarFisher.Console
             if (initialized || exception == null)
                 return initialized;
 
-            System.Console.WriteLine();
-            System.Console.WriteLine(
+            StarFisherConsole.Instance.WriteLine();
+            StarFisherConsole.Instance.WriteLine(
                 @"Failed to load saved configuration. You will need to re-run the initialization workflow.");
-            System.Console.WriteLine(exception.ToString());
-            System.Console.WriteLine();
+            StarFisherConsole.Instance.WriteLine();
+            StarFisherConsole.Instance.PrintException(exception);
 
             return false;
         }

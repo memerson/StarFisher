@@ -105,7 +105,7 @@ namespace StarFisher.Office.Outlook
 
             AppendParagraph(content, $@"Hi {hrFirstNames},");
             AppendSection(content,
-                $@">Could you please check the list of nominees for the {
+                $@"Could you please check the list of nominees for the {
                         awardsName
                     } and let us know if any are not eligible?");
         }
@@ -126,7 +126,7 @@ namespace StarFisher.Office.Outlook
             foreach (var group in nominationGroups)
             {
                 var nomineeName = group.Key.NomineeName.FullNameLastNameFirst;
-                var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.SurveyName;
+                var nomineeOfficeLocation = group.Key.NomineeOfficeLocation.Name;
 
                 var nomineeTableRow = AppendTableRow(nomineeTable);
 

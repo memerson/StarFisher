@@ -31,7 +31,8 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
 
         private bool TryGetAwardType(out AwardType awardType)
         {
-            var parameter = new AwardTypeParameter();
+            var awardCategory = Context.NominationListContext.NominationList.AwardCategory;
+            var parameter = new AwardTypeParameter(awardCategory);
             return TryGetArgumentValue(parameter, out awardType);
         }
 

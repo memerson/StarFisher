@@ -20,7 +20,7 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
         protected override string GetCallToActionText()
         {
             return $@"Enter the email address for the nominee named {_nominee.Name.FullName} from {
-                    _nominee.OfficeLocation.ConciseName
+                    _nominee.OfficeLocation.Name
                 }, or enter 'done' if you don't want to change it.";
         }
     }

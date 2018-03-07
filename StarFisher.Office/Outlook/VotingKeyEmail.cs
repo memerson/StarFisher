@@ -113,7 +113,7 @@ namespace StarFisher.Office.Outlook
             var keyorKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
 
             AppendParagraph(content, $@"Hi {eiaChairPerson.Name.FirstName},");
-            AppendSection(content, $@">Please find attached the {awardsName} voting {keyorKeys}.");
+            AppendSection(content, $@"Please find attached the {awardsName} voting {keyorKeys}.");
         }
     }
 }

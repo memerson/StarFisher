@@ -1,10 +1,12 @@
 ﻿using StarFisher.Console.Menu.Common.Parameters;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 
 namespace StarFisher.Console.Menu.SelectAwardWinner.Parameters
 {
     public class AwardTypeParameter : AwardTypeParameterBase
     {
-        public AwardTypeParameter()
+        public AwardTypeParameter(AwardCategory awardCategory)
+            : base(awardCategory)
         {
             RegisterAbortInput(@"stop");
         }

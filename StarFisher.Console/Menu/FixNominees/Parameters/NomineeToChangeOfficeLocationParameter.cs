@@ -14,7 +14,7 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.Name.FullName,-25} {listItem.OfficeLocation.ConciseName}";
+            return $@"{listItem.Name.FullName,-25} {listItem.OfficeLocation.Name}";
         }
 
         protected override void WriteCallToAction()

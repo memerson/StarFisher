@@ -17,7 +17,7 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
 
         protected override string GetListItemLabel(OfficeLocation listItem)
         {
-            return listItem.ConciseName;
+            return listItem.Name;
         }
 
         protected override void WriteCallToAction()

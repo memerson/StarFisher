@@ -31,7 +31,7 @@ namespace StarFisher.Office.Excel
                 var awardWinner = awardWinners[i];
 
                 SetCellValue(cells, rowNumber, 1, awardWinner.Name.FullName);
-                SetCellValue(cells, rowNumber, 2, awardWinner.OfficeLocation.ConciseName);
+                SetCellValue(cells, rowNumber, 2, awardWinner.OfficeLocation.Name);
             }
         }
     }

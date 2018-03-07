@@ -29,7 +29,7 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.EmailAddress,-45} {listItem.Name.FullName} from {listItem.OfficeLocation.ConciseName}";
+            return $@"{listItem.EmailAddress,-45} {listItem.Name.FullName} from {listItem.OfficeLocation.Name}";
         }
 
         protected override void WriteListItem(Person listItem, string listItemText)

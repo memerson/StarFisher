@@ -39,7 +39,8 @@ namespace StarFisher.Domain.NominationListAggregate
 
             if (awardCategory == AwardCategory.QuarterlyAwards)
                 nominations = LoadQuarterlyAwardsSurveyExport(excel);
-            //TODO: SuperStar load
+            else if (awardCategory == AwardCategory.SuperStarAwards)
+                nominations = LoadSuperStarAwardsSurveyExport(excel);
             else
                 throw new NotSupportedException($@"Unsupported award category: {awardCategory.Value}");
 
@@ -147,7 +148,7 @@ namespace StarFisher.Domain.NominationListAggregate
             var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
             var nomineeName = PersonName.Create(row[12]);
             var awardType = AwardType.FindByAwardName(row[13]);
-            var nomineeOfficeLocation = OfficeLocation.FindByValue(row[15]);
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
             var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
             var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
             var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[18]);
@@ -155,6 +156,49 @@ namespace StarFisher.Domain.NominationListAggregate
             var hasPerformance = !string.IsNullOrWhiteSpace(row[20]);
             var writeUp = NominationWriteUp.Create(nomineeName, row[21]);
             var writeUpSummary = NominationWriteUpSummary.Create(row[23]);
+
+            var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
+                hasIndividualIntegrity, hasPerformance);
+
+            var nominee = Person.Create(nomineeName, nomineeOfficeLocation, nomineeName.DerivedEmailAddress);
+
+            var nomination = new Nomination(rowNumber, NomineeVotingIdentifier.Unknown, nominee, awardType,
+                nominatorName, companyValues, writeUp, writeUpSummary);
+
+            return nomination;
+        }
+
+        private static IEnumerable<Nomination> LoadSuperStarAwardsSurveyExport(ExcelQueryFactory excel)
+        {
+            var worksheet = excel.Worksheet(0);
+            var nominations = new List<Nomination>(100);
+            var rowNumber = 0;
+
+            // It can't handle the OrderBy until we read all the rows into memory.
+            var rows = worksheet.Skip(1).ToList().OrderBy(r => r[12].ToString());
+
+            foreach (var row in rows)
+            {
+                ++rowNumber;
+                nominations.Add(LoadSuperStarAwardsNominationFromSurveyExport(row, rowNumber));
+            }
+            return nominations;
+        }
+
+        private static Nomination LoadSuperStarAwardsNominationFromSurveyExport(Row row, int rowNumber)
+        {
+            var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
+            var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
+            var nomineeName = PersonName.Create(row[12]);
+            var awardType = AwardType.SuperStar;
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[14]);
+            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[15]);
+            var hasInnovation = !string.IsNullOrWhiteSpace(row[16]);
+            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[17]);
+            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[18]);
+            var hasPerformance = !string.IsNullOrWhiteSpace(row[19]);
+            var writeUp = NominationWriteUp.Create(nomineeName, row[20]);
+            var writeUpSummary = NominationWriteUpSummary.NotApplicable;
 
             var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
                 hasIndividualIntegrity, hasPerformance);

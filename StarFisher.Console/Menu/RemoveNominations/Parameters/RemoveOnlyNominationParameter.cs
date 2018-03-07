@@ -18,7 +18,7 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
             var awardName = _nomination.AwardType.PrettyName;
             var nomineeName = _nomination.NomineeName.FullName;
 
-            return $@"This is the only {awardName} nomination for {nomineeName}. Removing it essentially disqualifies them for that award. Do you want to remove this nomination (yes or no)?";
+            return $@"This is the only {awardName} nomination for {nomineeName}. Removing it essentially disqualifies him/her for that award. Do you want to remove this nomination (yes or no)?";
         }
     }
 }

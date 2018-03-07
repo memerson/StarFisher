@@ -1,6 +1,7 @@
 ﻿using System;
 using StarFisher.Console.Context;
 using StarFisher.Console.Menu.Common;
+using StarFisher.Domain.NominationListAggregate.ValueObjects;
 using StarFisher.Office.Word;
 
 namespace StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts
@@ -33,6 +34,7 @@ namespace StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
+                   && Context.NominationListContext.NominationList.AwardCategory == AwardCategory.QuarterlyAwards
                    && Context.NominationListContext.NominationList.HasAwardWinners;
         }
 

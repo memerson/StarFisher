@@ -15,7 +15,7 @@ namespace StarFisher.Console.Menu.UnselectAwardWinner.Parameters
 
         protected override string GetListItemLabel(AwardWinner listItem)
         {
-            return $@"{listItem.Name} from {listItem.OfficeLocation.ConciseName}, {listItem.AwardType.PrettyName} winner";
+            return $@"{listItem.Name} from {listItem.OfficeLocation.Name}, {listItem.AwardType.PrettyName} winner";
         }
 
         protected override void WriteCallToAction()

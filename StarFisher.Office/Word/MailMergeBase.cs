@@ -47,7 +47,7 @@ namespace StarFisher.Office.Word
             object missing = Missing.Value;
             var dataSourcePath = GetDataSourcePath();
             object templatePath = ExtractMailMergeTemplate(_mailMergeTemplateResourceName);
-            var word = com.Get(() => new Application {Visible = true});
+            var word = com.Get(() => new Application {Visible = false});
             var documents = com.Get(() => word.Documents);
             var mergeTemplateDocument =
                 com.Get(() => documents.Add(ref templatePath, ref missing, ref missing, ref no));
@@ -58,7 +58,7 @@ namespace StarFisher.Office.Word
             }
             finally
             {
-                Cleanup(mergeTemplateDocument, dataSourcePath.Value, templatePath.ToString());
+                Cleanup(word, mergeTemplateDocument, dataSourcePath.Value, templatePath.ToString());
             }
         }
 
@@ -78,7 +78,7 @@ namespace StarFisher.Office.Word
 
             mailMerge.MainDocumentType = _mailMergeDocType;
 
-            mergeTemplateDocument.MailMerge.OpenDataSource(dataSourcePath.Value, ref format, ref no, ref no, ref yes,
+            mailMerge.OpenDataSource(dataSourcePath.Value, ref format, ref no, ref no, ref yes,
                 ref no,
                 ref missing, ref missing, ref no, ref missing, ref missing, ref connection, ref sqlStatement,
                 ref missing, ref no, ref subtype);
@@ -106,13 +106,15 @@ namespace StarFisher.Office.Word
             activeDocument.Close(ref no);
         }
 
-        private static void Cleanup(Document mergeTemplateDocument, string dataSourcePath, string templatePath)
+        private static void Cleanup(Application word, Document mergeTemplateDocument, string dataSourcePath, string templatePath)
         {
             if (mergeTemplateDocument != null)
             {
                 object no = false;
                 mergeTemplateDocument.Close(ref no);
             }
+
+            word.Quit();
 
             if (File.Exists(dataSourcePath))
                 File.Delete(dataSourcePath);

@@ -40,7 +40,7 @@ namespace StarFisher.Office.Excel
             var rowNumber = 2;
             foreach (var nomination in nominations)
             {
-                SetCellValue(cells, rowNumber, 1, awardsPeriod.Year);
+                SetCellValue(cells, rowNumber, 1, awardsPeriod.Year.ToString());
                 SetCellValue(cells, rowNumber, 2, awardsPeriod.Quarter.Abbreviation);
                 SetCellValue(cells, rowNumber, 3, nomination.NominatorName.FullName);
                 SetCellValue(cells, rowNumber, 4, nomination.NomineeName.FullName);

@@ -5,6 +5,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
     public class NominationWriteUpSummary : ValueObject<NominationWriteUpSummary>
     {
         public static readonly NominationWriteUpSummary Invalid = new NominationWriteUpSummary(@"INVALID");
+        public static readonly NominationWriteUpSummary NotApplicable = new NominationWriteUpSummary(@"N/A");
 
         private NominationWriteUpSummary(string value)
         {
@@ -17,6 +18,9 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
         {
             if (string.IsNullOrWhiteSpace(nominationWriteUpSummaryText))
                 return Invalid;
+
+            if (string.Equals(nominationWriteUpSummaryText, NotApplicable.Value))
+                return NotApplicable;
 
             return new NominationWriteUpSummary(nominationWriteUpSummaryText);
         }

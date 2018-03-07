@@ -33,7 +33,7 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
             var awardType = ValueObjects.AwardType.FindByAwardName(AwardType);
 
             var person = Person.Create(PersonName.Create(Name),
-                ValueObjects.OfficeLocation.FindByValue(OfficeLocation),
+                ValueObjects.OfficeLocation.FindByName(OfficeLocation),
                 ValueObjects.EmailAddress.Create(EmailAddress));
 
             return new AwardWinner(awardType, person);

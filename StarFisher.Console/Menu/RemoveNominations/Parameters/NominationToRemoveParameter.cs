@@ -16,7 +16,7 @@ namespace StarFisher.Console.Menu.RemoveNominations.Parameters
         {
             var awardType = listItem.AwardType;
             var nomineeName = listItem.NomineeName.FullName;
-            var officeLocation = listItem.NomineeOfficeLocation.ConciseName;
+            var officeLocation = listItem.NomineeOfficeLocation.Name;
             var nominatorName = listItem.NominatorName.FullName;
 
             return $@"{awardType.PrettyName} nomination for {nomineeName} ({officeLocation}) nominated by {nominatorName}";

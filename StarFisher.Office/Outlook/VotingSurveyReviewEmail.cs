@@ -69,7 +69,7 @@ namespace StarFisher.Office.Outlook
             IMailMergeFactory mailMergeFactory, NominationList nominationList, bool hasSuperStar)
         {
             if (hasSuperStar)
-                AddVotingGuideAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
+                AddVotingGuideAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.SuperStar);
         }
 
         private static void AddQuarterlyVotingGuideAttachments(ComObjectManager com, MailItem mailItem, HtmlNode content,
@@ -105,7 +105,7 @@ namespace StarFisher.Office.Outlook
 
         private static void AppendVotingSurveyWebLink(string votingSurveyWebLink, HtmlNode content)
         {
-            AppendSection(content, $"Here is the survey link: <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a><o:p></o:p></p>");
+            AppendSection(content, $"Here is the survey link: <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a><o:p></o:p>");
         }
 
         private static void AppendNoNomineesCaveat(HtmlNode content, AwardType awardType)

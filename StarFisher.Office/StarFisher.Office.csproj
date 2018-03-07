@@ -173,8 +173,8 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\Documents\StarAwardWinnersAndNomineesForDistribution.docx" />
     <None Include="Word\MailMergeTemplates\RisingStarWinnersMemoMailMergeTemplate.docx" />
-    <None Include="Word\MailMergeTemplates\SuperStarNominationNotificationsMailMergeTemplate.docx" />
-    <None Include="Word\MailMergeTemplates\SuperStarVotingGuideMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarNominationNotificationsMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarVotingGuideMailMergeTemplate.docx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

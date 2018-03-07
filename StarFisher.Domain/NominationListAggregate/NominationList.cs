@@ -4,6 +4,7 @@ using System.Linq;
 using StarFisher.Domain.Common;
 using StarFisher.Domain.NominationListAggregate.Entities;
 using StarFisher.Domain.NominationListAggregate.ValueObjects;
+using StarFisher.Domain.Utilities;
 
 namespace StarFisher.Domain.NominationListAggregate
 {
@@ -19,7 +20,7 @@ namespace StarFisher.Domain.NominationListAggregate
             AwardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
             _nominations = nominations?.ToList() ?? throw new ArgumentNullException(nameof(nominations));
             _awardWinners = awardWinners?.ToList() ?? new List<AwardWinner>();
-
+            
             SetNomineeIdentifiers();
         }
 
@@ -175,8 +176,8 @@ namespace StarFisher.Domain.NominationListAggregate
 
             MarkAsDirty(
                 $@"Updated nominee {nominee.Name.FullName}'s office location from {
-                        nominee.OfficeLocation.ConciseName
-                    } to {newOfficeLocation.ConciseName}");
+                        nominee.OfficeLocation.Name
+                    } to {newOfficeLocation.Name}");
         }
 
         public void UpdateNomineeEmailAddress(Person nominee, EmailAddress newEmailAddress)
@@ -270,6 +271,7 @@ namespace StarFisher.Domain.NominationListAggregate
 
         private void SetNomineeIdentifiers()
         {
+            SortNominations();
             var nominationsByNominee = Nominations.GroupBy(n => n.Nominee);
             var updatedVotingIdentifiers = false;
 
@@ -292,6 +294,11 @@ namespace StarFisher.Domain.NominationListAggregate
                 MarkAsDirty(@"Set nominee voting identifiers.");
         }
 
+        private void SortNominations()
+        {
+            _nominations.Sort(NominationComparer.ByNomineeName);
+        }
+
         #endregion Nominations
 
         #region Award Winners
@@ -310,7 +317,7 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public bool HasStarValuesAwardWinners => StarValuesAwardWinners.Count > 0;
 
-        public bool HasSuperStarAwardWinners => StarValuesAwardWinners.Count > 0;
+        public bool HasSuperStarAwardWinners => SuperStarAwardWinners.Count > 0;
 
         public bool GetIsAwardWinner(AwardType awardType, Person person)
         {

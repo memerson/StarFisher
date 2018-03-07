@@ -13,7 +13,7 @@ namespace StarFisher.Console.Menu.DisqualifyNominees.Parameters
 
         protected override string GetListItemLabel(Person listItem)
         {
-            return $@"{listItem.Name.FullName} ({listItem.OfficeLocation.ConciseName})";
+            return $@"{listItem.Name.FullName} ({listItem.OfficeLocation.Name})";
         }
 
         protected override void WriteCallToAction()

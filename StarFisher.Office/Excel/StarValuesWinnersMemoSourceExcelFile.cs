@@ -39,7 +39,7 @@ namespace StarFisher.Office.Excel
 
                 SetCellValue(cells, rowNumber, 1, nominationList.AwardsPeriod.Quarter.Abbreviation);
                 SetCellValue(cells, rowNumber, 2, awardWinner.Name.FullName);
-                SetCellValue(cells, rowNumber, 3, awardWinner.OfficeLocation.ConciseName);
+                SetCellValue(cells, rowNumber, 3, awardWinner.OfficeLocation.Name);
                 SetCellValue(cells, rowNumber, 4, companyValues);
                 SetCellValue(cells, rowNumber, 5, writeUps);
 

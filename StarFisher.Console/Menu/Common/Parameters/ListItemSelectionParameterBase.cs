@@ -6,22 +6,23 @@ namespace StarFisher.Console.Menu.Common.Parameters
     public abstract class ListItemSelectionParameterBase<T> : ParameterBase<T>
     {
         private readonly string _itemsDescription;
-        private readonly IReadOnlyList<T> _list;
 
-        protected ListItemSelectionParameterBase(IReadOnlyList<T> list, string itemsDescription,
+        protected ListItemSelectionParameterBase(IReadOnlyList<T> listItems, string itemsDescription,
             bool printCommandTitle = true)
             : base(printCommandTitle)
         {
             if (string.IsNullOrWhiteSpace(itemsDescription))
                 throw new ArgumentException(nameof(itemsDescription));
 
-            _list = list ?? throw new ArgumentNullException(nameof(list));
+            ListItems = listItems ?? throw new ArgumentNullException(nameof(listItems));
             _itemsDescription = itemsDescription;
         }
 
+        protected IReadOnlyList<T> ListItems { get; }
+
         public override Argument<T> GetArgumentCore()
         {
-            if (_list.Count == 0)
+            if (ListItems.Count == 0)
             {
                 WriteLine();
                 WriteLine($@"There are no {_itemsDescription}. Press any key to continue.");
@@ -46,9 +47,9 @@ namespace StarFisher.Console.Menu.Common.Parameters
             if (int.TryParse(input, out int nameId))
             {
                 var index = nameId - 1;
-                if (index >= 0 && index < _list.Count)
+                if (index >= 0 && index < ListItems.Count)
                 {
-                    argumentValue = _list[index];
+                    argumentValue = ListItems[index];
                     return true;
                 }
             }
@@ -80,11 +81,9 @@ namespace StarFisher.Console.Menu.Common.Parameters
             WriteLine();
             WriteLine();
 
-            var itemsWritten = 0;
-
-            for (var i = 0; i < _list.Count; ++i)
+            for (var i = 0; i < ListItems.Count; ++i)
             {
-                var listItem = _list[i];
+                var listItem = ListItems[i];
                 var listItemLabel = GetListItemLabel(listItem);
 
                 if (string.IsNullOrWhiteSpace(listItemLabel))
@@ -92,16 +91,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
                 var listItemText = $@"{i + 1,5}: {listItemLabel}";
 
-                if (itemsWritten != 0 && itemsWritten % 30 == 0)
-                {
-                    Write(@"Wow, there are a lot! Press any key to continue. ");
-                    WriteInputPrompt();
-                    WaitForKeyPress();
-                    ClearLastLine();
-                }
-
                 WriteListItem(listItem, listItemText);
-                ++itemsWritten;
             }
 
             WriteLine();

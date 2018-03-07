@@ -6,24 +6,26 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
-        public static readonly OfficeLocation Columbia =
-            new OfficeLocation(@"Columbia MD (formerly Laurel)", @"Columbia");
+        private readonly HashSet<string> _surveyNames;
 
-        public static readonly OfficeLocation EchoBoulder = new OfficeLocation(@"Echo - Boulder", @"Boulder");
-        public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Echo - Brentwood", @"Brentwood");
-        public static readonly OfficeLocation EchoSanDiego = new OfficeLocation(@"Echo - San Diego", @"San Diego");
-        public static readonly OfficeLocation Hccs = new OfficeLocation(@"HCCS - Jericho NY", @"Jericho");
+        public static readonly OfficeLocation Columbia =
+            new OfficeLocation(@"Columbia", @"Columbia MD (formerly Laurel)", @"Columbia MD (fmr. Laurel)");
+
+        public static readonly OfficeLocation EchoBoulder = new OfficeLocation(@"Boulder", @"Echo - Boulder");
+        public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Brentwood", @"Echo - Brentwood");
+        public static readonly OfficeLocation EchoSanDiego = new OfficeLocation(@"San Diego", @"Echo - San Diego", @"Echo - San Diego CA");
+        public static readonly OfficeLocation Hccs = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
 
         // TODO: Remove next quarter since this is no longer a HSTM office location.
         public static readonly OfficeLocation HighlandRidge =
-            new OfficeLocation(@"Nashville - Highland Ridge (Marriott Dr.)", @"Highland Ridge");
+            new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Marriott Dr.)");
 
-        public static readonly OfficeLocation Morrisey = new OfficeLocation(@"Morrisey - Chicago", @"Chicago");
+        public static readonly OfficeLocation Morrisey = new OfficeLocation(@"Chicago", @"Morrisey - Chicago", @"Morrisey - Chicago IL");
 
         public static readonly OfficeLocation NashvilleCorporate =
-            new OfficeLocation(@"Nashville - Corporate (Downtown + Brentwood Sales)", @"Nashville Downtown");
+            new OfficeLocation(@"Nashville Downtown", @"Nashville - Corporate (Downtown + Brentwood Sales)");
 
-        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote - Home Office and HEI", @"Remote");
+        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office and HEI");
 
         public static readonly IReadOnlyList<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
@@ -43,15 +45,13 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
         public static readonly OfficeLocation EiaTeamMember =
             new OfficeLocation(@"EIA Team Member", @"EIA Team Member");
 
-        private OfficeLocation(string surveyName, string conciseName)
+        private OfficeLocation(string name, params string[] surveyNames)
         {
-            SurveyName = surveyName;
-            ConciseName = conciseName;
+            Name = name;
+            _surveyNames = new HashSet<string>(surveyNames ?? Enumerable.Empty<string>());
         }
 
-        public string SurveyName { get; }
-
-        public string ConciseName { get; }
+        public string Name { get; }
 
         public static IReadOnlyList<OfficeLocation> OfficeLocationsForCertificatePrinting =>
             new List<OfficeLocation>
@@ -60,25 +60,27 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
                 Remote
             };
 
-        internal static OfficeLocation FindByValue(string officeLocationSurveyName)
+        internal static OfficeLocation FindByName(string officeLocationSurveyName)
         {
-            return ValidEmployeeOfficeLocations.FirstOrDefault(ol => ol.SurveyName == officeLocationSurveyName) ??
+            return ValidEmployeeOfficeLocations.FirstOrDefault(ol => 
+                ol.Name == officeLocationSurveyName ||
+                ol._surveyNames.Contains(officeLocationSurveyName)) ??
                    Invalid;
         }
 
         protected override bool EqualsCore(OfficeLocation other)
         {
-            return string.Equals(SurveyName, other.SurveyName);
+            return string.Equals(Name, other.Name);
         }
 
         protected override int GetHashCodeCore()
         {
-            return SurveyName.GetHashCode();
+            return Name.GetHashCode();
         }
 
         public override string ToString()
         {
-            return SurveyName;
+            return Name;
         }
 
         public static implicit operator string(OfficeLocation officeLocation)

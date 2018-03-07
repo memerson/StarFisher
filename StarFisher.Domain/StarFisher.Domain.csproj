@@ -74,6 +74,7 @@
     <Compile Include="NominationListAggregate\ValueObjects\Person.cs" />
     <Compile Include="NominationListAggregate\ValueObjects\AwardAmount.cs" />
     <Compile Include="NominationListAggregate\ValueObjects\AwardType.cs" />
+    <Compile Include="Utilities\NominationComparer.cs" />
     <Compile Include="Utilities\PersonNameComparer.cs" />
     <Compile Include="Utilities\PrettyPrintEnumerableExtension.cs" />
     <Compile Include="Utilities\SafeMaxCollectionExtension.cs" />

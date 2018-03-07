@@ -23,18 +23,32 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 
             switch (nameParts.Length)
             {
-                case 2:
-                    FirstName = nameParts[0];
-                    LastName = nameParts[1];
-                    FullName = $@"{FirstName} {LastName}";
-                    FullNameLastNameFirst = $@"{LastName}, {FirstName}";
-                    DerivedEmailAddress = EmailAddress.Create(FirstName, LastName);
+                case 0:
+                    FirstName = @"UNKNOWN";
+                    LastName = @"UNKNOWN";
+                    FullNameLastNameFirst = FullName = @"UNKNOWN NAME";
+                    DerivedEmailAddress = EmailAddress.Invalid;
+                    break;
+                case 1:
+                    FirstName = @"UNKNOWN";
+                    LastName = nameParts[0];
+                    FullName = LastName;
+                    FullNameLastNameFirst = LastName;
+                    DerivedEmailAddress = EmailAddress.Invalid;
                     break;
                 case 3:
                     FirstName = nameParts[0];
+                    var middleName = nameParts[1];
                     LastName = nameParts[2];
-                    FullName = $@"{FirstName} {nameParts[1]} {LastName}";
-                    FullNameLastNameFirst = $@"{LastName}, {FirstName} {nameParts[1]}";
+                    FullName = $@"{FirstName} {middleName} {LastName}";
+                    FullNameLastNameFirst = $@"{LastName}, {FirstName} {middleName}";
+                    DerivedEmailAddress = EmailAddress.Create(FirstName, LastName);
+                    break;
+                default: // 2 name parts or more than 3; in either case we can't tell the middle name.
+                    FirstName = nameParts[0];
+                    LastName = nameParts[nameParts.Length - 1];
+                    FullName = $@"{FirstName} {LastName}";
+                    FullNameLastNameFirst = $@"{LastName}, {FirstName}";
                     DerivedEmailAddress = EmailAddress.Create(FirstName, LastName);
                     break;
             }
