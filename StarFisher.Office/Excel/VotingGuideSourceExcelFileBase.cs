@@ -35,7 +35,7 @@ namespace StarFisher.Office.Excel
             var rowNumber = 2;
             foreach (var nomination in nominations)
             {
-                SetCellValue(cells, rowNumber, 1, nomination.Id);
+                SetCellValue(cells, rowNumber, 1, rowNumber - 1);
                 SetCellValue(cells, rowNumber, 2, nomination.VotingIdentifier.ToString());
                 SetCellValue(cells, rowNumber, 3, GetCompanyValue(nomination, CompanyValue.LearningCulture));
                 SetCellValue(cells, rowNumber, 4, GetCompanyValue(nomination, CompanyValue.Innovation));

@@ -18,7 +18,6 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
                 throw new ArgumentNullException(nameof(nomination));
 
             Id = nomination.Id;
-            NominationIds = nomination.VotingIdentifier.NominationIds.ToList();
             NomineeName = nomination.NomineeName.ToString();
             NomineeOfficeLocation = nomination.NomineeOfficeLocation.ToString();
             NomineeEmailAddress = nomination.NomineeEmailAddress.ToString();
@@ -31,8 +30,6 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
         }
 
         public int Id { get; set; }
-
-        public List<int> NominationIds { get; set; }
 
         public string NomineeName { get; set; }
 
@@ -62,7 +59,7 @@ namespace StarFisher.Domain.NominationListAggregate.Persistence
                 .ToList();
 
             return new Nomination(Id,
-                NomineeVotingIdentifier.Create(NominationIds),
+                NomineeVotingIdentifier.Unknown,
                 nominee,
                 ValueObjects.AwardType.FindByAwardName(AwardType),
                 PersonName.CreateForNominator(NominatorName, IsNominatorAnonymous),

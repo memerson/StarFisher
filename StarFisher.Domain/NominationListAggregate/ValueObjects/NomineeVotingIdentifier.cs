@@ -6,37 +6,33 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class NomineeVotingIdentifier : ValueObject<NomineeVotingIdentifier>
     {
-        public static readonly NomineeVotingIdentifier Unknown = new NomineeVotingIdentifier(new[] {0});
+        public static readonly NomineeVotingIdentifier Unknown = new NomineeVotingIdentifier(new[] {-1});
 
-        private NomineeVotingIdentifier(ICollection<int> nominationIds)
+        private NomineeVotingIdentifier(IEnumerable<int> nominationIndexes)
         {
-            NominationIds = new List<int>(nominationIds);
-
-            var items = nominationIds
+            var items = nominationIndexes
                 .Distinct()
-                .Select((id, index) => new {Id = id, Group = id - index})
+                .Select((index, metaIndex) => new {Value = index + 1, Group = index - metaIndex})
                 .GroupBy(item => item.Group)
                 .Select(group =>
                 {
                     if (group.Count() >= 3)
-                        return $@"{group.First().Id} - {group.Last().Id}";
+                        return $@"{group.First().Value} - {group.Last().Value}";
 
-                    return string.Join(@", ", group.Select(g => g.Id));
+                    return string.Join(@", ", group.Select(g => g.Value));
                 });
 
             Value = string.Join(", ", items);
         }
 
-        internal IReadOnlyCollection<int> NominationIds { get; }
-
         public string Value { get; }
 
-        internal static NomineeVotingIdentifier Create(ICollection<int> nomineeIds)
+        internal static NomineeVotingIdentifier Create(ICollection<int> nomineeIndexes)
         {
-            if (nomineeIds == null || nomineeIds.Count == 0)
+            if (nomineeIndexes == null || nomineeIndexes.Count == 0)
                 return Unknown;
 
-            return new NomineeVotingIdentifier(nomineeIds);
+            return new NomineeVotingIdentifier(nomineeIndexes);
         }
 
         protected override bool EqualsCore(NomineeVotingIdentifier other)

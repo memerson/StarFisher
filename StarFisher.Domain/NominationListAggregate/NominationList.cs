@@ -204,6 +204,8 @@ namespace StarFisher.Domain.NominationListAggregate
             if (!updated)
                 return;
 
+            SetNomineeIdentifiers();
+
             var awardWinner = AwardWinners.FirstOrDefault(w => w.Person == nominee);
 
             if (awardWinner != null)
@@ -257,6 +259,7 @@ namespace StarFisher.Domain.NominationListAggregate
                 return;
 
             SetNomineeIdentifiers();
+
             MarkAsDirty(
                 $@"Removed {nomination.NominatorName.RawNameText}'s nomination for {nomination.NomineeName.FullName}");
 
@@ -272,26 +275,26 @@ namespace StarFisher.Domain.NominationListAggregate
         private void SetNomineeIdentifiers()
         {
             SortNominations();
-            var nominationsByNominee = Nominations.GroupBy(n => n.Nominee);
-            var updatedVotingIdentifiers = false;
+
+            var nominationsByNominee = Nominations
+                .Select((n, i) => new { Index = i, Nomination = n})
+                .GroupBy(x => x.Nomination.Nominee);
 
             foreach (var group in nominationsByNominee)
             {
-                var nomineeIds = group.Select(n => n.Id).ToList();
-                var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIds);
+                var nomineeIndexes = group.Select(x => x.Index).ToList();
+                var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIndexes);
 
-                foreach (var nomination in group)
+                foreach (var item in group)
                 {
+                    var nomination = item.Nomination;
+
                     if (nomination.VotingIdentifier == votingIdentifier)
                         continue;
 
                     nomination.SetVotingIdentifier(votingIdentifier);
-                    updatedVotingIdentifiers = true;
                 }
             }
-
-            if (updatedVotingIdentifiers)
-                MarkAsDirty(@"Set nominee voting identifiers.");
         }
 
         private void SortNominations()
