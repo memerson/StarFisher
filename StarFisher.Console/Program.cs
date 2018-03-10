@@ -9,7 +9,7 @@ using StarFisher.Console.Menu.CreateHumanResourceNomineeValidationEmail;
 using StarFisher.Console.Menu.CreateLuncheonInviteeListEmail;
 using StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts;
 using StarFisher.Console.Menu.CreateVotingKeyEmail;
-using StarFisher.Console.Menu.CreateVotingSurveyReviewEmail;
+using StarFisher.Console.Menu.CreateVotingSurveyEmails;
 using StarFisher.Console.Menu.DisqualifyNominees;
 using StarFisher.Console.Menu.Exit;
 using StarFisher.Console.Menu.FixNominees;
@@ -34,8 +34,7 @@ namespace StarFisher.Console
         private static void Main(string[] args)
         {
             /* TODO:
-             * 1. SuperStar functionality
-             * 2. Changes from PX and Verity fallout
+             * 1. Changes from PX and Verity fallout
              */
 
             var excelFileFactory = new ExcelFileFactory();
@@ -59,7 +58,7 @@ namespace StarFisher.Console
                 new CreateHumanResourceNomineeValidationEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateAwardVotingKeyMenuItemCommand(StarFisherContext.Instance, excelFileFactory),
                 new CreateAwardVotingGuideMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),
-                new CreateVotingSurveyReviewEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
+                new CreateVotingSurveyEmailsMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateVotingKeyEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new CreateLuncheonInviteeListEmailMenuItemCommand(StarFisherContext.Instance, emailFactory),
                 new SendNominationNotificationEmailsMenuItemCommand(StarFisherContext.Instance, mailMergeFactory),

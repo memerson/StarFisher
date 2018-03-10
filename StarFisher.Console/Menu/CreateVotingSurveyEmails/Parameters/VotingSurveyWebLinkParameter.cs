@@ -1,7 +1,7 @@
 ﻿using System;
 using StarFisher.Console.Menu.Common;
 
-namespace StarFisher.Console.Menu.CreateVotingSurveyReviewEmail.Parameters
+namespace StarFisher.Console.Menu.CreateVotingSurveyEmails.Parameters
 {
     public class VotingSurveyWebLinkParameter : ParameterBase<string>
     {

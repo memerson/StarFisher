@@ -12,6 +12,8 @@ namespace StarFisher.Office.Outlook
         IEmail GetVotingKeyEmail(NominationList nominationList);
         IEmail GetLuncheonInviteeListEmail(NominationList nominationList);
         IEmail GetCertificatesEmail(NominationList nominationList);
+        IEmail GetVotingCallToActionEmail(NominationList nominationList, string votingSurveyWebLink,
+            DateTime votingDeadline);
     }
 
     public class EmailFactory : IEmailFactory
@@ -52,6 +54,12 @@ namespace StarFisher.Office.Outlook
         public IEmail GetCertificatesEmail(NominationList nominationList)
         {
             return new CertificatesEmail(_emailConfiguration, _mailMergeFactory, nominationList);
+        }
+
+        public IEmail GetVotingCallToActionEmail(NominationList nominationList, string votingSurveyWebLink,
+            DateTime votingDeadline)
+        {
+            return new VotingCallToActionEmail(_mailMergeFactory, nominationList, votingSurveyWebLink, votingDeadline);
         }
     }
 }

@@ -72,8 +72,10 @@
     <Compile Include="Menu\CreateCertificateEmail\CreateCertificateEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateLuncheonInviteeListEmail\CreateLuncheonInviteeListEmailMenuItemCommand.cs" />
     <Compile Include="Menu\CreateVotingKeyEmail\CreateVotingKeyEmailMenuItemCommand.cs" />
-    <Compile Include="Menu\CreateVotingSurveyReviewEmail\CreateVotingSurveyReviewEmailMenuItemCommand.cs" />
-    <Compile Include="Menu\CreateVotingSurveyReviewEmail\Parameters\VotingSurveyWebLinkParameter.cs" />
+    <Compile Include="Menu\CreateVotingSurveyEmails\CreateVotingSurveyEmailsMenuItemCommand.cs" />
+    <Compile Include="Menu\CreateVotingSurveyEmails\Parameters\ContinueParameter.cs" />
+    <Compile Include="Menu\CreateVotingSurveyEmails\Parameters\VotingDeadlineParameter.cs" />
+    <Compile Include="Menu\CreateVotingSurveyEmails\Parameters\VotingSurveyWebLinkParameter.cs" />
     <Compile Include="Menu\DisqualifyNominees\Parameters\AwardTypeParameter.cs" />
     <Compile Include="Menu\Exit\ExitCommand.cs" />
     <Compile Include="Menu\FixNominees\Commands\FixNomineeEmailAddressesCommand.cs" />
@@ -159,6 +161,8 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Menu\CreateVotingSurveyEmails\Commands\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

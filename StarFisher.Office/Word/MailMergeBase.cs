@@ -102,7 +102,13 @@ namespace StarFisher.Office.Word
         {
             var activeDocument = com.Get(() => word.ActiveDocument);
             object filePath = outputFilePath.Value;
-            activeDocument.SaveAs(ref filePath);
+            var extension = Path.GetExtension(outputFilePath.Value);
+
+            var saveFormat = string.Equals(@".pdf", extension, StringComparison.InvariantCultureIgnoreCase)
+                ? WdSaveFormat.wdFormatPDF
+                : WdSaveFormat.wdFormatDocumentDefault;
+
+            activeDocument.SaveAs(ref filePath, saveFormat);
             activeDocument.Close(ref no);
         }
 

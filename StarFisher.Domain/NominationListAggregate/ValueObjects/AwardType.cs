@@ -53,7 +53,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             if (awardsPeriod == null)
                 throw new ArgumentNullException(nameof(awardsPeriod));
 
-            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_VotingGuide.docx";
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_VotingGuide.pdf";
         }
 
         public string GetVotingKeyFileName(AwardsPeriod awardsPeriod)

@@ -39,7 +39,7 @@ namespace StarFisher.Office.Outlook
 
             var content = CreateContentNode();
 
-            AppendRequest(hasRisingStar, hasStarValues, content, eiaChairPerson, awardsName);
+            AppendRequest(content, eiaChairPerson, awardsName, hasStarValues, hasRisingStar);
 
             AddVotingGuideAttachments(com, mailItem, content, mailMergeFactory, nominationList, hasStarValues,
                 hasRisingStar, hasSuperStar);
@@ -113,9 +113,7 @@ namespace StarFisher.Office.Outlook
             AppendSection(content, $@"We had no eligible {awardType.PrettyName} nominees this time.");
         }
 
-        private static void AppendRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
-            Person eiaChairPerson,
-            string awardsName)
+        private static void AppendRequest(HtmlNode content, Person eiaChairPerson, string awardsName, bool hasStarValues, bool hasRisingStar)
         {
             var guideOrGuides = hasRisingStar && hasStarValues ? @"guides" : "guide";
 
