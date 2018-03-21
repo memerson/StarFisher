@@ -42,6 +42,7 @@ namespace StarFisher.Console
 
             System.Console.BackgroundColor = ConsoleColor.White;
             System.Console.ForegroundColor = ConsoleColor.Black;
+            System.Console.Title = @"StarFisher";
         }
 
         private StarFisherConsole()

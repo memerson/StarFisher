@@ -10,7 +10,7 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
     {
         private readonly IExcelFileFactory _excelFileFactory;
 
-        private const string CommandTitle = @"Create Super Star Awards voting key(s)";
+        private const string CommandTitle = @"Create Star Awards voting key(s)";
 
         public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory)
             : base(context, CommandTitle, GetSuccessMessage(context))

@@ -7,7 +7,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
     {
         private PersonName(string nameText, bool isAnonymous)
         {
-            RawNameText = nameText ?? string.Empty;
+            RawNameText = nameText?.Trim() ?? string.Empty;
             IsAnonymous = isAnonymous;
             FullName = string.Empty;
             FullNameLastNameFirst = string.Empty;

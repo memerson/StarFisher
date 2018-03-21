@@ -173,7 +173,7 @@
     <EmbeddedResource Include="Word\MailMergeTemplates\StarValuesNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\Documents\StarAwardWinnersAndNomineesForDistribution.docx" />
-    <None Include="Word\MailMergeTemplates\RisingStarWinnersMemoMailMergeTemplate.docx" />
+    <EmbeddedResource Include="Word\MailMergeTemplates\RisingStarWinnersMemoMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarNominationNotificationsMailMergeTemplate.docx" />
     <EmbeddedResource Include="Word\MailMergeTemplates\SuperStarVotingGuideMailMergeTemplate.docx" />
   </ItemGroup>

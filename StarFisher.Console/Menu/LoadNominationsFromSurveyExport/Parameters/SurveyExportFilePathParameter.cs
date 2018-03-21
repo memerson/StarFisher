@@ -19,7 +19,14 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters
                 @"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
             WriteInputPrompt();
 
-            return GetArgumentFromInputIfValid();
+            var argument = GetArgumentFromInputIfValid();
+
+            if (argument.ArgumentType != ArgumentType.Valid)
+                return argument;
+
+            WriteLine();
+            WriteLine(@"Loading! This might take a minute.");
+            return argument;
         }
 
         public override void PrintInvalidArgumentMessage()

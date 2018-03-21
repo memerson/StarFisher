@@ -276,16 +276,25 @@ namespace StarFisher.Domain.NominationListAggregate
         {
             SortNominations();
 
+            var awardTypes = AwardType.ValidAwardTypes.Where(at => at.AwardCategory == AwardCategory);
+
+            foreach (var awardType in awardTypes)
+                SetNomineeIdentifiers(awardType);
+        }
+
+        private void SetNomineeIdentifiers(AwardType awardType)
+        {
             var nominationsByNominee = Nominations
-                .Select((n, i) => new { Index = i, Nomination = n})
+                .Where(n => n.AwardType == awardType)
+                .Select((n, i) => new {Index = i, Nomination = n})
                 .GroupBy(x => x.Nomination.Nominee);
 
             foreach (var group in nominationsByNominee)
             {
-                var nomineeIndexes = group.Select(x => x.Index).ToList();
+                var nomineeIndexes = @group.Select(x => x.Index).ToList();
                 var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIndexes);
 
-                foreach (var item in group)
+                foreach (var item in @group)
                 {
                     var nomination = item.Nomination;
 
