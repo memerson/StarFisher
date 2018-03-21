@@ -21,7 +21,8 @@ namespace StarFisher.Console.Menu.Initialize.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction(@"Enter the number of the award category on which you will work, or enter 'stop' to stop the initialization workflow.");
+            WriteCallToAction(
+                @"Enter the number of the award category on which you will work, or enter 'stop' to stop the initialization workflow.");
         }
     }
 }

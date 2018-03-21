@@ -33,9 +33,7 @@ namespace StarFisher.Console.Menu.RemoveNominations
 
             if (!nominationList.GetIsOnlyNominationForAwardAndNominee(nominationToRemove) ||
                 RemoveOnlyNomination(nominationToRemove))
-            {
                 nominationList.RemoveNomination(nominationToRemove.Id);
-            }
 
             return true;
         }

@@ -11,7 +11,8 @@ namespace StarFisher.Office.Outlook
 {
     internal class VotingCallToActionEmail : EmailBase
     {
-        public VotingCallToActionEmail(IMailMergeFactory mailMergeFactory, NominationList nominationList, string votingSurveyWebLink, DateTime votingDeadline)
+        public VotingCallToActionEmail(IMailMergeFactory mailMergeFactory, NominationList nominationList,
+            string votingSurveyWebLink, DateTime votingDeadline)
             : base((com, mailItem) => BuildEmail(
                 com,
                 mailItem,
@@ -23,12 +24,13 @@ namespace StarFisher.Office.Outlook
             if (string.IsNullOrWhiteSpace(votingSurveyWebLink))
                 throw new ArgumentException(nameof(votingSurveyWebLink));
 
-            if(votingDeadline == default(DateTime))
+            if (votingDeadline == default(DateTime))
                 throw new ArgumentException(nameof(votingDeadline));
         }
 
         private static void BuildEmail(ComObjectManager com, MailItem mailItem,
-            IMailMergeFactory mailMergeFactory, NominationList nominationList, string votingSurveyWebLink, DateTime votingDeadline)
+            IMailMergeFactory mailMergeFactory, NominationList nominationList, string votingSurveyWebLink,
+            DateTime votingDeadline)
         {
             var awardsName = nominationList.AwardsPeriod.AwardsName;
             var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
@@ -42,7 +44,8 @@ namespace StarFisher.Office.Outlook
 
             AppendRequest(content, awardsName, votingDeadline);
 
-            AddVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList, hasStarValues,
+            AddVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList,
+                hasStarValues,
                 hasRisingStar, hasSuperStar);
 
             AppendVotingSurveyWebLink(votingSurveyWebLink, content);
@@ -50,20 +53,19 @@ namespace StarFisher.Office.Outlook
             WriteMailItemBody(mailItem, content);
         }
 
-        private static void AddVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem, HtmlNode content,
+        private static void AddVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem,
+            HtmlNode content,
             IMailMergeFactory mailMergeFactory, NominationList nominationList, bool hasStarValues, bool hasRisingStar,
             bool hasSuperStar)
         {
             var awardCategory = nominationList.AwardsPeriod.AwardCategory;
             if (awardCategory == AwardCategory.QuarterlyAwards)
-            {
-                AddQuarterlyVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList,
+                AddQuarterlyVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory,
+                    nominationList,
                     hasStarValues, hasRisingStar);
-            }
             else if (awardCategory == AwardCategory.SuperStarAwards)
-            {
-                AddSuperStarVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList, hasSuperStar);
-            }
+                AddSuperStarVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory,
+                    nominationList, hasSuperStar);
         }
 
         private static void AddSuperStarVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem,
@@ -81,14 +83,17 @@ namespace StarFisher.Office.Outlook
                 AwardType.SuperStar, instructions);
         }
 
-        private static void AddQuarterlyVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem, HtmlNode content,
+        private static void AddQuarterlyVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem,
+            HtmlNode content,
             IMailMergeFactory mailMergeFactory, NominationList nominationList, bool hasStarValues, bool hasRisingStar)
         {
             if (hasStarValues)
-                AddStarValuesVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList);
+                AddStarValuesVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory,
+                    nominationList);
 
             if (hasRisingStar)
-                AddRisingStarVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory, nominationList);
+                AddRisingStarVotingGuideAttachmentsAndInstructions(com, mailItem, content, mailMergeFactory,
+                    nominationList);
         }
 
         private static void AddRisingStarVotingGuideAttachmentsAndInstructions(ComObjectManager com, MailItem mailItem,
@@ -136,7 +141,8 @@ namespace StarFisher.Office.Outlook
 
         private static void AppendVotingSurveyWebLink(string votingSurveyWebLink, HtmlNode content)
         {
-            AppendSection(content, $"<b><i>Vote today:</i></b> <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a>");
+            AppendSection(content,
+                $"<b><i>Vote today:</i></b> <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a>");
         }
 
         private static void AppendRequest(HtmlNode content, string awardsName, DateTime votingDeadline)

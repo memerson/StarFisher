@@ -24,7 +24,8 @@ namespace StarFisher.Console.Menu.FixNominees.Commands
                     break;
 
                 var newNomineeOfficeLocationParameter = new NewNomineeOfficeLocationParameter(nomineeToChange.Name);
-                if (!TryGetArgumentValue(newNomineeOfficeLocationParameter, out OfficeLocation newNomineeOfficeLocation))
+                if (!TryGetArgumentValue(newNomineeOfficeLocationParameter,
+                    out OfficeLocation newNomineeOfficeLocation))
                     continue;
 
                 nominationList.UpdateNomineeOfficeLocation(nomineeToChange, newNomineeOfficeLocation);

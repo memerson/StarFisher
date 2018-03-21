@@ -58,7 +58,8 @@ namespace StarFisher.Office.Outlook
                 AppendNominees(content, nominationList, AwardType.SuperStar);
         }
 
-        private static void AppendQuarterlyAwardNominees(HtmlNode content, NominationList nominationList, bool hasStarValues,
+        private static void AppendQuarterlyAwardNominees(HtmlNode content, NominationList nominationList,
+            bool hasStarValues,
             bool hasRisingStar)
         {
             if (hasStarValues)
@@ -83,20 +84,19 @@ namespace StarFisher.Office.Outlook
             if (!hasSuperStar)
                 return;
 
-            AppendSection(content, @"Super Star nominees must be full-time employees in good standing. They must have been with HealthStream since January 1.");
+            AppendSection(content,
+                @"Super Star nominees must be full-time employees in good standing. They must have been with HealthStream since January 1.");
         }
 
         private static void AppendQuarterlyNomineeCriteria(HtmlNode content, bool hasStarValues, bool hasRisingStar)
         {
             if (hasStarValues)
-            {
-                AppendSection(content, @"Star Values nominees must be full-time or part-time/20 employees in good standing. They must have been with HealthStream for at least one full quarter.");
-            }
+                AppendSection(content,
+                    @"Star Values nominees must be full-time or part-time/20 employees in good standing. They must have been with HealthStream for at least one full quarter.");
 
             if (hasRisingStar)
-            {
-                AppendSection(content, @"Rising Star nominees must be active interns in good standing who are either in school or within their first year after graduation.");
-            }
+                AppendSection(content,
+                    @"Rising Star nominees must be active interns in good standing who are either in school or within their first year after graduation.");
         }
 
         private static void AppendIntroduction(HtmlNode content, IReadOnlyList<Person> hrPeople, string awardsName)
@@ -114,7 +114,7 @@ namespace StarFisher.Office.Outlook
         {
             var nominationGroups = nominationList.Nominations
                 .Where(n => n.AwardType == awardType)
-                .GroupBy(n => new { n.NomineeName, n.NomineeOfficeLocation })
+                .GroupBy(n => new {n.NomineeName, n.NomineeOfficeLocation})
                 .OrderBy(g => g.Key.NomineeName.FullNameLastNameFirst);
 
             AppendLineBreak(content);

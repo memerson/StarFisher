@@ -55,14 +55,10 @@ namespace StarFisher.Office.Outlook
         {
             var awardCategory = nominationList.AwardsPeriod.AwardCategory;
             if (awardCategory == AwardCategory.QuarterlyAwards)
-            {
                 AddQuarterlyVotingGuideAttachments(com, mailItem, content, mailMergeFactory, nominationList,
                     hasStarValues, hasRisingStar);
-            }
             else if (awardCategory == AwardCategory.SuperStarAwards)
-            {
                 AddSuperStarVotingGuideAttachments(com, mailItem, mailMergeFactory, nominationList, hasSuperStar);
-            }
         }
 
         private static void AddSuperStarVotingGuideAttachments(ComObjectManager com, MailItem mailItem,
@@ -72,7 +68,8 @@ namespace StarFisher.Office.Outlook
                 AddVotingGuideAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.SuperStar);
         }
 
-        private static void AddQuarterlyVotingGuideAttachments(ComObjectManager com, MailItem mailItem, HtmlNode content,
+        private static void AddQuarterlyVotingGuideAttachments(ComObjectManager com, MailItem mailItem,
+            HtmlNode content,
             IMailMergeFactory mailMergeFactory, NominationList nominationList, bool hasStarValues, bool hasRisingStar)
         {
             if (!hasStarValues)
@@ -105,7 +102,8 @@ namespace StarFisher.Office.Outlook
 
         private static void AppendVotingSurveyWebLink(string votingSurveyWebLink, HtmlNode content)
         {
-            AppendSection(content, $"Here is the survey link: <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a><o:p></o:p>");
+            AppendSection(content,
+                $"Here is the survey link: <a href=\"{votingSurveyWebLink}\">{votingSurveyWebLink}</a><o:p></o:p>");
         }
 
         private static void AppendNoNomineesCaveat(HtmlNode content, AwardType awardType)
@@ -113,7 +111,8 @@ namespace StarFisher.Office.Outlook
             AppendSection(content, $@"We had no eligible {awardType.PrettyName} nominees this time.");
         }
 
-        private static void AppendRequest(HtmlNode content, Person eiaChairPerson, string awardsName, bool hasStarValues, bool hasRisingStar)
+        private static void AppendRequest(HtmlNode content, Person eiaChairPerson, string awardsName,
+            bool hasStarValues, bool hasRisingStar)
         {
             var guideOrGuides = hasRisingStar && hasStarValues ? @"guides" : "guide";
 

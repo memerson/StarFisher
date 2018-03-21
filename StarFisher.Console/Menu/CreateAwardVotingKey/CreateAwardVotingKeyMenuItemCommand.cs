@@ -8,9 +8,8 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
 {
     public class CreateAwardVotingKeyMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IExcelFileFactory _excelFileFactory;
-
         private const string CommandTitle = @"Create Star Awards voting key(s)";
+        private readonly IExcelFileFactory _excelFileFactory;
 
         public CreateAwardVotingKeyMenuItemCommand(IStarFisherContext context, IExcelFileFactory excelFileFactory)
             : base(context, CommandTitle, GetSuccessMessage(context))
@@ -51,7 +50,9 @@ namespace StarFisher.Console.Menu.CreateAwardVotingKey
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            return $@"Success! You can find the voting key spreadsheets saved in your working directory ({context.WorkingDirectoryPath.Value}).";
+            return $@"Success! You can find the voting key spreadsheets saved in your working directory ({
+                    context.WorkingDirectoryPath.Value
+                }).";
         }
     }
 }

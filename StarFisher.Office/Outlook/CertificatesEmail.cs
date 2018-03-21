@@ -41,7 +41,8 @@ namespace StarFisher.Office.Outlook
             WriteMailItemBody(mailItem, content);
         }
 
-        private static void AddCertificatesAttachments(ComObjectManager com, MailItem mailItem, IMailMergeFactory mailMergeFactory,
+        private static void AddCertificatesAttachments(ComObjectManager com, MailItem mailItem,
+            IMailMergeFactory mailMergeFactory,
             NominationList nominationList, HtmlNode content)
         {
             var awardCategory = nominationList.AwardsPeriod.AwardCategory;
@@ -56,7 +57,7 @@ namespace StarFisher.Office.Outlook
             IMailMergeFactory mailMergeFactory, NominationList nominationList)
         {
             if (!nominationList.HasSuperStarAwardWinners)
-                return; 
+                return;
 
             AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.SuperStar);
         }

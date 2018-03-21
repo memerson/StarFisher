@@ -23,7 +23,6 @@ namespace StarFisher.Console.Menu.DisqualifyNominees
 
                 if (!TryDisqualifyNominee(awardType))
                     return CommandOutput.None.Success;
-
             } while (GetDisqualifyAnotherNominee());
 
             return CommandOutput.None.Success;

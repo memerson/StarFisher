@@ -10,7 +10,8 @@ namespace StarFisher.Office.Word
         private readonly IExcelFileFactory _excelFileFactory;
         private readonly NominationList _nominationList;
 
-        public StarValuesNominationNotificationsMailMerge(IExcelFileFactory excelFileFactory, NominationList nominationList)
+        public StarValuesNominationNotificationsMailMerge(IExcelFileFactory excelFileFactory,
+            NominationList nominationList)
             : base(@"StarFisher.Office.Word.MailMergeTemplates.StarValuesNominationNotificationsMailMergeTemplate.docx")
         {
             _excelFileFactory = excelFileFactory ?? throw new ArgumentNullException(nameof(excelFileFactory));
@@ -19,7 +20,8 @@ namespace StarFisher.Office.Word
 
         protected override IExcelFile GetDataSourceExcelFile()
         {
-            return _excelFileFactory.GetNominationNotificationEmailSourceExcelFile(AwardType.StarValues, _nominationList);
+            return _excelFileFactory.GetNominationNotificationEmailSourceExcelFile(AwardType.StarValues,
+                _nominationList);
         }
 
         protected override string GetEmailAddresFieldName()

@@ -112,7 +112,8 @@ namespace StarFisher.Office.Word
             activeDocument.Close(ref no);
         }
 
-        private static void Cleanup(Application word, Document mergeTemplateDocument, string dataSourcePath, string templatePath)
+        private static void Cleanup(Application word, Document mergeTemplateDocument, string dataSourcePath,
+            string templatePath)
         {
             if (mergeTemplateDocument != null)
             {

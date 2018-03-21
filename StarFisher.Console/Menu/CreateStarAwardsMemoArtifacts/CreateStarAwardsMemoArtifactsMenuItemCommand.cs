@@ -8,10 +8,10 @@ namespace StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts
 {
     public class CreateStarAwardsMemoArtifactsMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IStarAwardsMemoHelper _memoHelper;
-
         private const string CommandTitle =
             @"Create artifacts used to create the Star Awards memo for the Communications team";
+
+        private readonly IStarAwardsMemoHelper _memoHelper;
 
         public CreateStarAwardsMemoArtifactsMenuItemCommand(IStarFisherContext context,
             IStarAwardsMemoHelper memoHelper)
@@ -43,7 +43,10 @@ namespace StarFisher.Console.Menu.CreateStarAwardsMemoArtifacts
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            return $@"Success! You can find the items used to create the Star Awards memo saved in your working directory ({context.WorkingDirectoryPath.Value}).";
+            return
+                $@"Success! You can find the items used to create the Star Awards memo saved in your working directory ({
+                        context.WorkingDirectoryPath.Value
+                    }).";
         }
     }
 }

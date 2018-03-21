@@ -8,6 +8,8 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
         public static readonly AwardCategory QuarterlyAwards = new AwardCategory(@"Quarterly Awards");
         public static readonly AwardCategory SuperStarAwards = new AwardCategory(@"Super Star Awards");
 
+        public static readonly AwardCategory Invalid = new AwardCategory(@"INVALID");
+
         private AwardCategory(string value)
         {
             Value = value;
@@ -18,8 +20,6 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             QuarterlyAwards,
             SuperStarAwards
         };
-
-        public static readonly AwardCategory Invalid = new AwardCategory(@"INVALID");
 
         public string Value { get; }
 

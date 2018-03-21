@@ -52,14 +52,10 @@ namespace StarFisher.Office.Outlook
         {
             var awardCategory = nominationList.AwardsPeriod.AwardCategory;
             if (awardCategory == AwardCategory.QuarterlyAwards)
-            {
                 AddQuarterlyVotingKeyAttachments(com, mailItem, content, excelFileFactory, nominationList,
                     hasStarValues, hasRisingStar);
-            }
             else if (awardCategory == AwardCategory.SuperStarAwards)
-            {
                 AddSuperStarVotingKeyAttachments(com, mailItem, excelFileFactory, nominationList, hasSuperStar);
-            }
         }
 
         private static void AddSuperStarVotingKeyAttachments(ComObjectManager com, MailItem mailItem,

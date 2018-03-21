@@ -15,7 +15,10 @@ namespace StarFisher.Console.Menu.CreateVotingSurveyEmails.Parameters
             var exampleDate = DateTime.Now + TimeSpan.FromDays(14);
 
             WriteLine();
-            WriteCallToAction($@"Enter the voting deadline date (e.g. '{exampleDate.ToShortDateString()}', or enter 'stop' to stop creating the voting survey emails.");
+            WriteCallToAction(
+                $@"Enter the voting deadline date (e.g. '{
+                        exampleDate.ToShortDateString()
+                    }', or enter 'stop' to stop creating the voting survey emails.");
             WriteInputPrompt();
 
             return GetArgumentFromInputIfValid();

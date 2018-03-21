@@ -18,7 +18,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport
             var parameter = new SurveyExportFilePathParameter();
             if (!TryGetArgumentValue(parameter, out FilePath filePath))
                 return CommandOutput.None.Abort;
-            
+
             Context.NominationListContext.LoadSurveyExport(filePath);
             Context.NominationListContext.SaveSnapshot();
 

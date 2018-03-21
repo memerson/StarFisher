@@ -9,7 +9,8 @@ namespace StarFisher.Office.Excel
 {
     internal abstract class NominationNotificationEmailSourceExcelFileBase : ExcelFileBase
     {
-        protected NominationNotificationEmailSourceExcelFileBase(AwardsPeriod awardsPeriod, IEnumerable<Nomination> nominations)
+        protected NominationNotificationEmailSourceExcelFileBase(AwardsPeriod awardsPeriod,
+            IEnumerable<Nomination> nominations)
             : base((com, worksheet) => BuildWorksheet(com,
                 awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod)),
                 nominations ?? throw new ArgumentNullException(nameof(nominations)),

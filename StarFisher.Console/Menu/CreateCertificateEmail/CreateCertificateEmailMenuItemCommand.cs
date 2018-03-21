@@ -7,13 +7,15 @@ namespace StarFisher.Console.Menu.CreateCertificateEmail
 {
     public class CreateCertificateEmailMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IEmailFactory _emailFactory;
-
         private const string CommandTitle = @"Create award winner certificates email";
+
         private const string SuccessMessage =
             @"Success! You should now see an email ready to review and send on to the certificate printer(s).";
 
-        public CreateCertificateEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory) : base(context, CommandTitle, SuccessMessage)
+        private readonly IEmailFactory _emailFactory;
+
+        public CreateCertificateEmailMenuItemCommand(IStarFisherContext context, IEmailFactory emailFactory) : base(
+            context, CommandTitle, SuccessMessage)
         {
             _emailFactory = emailFactory ?? throw new ArgumentNullException(nameof(emailFactory));
         }
@@ -22,7 +24,9 @@ namespace StarFisher.Console.Menu.CreateCertificateEmail
         {
             var nominationList = Context.NominationListContext.NominationList;
             using (var email = _emailFactory.GetCertificatesEmail(nominationList))
+            {
                 email.Display();
+            }
 
             return CommandOutput.None.Success;
         }

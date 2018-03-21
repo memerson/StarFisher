@@ -7,7 +7,7 @@ namespace StarFisher.Console.Menu.UnselectAwardWinner.Parameters
 {
     public class AwardWinnerToUnselectParameter : ListItemSelectionParameterBase<AwardWinner>
     {
-        public AwardWinnerToUnselectParameter(IReadOnlyList<AwardWinner> awardWinners) 
+        public AwardWinnerToUnselectParameter(IReadOnlyList<AwardWinner> awardWinners)
             : base(awardWinners?.OrderBy(w => w.Name.FullName).ToList(), @"award winners")
         {
             RegisterAbortInput(@"stop");
@@ -20,7 +20,8 @@ namespace StarFisher.Console.Menu.UnselectAwardWinner.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction($@"Enter the number of the award winner you want to unselect, or enter 'stop' to stop unselecting award winners.");
+            WriteCallToAction(
+                $@"Enter the number of the award winner you want to unselect, or enter 'stop' to stop unselecting award winners.");
         }
     }
 }

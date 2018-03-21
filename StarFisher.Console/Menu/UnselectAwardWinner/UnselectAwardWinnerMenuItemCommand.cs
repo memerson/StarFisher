@@ -19,7 +19,6 @@ namespace StarFisher.Console.Menu.UnselectAwardWinner
             {
                 if (!TryUnselectAwardWinner())
                     break;
-
             } while (GetUnelectAnotherAwardWinner());
 
             return CommandOutput.None.Success;

@@ -34,7 +34,7 @@ namespace StarFisher.Console.Menu.FixNominees
             if (!FixNomineeNames(_globalAddressList, nominationList, out Exception exception))
                 return CommandOutput.None.Failure(exception);
 
-            if(!FixNomineeOfficeLocations(out exception))
+            if (!FixNomineeOfficeLocations(out exception))
                 return CommandOutput.None.Failure(exception);
 
             if (!FixNomineeEmailAddresses(_globalAddressList, nominationList, out exception))
@@ -88,7 +88,8 @@ namespace StarFisher.Console.Menu.FixNominees
             return true;
         }
 
-        private bool FixNomineeEmailAddresses(IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses, out Exception exception)
+        private bool FixNomineeEmailAddresses(IReadOnlyCollection<EmailAddress> unrecognizedEmailAddresses,
+            out Exception exception)
         {
             var fixNomineeEmailAddressesCommand = new FixNomineeEmailAddressesCommand(Context, _globalAddressList);
             var input = new FixNomineeEmailAddressesCommand.Input(unrecognizedEmailAddresses);

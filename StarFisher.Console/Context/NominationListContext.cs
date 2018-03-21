@@ -26,8 +26,8 @@ namespace StarFisher.Console.Context
 
     public class NominationListContext : INominationListContext
     {
-        private readonly INominationListRepository _repository;
         private readonly AwardCategory _awardCategory;
+        private readonly INominationListRepository _repository;
 
         private NominationList _nominationList;
 

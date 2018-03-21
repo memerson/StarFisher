@@ -8,7 +8,8 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
     {
         private readonly PersonName _nomineeName;
 
-        public NewNomineeOfficeLocationParameter(PersonName nomineeName) : base(OfficeLocation.ValidEmployeeOfficeLocations, @"office locations")
+        public NewNomineeOfficeLocationParameter(PersonName nomineeName) : base(
+            OfficeLocation.ValidEmployeeOfficeLocations, @"office locations")
         {
             _nomineeName = nomineeName ?? throw new ArgumentNullException(nameof(nomineeName));
 
@@ -22,7 +23,10 @@ namespace StarFisher.Console.Menu.FixNominees.Parameters
 
         protected override void WriteCallToAction()
         {
-            WriteCallToAction($@"Enter the number of the correct office location for {_nomineeName.FullName}, or enter 'done' if you don't want to change it.");
+            WriteCallToAction(
+                $@"Enter the number of the correct office location for {
+                        _nomineeName.FullName
+                    }, or enter 'done' if you don't want to change it.");
         }
     }
 }

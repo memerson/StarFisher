@@ -74,16 +74,16 @@ namespace StarFisher.Console.Menu.Initialize
             if (year == null)
                 return null;
 
-            if(awardCategory == AwardCategory.SuperStarAwards)
+            if (awardCategory == AwardCategory.SuperStarAwards)
                 return AwardsPeriod.CreateForSuperStarAwards(year);
 
-            if(awardCategory != AwardCategory.QuarterlyAwards)
+            if (awardCategory != AwardCategory.QuarterlyAwards)
                 throw new NotSupportedException($@"Unsupported award category: {awardCategory.Value}");
 
             var quarter = GetCommandResult(new GetQuarterCommand(Context), out unsuccessfulResult);
 
-            return quarter == null 
-                ? null 
+            return quarter == null
+                ? null
                 : AwardsPeriod.CreateForQuarterlyAwards(year, quarter);
         }
 

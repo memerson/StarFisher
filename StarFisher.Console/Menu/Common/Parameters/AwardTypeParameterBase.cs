@@ -28,7 +28,7 @@ namespace StarFisher.Console.Menu.Common.Parameters
 
         private static IReadOnlyList<AwardType> GetAwardTypes(AwardCategory awardCategory)
         {
-            if(awardCategory == null)
+            if (awardCategory == null)
                 throw new ArgumentNullException(nameof(awardCategory));
 
             return AwardType.ValidAwardTypes

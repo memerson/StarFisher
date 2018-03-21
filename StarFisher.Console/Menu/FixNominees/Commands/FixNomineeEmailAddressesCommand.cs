@@ -8,7 +8,8 @@ using StarFisher.Office.Outlook.AddressBook;
 
 namespace StarFisher.Console.Menu.FixNominees.Commands
 {
-    public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None>
+    public class FixNomineeEmailAddressesCommand : CommandBase<FixNomineeEmailAddressesCommand.Input, CommandOutput.None
+    >
     {
         private readonly IGlobalAddressList _globalAddressList;
 

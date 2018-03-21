@@ -8,9 +8,8 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
 {
     public class CreateAwardVotingGuideMenuItemCommand : MenuItemCommandBase
     {
-        private readonly IMailMergeFactory _mailMergeFactory;
-
         private const string CommandTitle = @"Create Star Awards voting guide(s)";
+        private readonly IMailMergeFactory _mailMergeFactory;
 
         public CreateAwardVotingGuideMenuItemCommand(IStarFisherContext context, IMailMergeFactory mailMergeFactory)
             : base(context, CommandTitle, GetSuccessMessage(context))
@@ -48,7 +47,9 @@ namespace StarFisher.Console.Menu.CreateAwardVotingGuide
             if (context == null)
                 throw new ArgumentNullException(nameof(context));
 
-            return $@"Success! You can find the voting guide document(s) saved in your working directory ({context.WorkingDirectoryPath.Value}).";
+            return $@"Success! You can find the voting guide document(s) saved in your working directory ({
+                    context.WorkingDirectoryPath.Value
+                }).";
         }
     }
 }

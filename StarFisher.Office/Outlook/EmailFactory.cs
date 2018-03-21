@@ -12,6 +12,7 @@ namespace StarFisher.Office.Outlook
         IEmail GetVotingKeyEmail(NominationList nominationList);
         IEmail GetLuncheonInviteeListEmail(NominationList nominationList);
         IEmail GetCertificatesEmail(NominationList nominationList);
+
         IEmail GetVotingCallToActionEmail(NominationList nominationList, string votingSurveyWebLink,
             DateTime votingDeadline);
     }

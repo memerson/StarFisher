@@ -21,7 +21,6 @@ namespace StarFisher.Console.Menu.SelectAwardWinner
                     break;
 
                 SelectAwardWinner(awardType);
-
             } while (GetSelectAnotherAwardWinner());
 
             return CommandOutput.None.Success;

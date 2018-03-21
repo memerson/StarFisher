@@ -104,7 +104,7 @@ namespace StarFisher.Console.Context
             {
                 StarFisherContext.Instance.Initialize(
                     DirectoryPath.Create(StarAwardsDirectoryPath),
-                    Domain.NominationListAggregate.ValueObjects.AwardsPeriod.CreateFromValue(AwardsPeriod), 
+                    Domain.NominationListAggregate.ValueObjects.AwardsPeriod.CreateFromValue(AwardsPeriod),
                     Convert(EiaChairPerson),
                     Convert(HrPeople),
                     Convert(LuncheonPlannerPeople),
@@ -118,7 +118,8 @@ namespace StarFisher.Console.Context
 
             private static Domain.NominationListAggregate.ValueObjects.Person Convert(Person person)
             {
-                return Domain.NominationListAggregate.ValueObjects.Person.Create(PersonName.Create(person.Name), OfficeLocation.EiaTeamMember,
+                return Domain.NominationListAggregate.ValueObjects.Person.Create(PersonName.Create(person.Name),
+                    OfficeLocation.EiaTeamMember,
                     EmailAddress.Create(person.EmailAddress));
             }
 

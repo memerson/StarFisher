@@ -9,12 +9,15 @@ namespace StarFisher.Console.Menu.SendNominationNotificationEmails
 {
     public class SendNominationNotificationEmailsMenuItemCommand : MenuItemCommandBase
     {
+        private const string CommandTitle = @"Send nomination notification emails";
+
+        private const string SuccessMessage =
+            @"Success! You should now see many nomination notification emails in your Outlook Outbox.";
+
         private readonly IMailMergeFactory _mailMergeFactory;
 
-        private const string CommandTitle = @"Send nomination notification emails";
-        private const string SuccessMessage = @"Success! You should now see many nomination notification emails in your Outlook Outbox.";
-
-        public SendNominationNotificationEmailsMenuItemCommand(IStarFisherContext context, IMailMergeFactory mailMergeFactory) 
+        public SendNominationNotificationEmailsMenuItemCommand(IStarFisherContext context,
+            IMailMergeFactory mailMergeFactory)
             : base(context, CommandTitle, SuccessMessage)
         {
             _mailMergeFactory = mailMergeFactory ?? throw new ArgumentNullException(nameof(mailMergeFactory));

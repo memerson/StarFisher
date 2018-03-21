@@ -7,11 +7,13 @@ namespace StarFisher.Domain.Utilities
     {
         public static readonly NominationComparer ByNomineeName = new NominationComparer();
 
+        private NominationComparer()
+        {
+        }
+
         public int Compare(Nomination x, Nomination y)
         {
             return PersonNameComparer.FirstNameFirst.Compare(x?.NomineeName, y?.NomineeName);
         }
-
-        private NominationComparer() { }
     }
 }

@@ -48,7 +48,8 @@ namespace StarFisher.Office.Excel
             throw new NotSupportedException(awardType.Value);
         }
 
-        public IExcelFile GetNominationNotificationEmailSourceExcelFile(AwardType awardType, NominationList nominationList)
+        public IExcelFile GetNominationNotificationEmailSourceExcelFile(AwardType awardType,
+            NominationList nominationList)
         {
             if (awardType == null)
                 throw new ArgumentNullException(nameof(awardType));

@@ -20,7 +20,7 @@ namespace StarFisher.Domain.NominationListAggregate
             AwardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
             _nominations = nominations?.ToList() ?? throw new ArgumentNullException(nameof(nominations));
             _awardWinners = awardWinners?.ToList() ?? new List<AwardWinner>();
-            
+
             SetNomineeIdentifiers();
         }
 
@@ -40,7 +40,7 @@ namespace StarFisher.Domain.NominationListAggregate
             {
                 AwardType awardType;
 
-                if(AwardCategory == AwardCategory.QuarterlyAwards)
+                if (AwardCategory == AwardCategory.QuarterlyAwards)
                     awardType = AwardType.StarValues;
                 else if (AwardCategory == AwardCategory.SuperStarAwards)
                     awardType = AwardType.SuperStar;
@@ -175,9 +175,9 @@ namespace StarFisher.Domain.NominationListAggregate
                 awardWinner.UpdateAwardWinnerOfficeLocation(newOfficeLocation);
 
             MarkAsDirty(
-                $@"Updated nominee {nominee.Name.FullName}'s office location from {
-                        nominee.OfficeLocation.Name
-                    } to {newOfficeLocation.Name}");
+                $@"Updated nominee {nominee.Name.FullName}'s office location from {nominee.OfficeLocation.Name} to {
+                        newOfficeLocation.Name
+                    }");
         }
 
         public void UpdateNomineeEmailAddress(Person nominee, EmailAddress newEmailAddress)
@@ -291,10 +291,10 @@ namespace StarFisher.Domain.NominationListAggregate
 
             foreach (var group in nominationsByNominee)
             {
-                var nomineeIndexes = @group.Select(x => x.Index).ToList();
+                var nomineeIndexes = group.Select(x => x.Index).ToList();
                 var votingIdentifier = NomineeVotingIdentifier.Create(nomineeIndexes);
 
-                foreach (var item in @group)
+                foreach (var item in group)
                 {
                     var nomination = item.Nomination;
 

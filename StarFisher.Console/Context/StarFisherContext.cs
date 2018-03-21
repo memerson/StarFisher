@@ -21,6 +21,7 @@ namespace StarFisher.Console.Context
     public class StarFisherContext : IStarFisherContext
     {
         public static readonly StarFisherContext Instance = new StarFisherContext();
+        private AwardsPeriod _awardsPeriod;
         private Person _certificatePrinterPerson;
         private Person _eiaChairPerson;
         private IReadOnlyList<Person> _hrPeople;
@@ -28,7 +29,6 @@ namespace StarFisher.Console.Context
         private NominationListContext _nominationListContext;
         private DirectoryPath _starAwardsDirectoryPath;
         private WorkingDirectoryPath _workingDirectoryPath;
-        private AwardsPeriod _awardsPeriod;
 
         private StarFisherContext()
         {
@@ -38,7 +38,7 @@ namespace StarFisher.Console.Context
             ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson)
         {
             _starAwardsDirectoryPath = starAwardsDirectoryPath ??
-                                    throw new ArgumentNullException(nameof(starAwardsDirectoryPath));
+                                       throw new ArgumentNullException(nameof(starAwardsDirectoryPath));
             _awardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
             _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(_awardsPeriod);
             _eiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
