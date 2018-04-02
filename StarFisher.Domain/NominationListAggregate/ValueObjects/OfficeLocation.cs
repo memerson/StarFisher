@@ -6,38 +6,34 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
-        public static readonly OfficeLocation Columbia =
-            new OfficeLocation(@"Columbia", @"Columbia MD (formerly Laurel)", @"Columbia MD (fmr. Laurel)");
+        public static readonly OfficeLocation Boulder = new OfficeLocation(@"Boulder", @"Verity - Boulder CO");
+        public static readonly OfficeLocation Brentwood = new OfficeLocation(@"Brentwood", @"Verity - Brentwood TN");
 
-        public static readonly OfficeLocation EchoBoulder = new OfficeLocation(@"Boulder", @"Echo - Boulder");
-        public static readonly OfficeLocation EchoBrentwood = new OfficeLocation(@"Brentwood", @"Echo - Brentwood");
+        public static readonly OfficeLocation SanDiego =
+            new OfficeLocation(@"San Diego", @"Verity - San Diego", @"Verity - San Diego CA");
 
-        public static readonly OfficeLocation EchoSanDiego =
-            new OfficeLocation(@"San Diego", @"Echo - San Diego", @"Echo - San Diego CA");
-
-        public static readonly OfficeLocation Hccs = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
+        public static readonly OfficeLocation Jericho = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
 
         // TODO: Remove next quarter since this is no longer a HSTM office location.
         public static readonly OfficeLocation HighlandRidge =
-            new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Marriott Dr.)");
+            new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Training Center only)");
 
-        public static readonly OfficeLocation Morrisey =
-            new OfficeLocation(@"Chicago", @"Morrisey - Chicago", @"Morrisey - Chicago IL");
+        public static readonly OfficeLocation Chicago =
+            new OfficeLocation(@"Chicago", @"Verity - Chicago", @"Verity - Chicago IL");
 
         public static readonly OfficeLocation NashvilleCorporate =
             new OfficeLocation(@"Nashville Downtown", @"Nashville - Corporate (Downtown + Brentwood Sales)");
 
-        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office and HEI");
+        public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office");
 
         public static readonly IReadOnlyList<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
-            Columbia,
-            EchoBoulder,
-            EchoBrentwood,
-            EchoSanDiego,
-            Hccs,
+            Boulder,
+            Brentwood,
+            SanDiego,
+            Jericho,
             HighlandRidge,
-            Morrisey,
+            Chicago,
             NashvilleCorporate,
             Remote
         };

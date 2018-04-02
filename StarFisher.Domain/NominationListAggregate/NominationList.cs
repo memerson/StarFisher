@@ -50,7 +50,7 @@ namespace StarFisher.Domain.NominationListAggregate
                 return GetNominationsByAwardType(awardType)
                     .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
                                 n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
-                                n.NomineeOfficeLocation == OfficeLocation.EchoBrentwood)
+                                n.NomineeOfficeLocation == OfficeLocation.Brentwood)
                     .Select(n => n.Nominee)
                     .Distinct()
                     .ToList();
