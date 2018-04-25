@@ -5,7 +5,7 @@ namespace StarFisher.Office.Excel
     internal class RisingStarCertificatesSourceExcelFile : CertificatesSourceExcelFileBase
     {
         public RisingStarCertificatesSourceExcelFile(NominationList nominationList)
-            : base(nominationList?.AwardsPeriod, nominationList?.RisingStarAwardWinners)
+            : base(nominationList?.AwardsPeriod, nominationList?.RisingStarCertificateRecipients)
         {
         }
     }

@@ -35,7 +35,8 @@ namespace StarFisher.Console.Menu.CreateCertificateEmail
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && Context.NominationListContext.NominationList.HasAwardWinners;
+                   && Context.NominationListContext.NominationList.HasAwardWinners
+                   && Context.NominationListContext.NominationList.HasCertificateRecipients;
         }
     }
 }

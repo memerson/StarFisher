@@ -33,7 +33,7 @@ namespace StarFisher.Office.Outlook
 
             mailItem.To = string.Join(";", luncheonPlanners.Select(p => p.EmailAddress));
             mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
-            mailItem.Subject = $@"EIA: {awardsName} luncheon invite list";
+            mailItem.Subject = $@"EIA: {awardsName} luncheon invitee list";
 
             var content = CreateContentNode();
 
@@ -69,7 +69,7 @@ namespace StarFisher.Office.Outlook
             var luncheonPlannerFirstNames = luncheonPlanners.Select(n => n.Name.FirstName).PrettyPrint();
             AppendParagraph(content, $@"Hi {luncheonPlannerFirstNames},");
             AppendSection(content,
-                $@"Please find attached the spreadsheet with the invite list for the {awardsName} luncheon.");
+                $@"Please find attached the spreadsheet with the invitee list for the {awardsName} luncheon.");
         }
     }
 }

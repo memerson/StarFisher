@@ -48,14 +48,14 @@ namespace StarFisher.Domain.NominationListAggregate
                     return new List<Person>();
 
                 return GetNominationsByAwardType(awardType)
-                    .Where(n => n.NomineeOfficeLocation == OfficeLocation.NashvilleCorporate ||
-                                n.NomineeOfficeLocation == OfficeLocation.HighlandRidge ||
-                                n.NomineeOfficeLocation == OfficeLocation.Brentwood)
+                    .Where(n => OfficeLocation.OfficeLocationsForLuncheon.Any(ol => ol == n.NomineeOfficeLocation))
                     .Select(n => n.Nominee)
                     .Distinct()
                     .ToList();
             }
         }
+
+        public bool HasAwardsLuncheonInvitees => AwardsLuncheonInvitees.Any();
 
         public IReadOnlyList<Nomination> StarValuesNominations => GetNominationsByAwardType(AwardType.StarValues)
             .ToList();
@@ -317,19 +317,37 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public IReadOnlyList<AwardWinner> AwardWinners => _awardWinners;
 
-        public IReadOnlyList<AwardWinner> RisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar);
+        public IReadOnlyList<AwardWinner> RisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar).ToList();
 
-        public IReadOnlyList<AwardWinner> StarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues);
+        public IReadOnlyList<AwardWinner> StarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues).ToList();
 
-        public IReadOnlyList<AwardWinner> SuperStarAwardWinners => GetWinnersForAwardType(AwardType.SuperStar);
+        public IReadOnlyList<AwardWinner> SuperStarAwardWinners => GetWinnersForAwardType(AwardType.SuperStar).ToList();
+
+        public IEnumerable<AwardWinner> RisingStarCertificateRecipients =>
+            GetCertificateRecipientsForAwardType(AwardType.RisingStar);
+
+        public IEnumerable<AwardWinner> StarValuesCertificateRecipients =>
+            GetCertificateRecipientsForAwardType(AwardType.StarValues);
+
+        public IEnumerable<AwardWinner> SuperStarCertificateRecipients =>
+            GetCertificateRecipientsForAwardType(AwardType.SuperStar);
 
         public bool HasAwardWinners => AwardWinners.Count > 0;
 
-        public bool HasRisingStarAwardWinners => RisingStarAwardWinners.Count > 0;
+        public bool HasRisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar).Any();
 
-        public bool HasStarValuesAwardWinners => StarValuesAwardWinners.Count > 0;
+        public bool HasStarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues).Any();
 
-        public bool HasSuperStarAwardWinners => SuperStarAwardWinners.Count > 0;
+        public bool HasSuperStarAwardWinners => GetWinnersForAwardType(AwardType.SuperStar).Any();
+
+        public bool HasRisingStarCertificateRecipients => RisingStarCertificateRecipients.Any();
+
+        public bool HasStarValuesCertificateRecipients => StarValuesCertificateRecipients.Any();
+
+        public bool HasSuperStarCertificateRecipients => SuperStarCertificateRecipients.Any();
+
+        public bool HasCertificateRecipients => HasRisingStarCertificateRecipients ||
+                                                HasStarValuesCertificateRecipients || HasSuperStarCertificateRecipients;
 
         public bool GetIsAwardWinner(AwardType awardType, Person person)
         {
@@ -393,9 +411,16 @@ namespace StarFisher.Domain.NominationListAggregate
             UnselectAwardWinner(awardWinner);
         }
 
-        private IReadOnlyList<AwardWinner> GetWinnersForAwardType(AwardType awardType)
+        private IEnumerable<AwardWinner> GetWinnersForAwardType(AwardType awardType)
         {
-            return AwardWinners.Where(w => w.AwardType == awardType).ToList();
+            return AwardWinners.Where(w => w.AwardType == awardType);
+        }
+
+        private IEnumerable<AwardWinner> GetCertificateRecipientsForAwardType(AwardType awardType)
+        {
+            var awardWinners = GetWinnersForAwardType(awardType);
+            return awardWinners
+                .Where(w => OfficeLocation.OfficeLocationsForCertificatePrinting.Any(ol => ol == w.OfficeLocation));
         }
 
         #endregion Award Winners

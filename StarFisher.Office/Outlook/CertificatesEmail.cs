@@ -56,7 +56,7 @@ namespace StarFisher.Office.Outlook
         private static void AddSuperStarCertificatesAttachments(ComObjectManager com, MailItem mailItem,
             IMailMergeFactory mailMergeFactory, NominationList nominationList)
         {
-            if (!nominationList.HasSuperStarAwardWinners)
+            if (!nominationList.HasSuperStarCertificateRecipients)
                 return;
 
             AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.SuperStar);
@@ -65,13 +65,13 @@ namespace StarFisher.Office.Outlook
         private static void AddQuarterlyCertificatesAttachments(ComObjectManager com, MailItem mailItem,
             IMailMergeFactory mailMergeFactory, NominationList nominationList, HtmlNode content)
         {
-            if (!nominationList.HasStarValuesAwardWinners)
-                AppendNoWinnersCaveat(content, AwardType.StarValues);
+            if (!nominationList.HasStarValuesCertificateRecipients)
+                AppendNoCertificateRecipientsCaveat(content, AwardType.StarValues);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.StarValues);
 
-            if (!nominationList.HasRisingStarAwardWinners)
-                AppendNoWinnersCaveat(content, AwardType.RisingStar);
+            if (!nominationList.HasRisingStarCertificateRecipients)
+                AppendNoCertificateRecipientsCaveat(content, AwardType.RisingStar);
             else
                 AddCertificatesAttachment(com, mailItem, mailMergeFactory, nominationList, AwardType.RisingStar);
         }
@@ -93,9 +93,9 @@ namespace StarFisher.Office.Outlook
             com.Get(() => attachments.Add(filePath.Value));
         }
 
-        private static void AppendNoWinnersCaveat(HtmlNode content, AwardType awardType)
+        private static void AppendNoCertificateRecipientsCaveat(HtmlNode content, AwardType awardType)
         {
-            AppendSection(content, $@"We had no {awardType.PrettyName} winners this time.");
+            AppendSection(content, $@"We had no {awardType.PrettyName} certificates to print this time.");
         }
 
         private static void AppendIntroduction(HtmlNode content, Person certificatePrinter, string awardsName)

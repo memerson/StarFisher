@@ -35,7 +35,8 @@ namespace StarFisher.Console.Menu.CreateLuncheonInviteeListEmail
         {
             return Context.IsInitialized
                    && Context.NominationListContext.HasNominationListLoaded
-                   && Context.NominationListContext.NominationList.HasNominations;
+                   && Context.NominationListContext.NominationList.HasNominations
+                   && Context.NominationListContext.NominationList.HasAwardsLuncheonInvitees;
         }
     }
 }

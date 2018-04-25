@@ -53,6 +53,14 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 
         public string Name { get; }
 
+        public static IReadOnlyList<OfficeLocation> OfficeLocationsForLuncheon =>
+            new List<OfficeLocation>
+            {
+                NashvilleCorporate,
+                HighlandRidge,
+                Brentwood
+            };
+
         public static IReadOnlyList<OfficeLocation> OfficeLocationsForCertificatePrinting =>
             new List<OfficeLocation>
             {
