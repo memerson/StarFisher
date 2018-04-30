@@ -62,11 +62,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             };
 
         public static IReadOnlyList<OfficeLocation> OfficeLocationsForCertificatePrinting =>
-            new List<OfficeLocation>
-            {
-                NashvilleCorporate,
-                Remote
-            };
+            ValidEmployeeOfficeLocations;
 
         internal static OfficeLocation FindByName(string officeLocationSurveyName)
         {
