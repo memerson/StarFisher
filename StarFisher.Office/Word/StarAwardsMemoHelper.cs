@@ -32,8 +32,9 @@ namespace StarFisher.Office.Word
 
             SaveMemoSkeleton(workingDirectoryPath);
             SaveStarValuesWinnersMemoMailMerge(workingDirectoryPath, nominationList);
-            SaveStarValuesNomineeListExcelFile(workingDirectoryPath, nominationList);
+            SaveNomineeListExcelFile(workingDirectoryPath, nominationList, AwardType.StarValues);
             SaveRisingStarWinnerMemoMailMerge(workingDirectoryPath, nominationList);
+            SaveNomineeListExcelFile(workingDirectoryPath, nominationList, AwardType.RisingStar);
         }
 
         private static void SaveMemoSkeleton(WorkingDirectoryPath workingDirectoryPath)
@@ -55,24 +56,19 @@ namespace StarFisher.Office.Word
         private void SaveStarValuesWinnersMemoMailMerge(WorkingDirectoryPath workingDirectoryPath,
             NominationList nominationList)
         {
-            if (!nominationList.HasStarValuesAwardWinners)
-                return;
-
-            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_StarValuesWinnersForMemo.docx";
-            var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
             var mailMerge = _mailMergeFactory.GetStarValuesWinnersMemoMailMerge(nominationList);
-            mailMerge.Execute(filePath);
+            SaveAwardWinnerMemoMailMerge(workingDirectoryPath, AwardType.StarValues, nominationList, mailMerge);
         }
 
-        private void SaveStarValuesNomineeListExcelFile(WorkingDirectoryPath workingDirectoryPath,
-            NominationList nominationList)
+        private void SaveNomineeListExcelFile(WorkingDirectoryPath workingDirectoryPath, NominationList nominationList,
+            AwardType awardType)
         {
-            if (!nominationList.HasStarValuesAwardWinners)
+            if (!nominationList.HasNominationsForAward(awardType))
                 return;
 
-            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_StarValuesNomineesForMemo.xlsx";
+            var fileName = awardType.GetNomineesForMemoFileName(nominationList.AwardsPeriod);
             var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
-            using (var excelFile = _excelFileFactory.GetStarValuesNomineeListExcelFile(nominationList))
+            using (var excelFile = _excelFileFactory.GetNomineeListExcelFile(awardType, nominationList))
             {
                 excelFile.Save(filePath);
             }
@@ -81,12 +77,19 @@ namespace StarFisher.Office.Word
         private void SaveRisingStarWinnerMemoMailMerge(WorkingDirectoryPath workingDirectoryPath,
             NominationList nominationList)
         {
-            if (!nominationList.HasRisingStarAwardWinners)
+            var mailMerge = _mailMergeFactory.GetRisingStarWinnersMemoMailMerge(nominationList);
+            SaveAwardWinnerMemoMailMerge(workingDirectoryPath, AwardType.RisingStar, nominationList, mailMerge);
+        }
+
+        private static void SaveAwardWinnerMemoMailMerge(WorkingDirectoryPath workingDirectoryPath, AwardType awardType,
+            NominationList nominationList, IMailMerge mailMerge)
+        {
+            if (!nominationList.HasWinnersForAward(awardType))
                 return;
 
-            var fileName = $@"{nominationList.AwardsPeriod.FileNamePrefix}_RisingStarWinnersForMemo.docx";
+            var fileName = awardType.GetWinnersForMemoFileName(nominationList.AwardsPeriod);
             var filePath = workingDirectoryPath.GetFilePathForFileInDirectory(fileName, false, false);
-            var mailMerge = _mailMergeFactory.GetRisingStarWinnersMemoMailMerge(nominationList);
+
             mailMerge.Execute(filePath);
         }
     }

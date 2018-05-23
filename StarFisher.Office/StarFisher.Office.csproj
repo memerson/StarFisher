@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Excel\NomineeListExcelFileBase.cs" />
+    <Compile Include="Excel\RisingStarNomineeListExcelFile.cs" />
     <Compile Include="Excel\SuperStarVotingGuideSourceExcelFile.cs" />
     <Compile Include="Excel\SuperStarVotingKeyExcelFile.cs" />
     <Compile Include="Excel\SuperStarNominationNotificationEmailSourceExcelFile.cs" />

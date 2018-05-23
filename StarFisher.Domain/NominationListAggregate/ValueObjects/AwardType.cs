@@ -78,6 +78,22 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_Certificates.docx";
         }
 
+        public string GetWinnersForMemoFileName(AwardsPeriod awardsPeriod)
+        {
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
+
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_WinnersForMemo.docx";
+        }
+
+        public string GetNomineesForMemoFileName(AwardsPeriod awardsPeriod)
+        {
+            if (awardsPeriod == null)
+                throw new ArgumentNullException(nameof(awardsPeriod));
+
+            return $@"{awardsPeriod.FileNamePrefix}_{FileNameIdentifier}_NomineesForMemo.xlsx";
+        }
+
         protected override bool EqualsCore(AwardType other)
         {
             return string.Equals(Value, other.Value);

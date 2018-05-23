@@ -334,11 +334,11 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public bool HasAwardWinners => AwardWinners.Count > 0;
 
-        public bool HasRisingStarAwardWinners => GetWinnersForAwardType(AwardType.RisingStar).Any();
+        public bool HasRisingStarAwardWinners => HasWinnersForAward(AwardType.RisingStar);
 
-        public bool HasStarValuesAwardWinners => GetWinnersForAwardType(AwardType.StarValues).Any();
+        public bool HasStarValuesAwardWinners => HasWinnersForAward(AwardType.StarValues);
 
-        public bool HasSuperStarAwardWinners => GetWinnersForAwardType(AwardType.SuperStar).Any();
+        public bool HasSuperStarAwardWinners => HasWinnersForAward(AwardType.SuperStar);
 
         public bool HasRisingStarCertificateRecipients => RisingStarCertificateRecipients.Any();
 
@@ -348,6 +348,14 @@ namespace StarFisher.Domain.NominationListAggregate
 
         public bool HasCertificateRecipients => HasRisingStarCertificateRecipients ||
                                                 HasStarValuesCertificateRecipients || HasSuperStarCertificateRecipients;
+
+        public bool HasWinnersForAward(AwardType awardType)
+        {
+            if (awardType == null)
+                throw new ArgumentNullException(nameof(awardType));
+
+            return GetWinnersForAwardType(awardType).Any();
+        }
 
         public bool GetIsAwardWinner(AwardType awardType, Person person)
         {
