@@ -144,18 +144,18 @@ namespace StarFisher.Domain.NominationListAggregate
 
         private static Nomination LoadQuarterlyAwardsNominationFromSurveyExport(Row row, int rowNumber)
         {
-            var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
-            var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
-            var nomineeName = PersonName.Create(row[12]);
-            var awardType = AwardType.FindByAwardName(row[13]);
-            var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
-            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
-            var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
-            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[18]);
-            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[19]);
-            var hasPerformance = !string.IsNullOrWhiteSpace(row[20]);
-            var writeUp = NominationWriteUp.Create(nomineeName, row[21]);
-            var writeUpSummary = NominationWriteUpSummary.Create(row[23]);
+            var isAnonymousNominator = row[11] != @"Display My Name (Recommended)";
+            var nominatorName = PersonName.CreateForNominator(row[10], isAnonymousNominator);
+            var nomineeName = PersonName.Create(row[13]);
+            var awardType = AwardType.FindByAwardName(row[14]);
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[16]);
+            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[17]);
+            var hasInnovation = !string.IsNullOrWhiteSpace(row[18]);
+            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[19]);
+            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[10]);
+            var hasPerformance = !string.IsNullOrWhiteSpace(row[21]);
+            var writeUp = NominationWriteUp.Create(nomineeName, row[22]);
+            var writeUpSummary = NominationWriteUpSummary.Create(row[24]);
 
             var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
                 hasIndividualIntegrity, hasPerformance);
@@ -187,17 +187,17 @@ namespace StarFisher.Domain.NominationListAggregate
 
         private static Nomination LoadSuperStarAwardsNominationFromSurveyExport(Row row, int rowNumber)
         {
-            var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
-            var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
-            var nomineeName = PersonName.Create(row[12]);
+            var isAnonymousNominator = row[11] != @"Display My Name (Recommended)";
+            var nominatorName = PersonName.CreateForNominator(row[10], isAnonymousNominator);
+            var nomineeName = PersonName.Create(row[13]);
             var awardType = AwardType.SuperStar;
-            var nomineeOfficeLocation = OfficeLocation.FindByName(row[14]);
-            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[15]);
-            var hasInnovation = !string.IsNullOrWhiteSpace(row[16]);
-            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[17]);
-            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[18]);
-            var hasPerformance = !string.IsNullOrWhiteSpace(row[19]);
-            var writeUp = NominationWriteUp.Create(nomineeName, row[20]);
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
+            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
+            var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
+            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[18]);
+            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[19]);
+            var hasPerformance = !string.IsNullOrWhiteSpace(row[20]);
+            var writeUp = NominationWriteUp.Create(nomineeName, row[21]);
             var writeUpSummary = NominationWriteUpSummary.NotApplicable;
 
             var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
