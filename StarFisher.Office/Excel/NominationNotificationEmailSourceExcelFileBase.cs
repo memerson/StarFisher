@@ -30,13 +30,14 @@ namespace StarFisher.Office.Excel
             SetCellValue(cells, 1, 3, @"Submitted by");
             SetCellValue(cells, 1, 4, @"NOMINEE'S NAME");
             SetCellValue(cells, 1, 5, @"NOMINEE'S OFFICE");
-            SetCellValue(cells, 1, 6, @"Learning Culture");
-            SetCellValue(cells, 1, 7, @"Innovation");
-            SetCellValue(cells, 1, 8, @"Customer Focus");
-            SetCellValue(cells, 1, 9, @"Individual Integrity");
-            SetCellValue(cells, 1, 10, @"Performance");
-            SetCellValue(cells, 1, 11, @"WRITE-UP");
-            SetCellValue(cells, 1, 12, @"Email");
+            SetCellValue(cells, 1, 6, @"Continuously_Improving");
+            SetCellValue(cells, 1, 7, @"Driving_Innovation");
+            SetCellValue(cells, 1, 8, @"Delighting_Customers");
+            SetCellValue(cells, 1, 9, @"Behaving_with_Integrity");
+            SetCellValue(cells, 1, 10, @"Delivering_Meaningful_Outcomes");
+            SetCellValue(cells, 1, 11, @"Streaming_Good");
+            SetCellValue(cells, 1, 12, @"WRITE-UP");
+            SetCellValue(cells, 1, 13, @"Email");
 
             var rowNumber = 2;
             foreach (var nomination in nominations)
@@ -46,13 +47,14 @@ namespace StarFisher.Office.Excel
                 SetCellValue(cells, rowNumber, 3, nomination.NominatorName.FullName);
                 SetCellValue(cells, rowNumber, 4, nomination.NomineeName.FullName);
                 SetCellValue(cells, rowNumber, 5, nomination.NomineeOfficeLocation.ToString());
-                SetCellValue(cells, rowNumber, 6, GetCompanyValue(nomination, CompanyValue.LearningCulture));
-                SetCellValue(cells, rowNumber, 7, GetCompanyValue(nomination, CompanyValue.Innovation));
-                SetCellValue(cells, rowNumber, 8, GetCompanyValue(nomination, CompanyValue.CustomerFocus));
-                SetCellValue(cells, rowNumber, 9, GetCompanyValue(nomination, CompanyValue.IndividualIntegrity));
-                SetCellValue(cells, rowNumber, 10, GetCompanyValue(nomination, CompanyValue.Performance));
-                SetCellValue(cells, rowNumber, 11, nomination.WriteUp.ToString());
-                SetCellValue(cells, rowNumber, 12, nomination.NomineeEmailAddress.ToString());
+                SetCellValue(cells, rowNumber, 6, GetCompanyValue(nomination, CompanyValue.ContinuouslyImproving));
+                SetCellValue(cells, rowNumber, 7, GetCompanyValue(nomination, CompanyValue.DrivingInnovation));
+                SetCellValue(cells, rowNumber, 8, GetCompanyValue(nomination, CompanyValue.DelightingCustomers));
+                SetCellValue(cells, rowNumber, 9, GetCompanyValue(nomination, CompanyValue.BehavingWithIntegrity));
+                SetCellValue(cells, rowNumber, 10, GetCompanyValue(nomination, CompanyValue.DeliveringMeaningfulOutcomes));
+                SetCellValue(cells, rowNumber, 11, GetCompanyValue(nomination, CompanyValue.StreamingGood));
+                SetCellValue(cells, rowNumber, 12, nomination.WriteUp.ToString());
+                SetCellValue(cells, rowNumber, 13, nomination.NomineeEmailAddress.ToString());
 
                 ++rowNumber;
             }

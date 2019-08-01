@@ -100,16 +100,6 @@ namespace StarFisher.Console.Menu.Common
             throw new NotImplementedException();
         }
 
-        protected void Write(string text)
-        {
-            _console.Write(text);
-        }
-
-        protected void WriteRed(string text)
-        {
-            _console.WriteRed(text);
-        }
-
         protected void WriteLine(string text, params string[] redTokens)
         {
             _console.WriteLine(text, redTokens);

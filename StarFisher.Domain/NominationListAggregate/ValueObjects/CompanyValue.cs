@@ -6,19 +6,21 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class CompanyValue : ValueObject<CompanyValue>
     {
-        public static readonly CompanyValue LearningCulture = new CompanyValue(@"Learning Culture");
-        public static readonly CompanyValue Innovation = new CompanyValue(@"Innovation");
-        public static readonly CompanyValue CustomerFocus = new CompanyValue(@"Customer Focus");
-        public static readonly CompanyValue IndividualIntegrity = new CompanyValue(@"Individual Integrity");
-        public static readonly CompanyValue Performance = new CompanyValue(@"Performance");
+        public static readonly CompanyValue ContinuouslyImproving = new CompanyValue(@"Continuously Improving");
+        public static readonly CompanyValue DrivingInnovation = new CompanyValue(@"Driving Innovation");
+        public static readonly CompanyValue DelightingCustomers = new CompanyValue(@"Delighting Customers");
+        public static readonly CompanyValue BehavingWithIntegrity = new CompanyValue(@"Behaving with Integrity");
+        public static readonly CompanyValue DeliveringMeaningfulOutcomes = new CompanyValue(@"Delivering Meaningful Outcomes");
+        public static readonly CompanyValue StreamingGood = new CompanyValue(@"Streaming Good");
 
         private static readonly List<CompanyValue> ValidCompanyValues = new List<CompanyValue>
         {
-            LearningCulture,
-            Innovation,
-            CustomerFocus,
-            IndividualIntegrity,
-            Performance
+            ContinuouslyImproving,
+            DrivingInnovation,
+            DelightingCustomers,
+            BehavingWithIntegrity,
+            DeliveringMeaningfulOutcomes,
+            StreamingGood
         };
 
         public static readonly CompanyValue Invalid = new CompanyValue(@"INVALID");

@@ -25,10 +25,9 @@ namespace StarFisher.Office.Outlook
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
             IExcelFileFactory excelFileFactory, NominationList nominationList)
         {
-            var eiaChairPerson = emailConfiguration.EiaChairPerson;
             var awardsName = nominationList.AwardsPeriod.AwardsName;
 
-            mailItem.To = string.Join(";", eiaChairPerson.EmailAddress);
+            mailItem.To = string.Join(";", emailConfiguration.EiaCoChair1.EmailAddress, emailConfiguration.EiaCoChair2.EmailAddress);
             mailItem.Subject = $@"EIA: {awardsName} voting key";
 
             var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
@@ -37,7 +36,8 @@ namespace StarFisher.Office.Outlook
 
             var content = HtmlNode.CreateNode(@"<div class=WordSection1>");
 
-            AppendRequest(hasRisingStar, hasStarValues, content, eiaChairPerson, awardsName);
+            AppendRequest(hasRisingStar, hasStarValues, content, emailConfiguration.EiaCoChair1,
+                emailConfiguration.EiaCoChair2, awardsName);
 
             AddVotingKeyAttachments(com, mailItem, content, excelFileFactory, nominationList, hasStarValues,
                 hasRisingStar, hasSuperStar);
@@ -104,12 +104,12 @@ namespace StarFisher.Office.Outlook
         }
 
         private static void AppendRequest(bool hasRisingStar, bool hasStarValues, HtmlNode content,
-            Person eiaChairPerson, string awardsName)
+            Person eiaCoChair1, Person eiaCoChair2, string awardsName)
         {
-            var keyorKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
+            var keyOrKeys = hasRisingStar && hasStarValues ? @"keys" : "key";
 
-            AppendParagraph(content, $@"Hi {eiaChairPerson.Name.FirstName},");
-            AppendSection(content, $@"Please find attached the {awardsName} voting {keyorKeys}.");
+            AppendParagraph(content, $@"Hi {eiaCoChair1.Name.FirstName} and {eiaCoChair2.Name.FirstName},");
+            AppendSection(content, $@"Please find attached the {awardsName} voting {keyOrKeys}.");
         }
     }
 }

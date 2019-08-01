@@ -144,21 +144,22 @@ namespace StarFisher.Domain.NominationListAggregate
 
         private static Nomination LoadQuarterlyAwardsNominationFromSurveyExport(Row row, int rowNumber)
         {
-            var isAnonymousNominator = row[11] != @"Display My Name (Recommended)";
-            var nominatorName = PersonName.CreateForNominator(row[10], isAnonymousNominator);
-            var nomineeName = PersonName.Create(row[13]);
-            var awardType = AwardType.FindByAwardName(row[14]);
-            var nomineeOfficeLocation = OfficeLocation.FindByName(row[16]);
-            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[17]);
-            var hasInnovation = !string.IsNullOrWhiteSpace(row[18]);
-            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[19]);
-            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[10]);
-            var hasPerformance = !string.IsNullOrWhiteSpace(row[21]);
+            var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
+            var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
+            var nomineeName = PersonName.Create(row[12]);
+            var awardType = AwardType.FindByAwardName(row[13]);
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
+            var hasContinuouslyImproving = !string.IsNullOrWhiteSpace(row[16]);
+            var hasDrivingInnovation = !string.IsNullOrWhiteSpace(row[17]);
+            var hasDelightingCustomers = !string.IsNullOrWhiteSpace(row[18]);
+            var hasBehavingWithIntegrity = !string.IsNullOrWhiteSpace(row[19]);
+            var hasDeliveringMeaningfulOutcomes = !string.IsNullOrWhiteSpace(row[20]);
+            var hasStreamingGood = !string.IsNullOrWhiteSpace(row[21]);
             var writeUp = NominationWriteUp.Create(nomineeName, row[22]);
             var writeUpSummary = NominationWriteUpSummary.Create(row[24]);
 
-            var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
-                hasIndividualIntegrity, hasPerformance);
+            var companyValues = GetCompanyValues(hasContinuouslyImproving, hasDrivingInnovation, hasDelightingCustomers,
+                hasBehavingWithIntegrity, hasDeliveringMeaningfulOutcomes, hasStreamingGood);
 
             var nominee = Person.Create(nomineeName, nomineeOfficeLocation, nomineeName.DerivedEmailAddress);
 
@@ -192,16 +193,17 @@ namespace StarFisher.Domain.NominationListAggregate
             var nomineeName = PersonName.Create(row[13]);
             var awardType = AwardType.SuperStar;
             var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
-            var hasLearningCulture = !string.IsNullOrWhiteSpace(row[16]);
-            var hasInnovation = !string.IsNullOrWhiteSpace(row[17]);
-            var hasCustomerFocus = !string.IsNullOrWhiteSpace(row[18]);
-            var hasIndividualIntegrity = !string.IsNullOrWhiteSpace(row[19]);
-            var hasPerformance = !string.IsNullOrWhiteSpace(row[20]);
-            var writeUp = NominationWriteUp.Create(nomineeName, row[21]);
+            var hasContinuouslyImproving = !string.IsNullOrWhiteSpace(row[16]);
+            var hasDrivingInnovation = !string.IsNullOrWhiteSpace(row[17]);
+            var hasDelightingCustomers = !string.IsNullOrWhiteSpace(row[18]);
+            var hasBehavingWithIntegrity = !string.IsNullOrWhiteSpace(row[19]);
+            var hasDeliveringMeaningfulOutcomes = !string.IsNullOrWhiteSpace(row[20]);
+            var hasStreamingGood = !string.IsNullOrWhiteSpace(row[21]);
+            var writeUp = NominationWriteUp.Create(nomineeName, row[22]);
             var writeUpSummary = NominationWriteUpSummary.NotApplicable;
 
-            var companyValues = GetCompanyValues(hasLearningCulture, hasInnovation, hasCustomerFocus,
-                hasIndividualIntegrity, hasPerformance);
+            var companyValues = GetCompanyValues(hasContinuouslyImproving, hasDrivingInnovation, hasDelightingCustomers,
+                hasBehavingWithIntegrity, hasDeliveringMeaningfulOutcomes, hasStreamingGood);
 
             var nominee = Person.Create(nomineeName, nomineeOfficeLocation, nomineeName.DerivedEmailAddress);
 
@@ -211,21 +213,23 @@ namespace StarFisher.Domain.NominationListAggregate
             return nomination;
         }
 
-        private static IEnumerable<CompanyValue> GetCompanyValues(bool hasLearningCulture, bool hasInnovation,
-            bool hasCustomerFocus,
-            bool hasIndividualIntegrity, bool hasPerformance)
+        private static IEnumerable<CompanyValue> GetCompanyValues(bool hasContinuouslyImproving,
+            bool hasDrivingInnovation, bool hasDelightingCustomers, bool hasBehavingWithIntegrity,
+            bool hasDeliveringMeaningfulOutcomes, bool hasStreamingGood)
         {
-            var companyValues = new List<CompanyValue>(5);
-            if (hasLearningCulture)
-                companyValues.Add(CompanyValue.LearningCulture);
-            if (hasInnovation)
-                companyValues.Add(CompanyValue.Innovation);
-            if (hasCustomerFocus)
-                companyValues.Add(CompanyValue.CustomerFocus);
-            if (hasIndividualIntegrity)
-                companyValues.Add(CompanyValue.IndividualIntegrity);
-            if (hasPerformance)
-                companyValues.Add(CompanyValue.Performance);
+            var companyValues = new List<CompanyValue>(6);
+            if (hasContinuouslyImproving)
+                companyValues.Add(CompanyValue.ContinuouslyImproving);
+            if (hasDrivingInnovation)
+                companyValues.Add(CompanyValue.DrivingInnovation);
+            if (hasDelightingCustomers)
+                companyValues.Add(CompanyValue.DelightingCustomers);
+            if (hasBehavingWithIntegrity)
+                companyValues.Add(CompanyValue.BehavingWithIntegrity);
+            if (hasDeliveringMeaningfulOutcomes)
+                companyValues.Add(CompanyValue.DeliveringMeaningfulOutcomes);
+            if (hasStreamingGood)
+                companyValues.Add(CompanyValue.StreamingGood);
             return companyValues;
         }
 

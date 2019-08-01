@@ -32,7 +32,7 @@ namespace StarFisher.Office.Outlook
             var awardsName = nominationList.AwardsPeriod.AwardsName;
 
             mailItem.To = string.Join(";", luncheonPlanners.Select(p => p.EmailAddress));
-            mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
+            mailItem.CC = string.Join(";", emailConfiguration.EiaCoChair1.EmailAddress, emailConfiguration.EiaCoChair2.EmailAddress);
             mailItem.Subject = $@"EIA: {awardsName} luncheon invitee list";
 
             var content = CreateContentNode();

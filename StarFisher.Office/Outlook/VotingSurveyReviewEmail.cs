@@ -28,18 +28,18 @@ namespace StarFisher.Office.Outlook
         private static void BuildEmail(ComObjectManager com, MailItem mailItem, IEmailConfiguration emailConfiguration,
             IMailMergeFactory mailMergeFactory, NominationList nominationList, string votingSurveyWebLink)
         {
-            var eiaChairPerson = emailConfiguration.EiaChairPerson;
             var awardsName = nominationList.AwardsPeriod.AwardsName;
             var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
             var hasRisingStar = nominationList.HasNominationsForAward(AwardType.RisingStar);
             var hasSuperStar = nominationList.HasNominationsForAward(AwardType.SuperStar);
 
-            mailItem.To = string.Join(";", eiaChairPerson.EmailAddress);
+            mailItem.To = string.Join(";", emailConfiguration.EiaCoChair1.EmailAddress, emailConfiguration.EiaCoChair2.EmailAddress);
             mailItem.Subject = $@"EIA: {awardsName} voting survey review request";
 
             var content = CreateContentNode();
 
-            AppendRequest(content, eiaChairPerson, awardsName, hasStarValues, hasRisingStar);
+            AppendRequest(content, emailConfiguration.EiaCoChair1, emailConfiguration.EiaCoChair2, awardsName,
+                hasStarValues, hasRisingStar);
 
             AddVotingGuideAttachments(com, mailItem, content, mailMergeFactory, nominationList, hasStarValues,
                 hasRisingStar, hasSuperStar);
@@ -111,12 +111,12 @@ namespace StarFisher.Office.Outlook
             AppendSection(content, $@"We had no eligible {awardType.PrettyName} nominees this time.");
         }
 
-        private static void AppendRequest(HtmlNode content, Person eiaChairPerson, string awardsName,
+        private static void AppendRequest(HtmlNode content, Person eiaCoChair1, Person eiaCoChair2, string awardsName,
             bool hasStarValues, bool hasRisingStar)
         {
             var guideOrGuides = hasRisingStar && hasStarValues ? @"guides" : "guide";
 
-            AppendParagraph(content, $@"Hi {eiaChairPerson.Name.FirstName},");
+            AppendParagraph(content, $@"Hi {eiaCoChair1.Name.FirstName} and {eiaCoChair2.Name.FirstName},");
             AppendSection(content,
                 $@"Could you please review and approve the attached voting {
                         guideOrGuides

@@ -5,7 +5,9 @@ namespace StarFisher.Office.Outlook
 {
     public interface IEmailConfiguration
     {
-        Person EiaChairPerson { get; }
+        Person EiaCoChair1 { get; }
+
+        Person EiaCoChair2 { get; }
 
         IReadOnlyList<Person> HrPeople { get; }
 

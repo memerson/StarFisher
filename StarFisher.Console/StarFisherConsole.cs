@@ -124,7 +124,8 @@ namespace StarFisher.Console
 
         public void WriteRed(string text)
         {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+            using (ConsoleColorSelector.SetConsoleBackgroundColor(ConsoleColor.Red))
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.White))
             {
                 Write(text);
             }
@@ -175,7 +176,8 @@ namespace StarFisher.Console
 
         public void WriteLineRed(string text)
         {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.Red))
+            using (ConsoleColorSelector.SetConsoleBackgroundColor(ConsoleColor.Red))
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.White))
             {
                 WriteLine(text);
             }

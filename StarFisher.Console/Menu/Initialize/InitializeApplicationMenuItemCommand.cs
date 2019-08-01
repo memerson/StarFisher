@@ -40,8 +40,12 @@ namespace StarFisher.Console.Menu.Initialize
             if (awardPeriod == null)
                 return unsuccessfulResult;
 
-            var eiaChairPerson = GetEiaChairPerson(out unsuccessfulResult);
-            if (eiaChairPerson == null)
+            var eiaCoChair1 = GetEiaCoChair1(out unsuccessfulResult);
+            if (eiaCoChair1 == null)
+                return unsuccessfulResult;
+
+            var eiaCoChair2 = GetEiaCoChair2(out unsuccessfulResult);
+            if (eiaCoChair2 == null)
                 return unsuccessfulResult;
 
             var hrPeople = GetHrPeople(out unsuccessfulResult);
@@ -56,8 +60,8 @@ namespace StarFisher.Console.Menu.Initialize
             if (certificatePrinterPerson == null)
                 return unsuccessfulResult;
 
-            Context.Initialize(starAwardsDirectoryPath, awardPeriod, eiaChairPerson, hrPeople, luncheonPlannerPeople,
-                certificatePrinterPerson);
+            Context.Initialize(starAwardsDirectoryPath, awardPeriod, eiaCoChair1, eiaCoChair2, hrPeople,
+                luncheonPlannerPeople, certificatePrinterPerson);
 
             _configurationStorage.SaveConfiguration();
 
@@ -101,10 +105,16 @@ namespace StarFisher.Console.Menu.Initialize
             return awardCategory;
         }
 
-        private Person GetEiaChairPerson(out CommandResult<CommandOutput.None> unsuccessfulResult)
+        private Person GetEiaCoChair1(out CommandResult<CommandOutput.None> unsuccessfulResult)
         {
-            var currentEiaChairPerson = Context.IsInitialized ? Context.EiaChairPerson : null;
-            return GetPerson(@"EIA Chairperson", currentEiaChairPerson, out unsuccessfulResult);
+            var currentEiaChairPerson = Context.IsInitialized ? Context.EiaCoChair1 : null;
+            return GetPerson(@"EIA Co-Chair 1", currentEiaChairPerson, out unsuccessfulResult);
+        }
+
+        private Person GetEiaCoChair2(out CommandResult<CommandOutput.None> unsuccessfulResult)
+        {
+            var currentEiaChairPerson = Context.IsInitialized ? Context.EiaCoChair2 : null;
+            return GetPerson(@"EIA Co-Chair 2", currentEiaChairPerson, out unsuccessfulResult);
         }
 
         private List<Person> GetHrPeople(out CommandResult<CommandOutput.None> unsuccessfulResult)

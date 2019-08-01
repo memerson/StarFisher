@@ -24,7 +24,7 @@ namespace StarFisher.Office.Outlook
             NominationList nominationList)
         {
             mailItem.To = string.Join(";", emailConfiguration.HrPeople.Select(p => p.EmailAddress));
-            mailItem.CC = string.Join(";", emailConfiguration.EiaChairPerson.EmailAddress);
+            mailItem.CC = string.Join(";", emailConfiguration.EiaCoChair1.EmailAddress, emailConfiguration.EiaCoChair2.EmailAddress);
 
             var hasStarValues = nominationList.HasNominationsForAward(AwardType.StarValues);
             var hasRisingStar = nominationList.HasNominationsForAward(AwardType.RisingStar);

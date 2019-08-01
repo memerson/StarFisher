@@ -14,8 +14,9 @@ namespace StarFisher.Console.Context
 
         INominationListContext NominationListContext { get; }
 
-        void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaChairPerson,
-            ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson);
+        void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaCoChair1,
+            Person eiaCoChair2, ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople,
+            Person certificatePrinterPerson);
     }
 
     public class StarFisherContext : IStarFisherContext
@@ -23,7 +24,8 @@ namespace StarFisher.Console.Context
         public static readonly StarFisherContext Instance = new StarFisherContext();
         private AwardsPeriod _awardsPeriod;
         private Person _certificatePrinterPerson;
-        private Person _eiaChairPerson;
+        private Person _eiaCoChair1;
+        private Person _eiaCoChair2;
         private IReadOnlyList<Person> _hrPeople;
         private IReadOnlyList<Person> _luncheonPlannerPeople;
         private NominationListContext _nominationListContext;
@@ -34,14 +36,16 @@ namespace StarFisher.Console.Context
         {
         }
 
-        public void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaChairPerson,
-            ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople, Person certificatePrinterPerson)
+        public void Initialize(DirectoryPath starAwardsDirectoryPath, AwardsPeriod awardsPeriod, Person eiaCoChair1,
+            Person eiaCoChair2, ICollection<Person> hrPeople, ICollection<Person> luncheonPlannerPeople,
+            Person certificatePrinterPerson)
         {
             _starAwardsDirectoryPath = starAwardsDirectoryPath ??
                                        throw new ArgumentNullException(nameof(starAwardsDirectoryPath));
             _awardsPeriod = awardsPeriod ?? throw new ArgumentNullException(nameof(awardsPeriod));
             _workingDirectoryPath = _starAwardsDirectoryPath.GetWorkingDirectory(_awardsPeriod);
-            _eiaChairPerson = eiaChairPerson ?? throw new ArgumentNullException(nameof(eiaChairPerson));
+            _eiaCoChair1 = eiaCoChair1 ?? throw new ArgumentNullException(nameof(eiaCoChair1));
+            _eiaCoChair2 = eiaCoChair2 ?? throw new ArgumentNullException(nameof(eiaCoChair2));
             _hrPeople = hrPeople?.ToList() ?? throw new ArgumentNullException(nameof(hrPeople));
             _luncheonPlannerPeople = luncheonPlannerPeople?.ToList() ??
                                      throw new ArgumentNullException(nameof(luncheonPlannerPeople));
@@ -84,12 +88,21 @@ namespace StarFisher.Console.Context
             }
         }
 
-        public Person EiaChairPerson
+        public Person EiaCoChair1
         {
             get
             {
                 CheckIsInitialized();
-                return _eiaChairPerson;
+                return _eiaCoChair1;
+            }
+        }
+
+        public Person EiaCoChair2
+        {
+            get
+            {
+                CheckIsInitialized();
+                return _eiaCoChair2;
             }
         }
 

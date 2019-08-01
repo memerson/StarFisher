@@ -7,7 +7,6 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
         public static readonly OfficeLocation Boulder = new OfficeLocation(@"Boulder", @"Verity - Boulder CO");
-        public static readonly OfficeLocation Brentwood = new OfficeLocation(@"Brentwood", @"Verity - Brentwood TN");
 
         public static readonly OfficeLocation SanDiego =
             new OfficeLocation(@"San Diego", @"Verity - San Diego", @"Verity - San Diego CA");
@@ -22,19 +21,21 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             new OfficeLocation(@"Chicago", @"Verity - Chicago", @"Verity - Chicago IL");
 
         public static readonly OfficeLocation NashvilleCorporate =
-            new OfficeLocation(@"Nashville Downtown", @"Nashville - Corporate (Downtown + Brentwood Sales)");
+            new OfficeLocation(@"Nashville Downtown", @"Nashville - Capitol View");
+
+        public static readonly OfficeLocation Providigm = new OfficeLocation(@"Providigm", @"Providigm - Denver CO ");
 
         public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office");
 
         public static readonly IReadOnlyList<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
             Boulder,
-            Brentwood,
             SanDiego,
             Jericho,
             HighlandRidge,
             Chicago,
             NashvilleCorporate,
+            Providigm,
             Remote
         };
 
@@ -57,8 +58,7 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             new List<OfficeLocation>
             {
                 NashvilleCorporate,
-                HighlandRidge,
-                Brentwood
+                HighlandRidge
             };
 
         public static IReadOnlyList<OfficeLocation> OfficeLocationsForCertificatePrinting =>

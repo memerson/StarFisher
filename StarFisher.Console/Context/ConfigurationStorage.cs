@@ -82,7 +82,8 @@ namespace StarFisher.Console.Context
 
                 StarAwardsDirectoryPath = context.StarAwardsDirectoryPath.Value;
                 AwardsPeriod = context.AwardsPeriod.Value;
-                EiaChairPerson = Convert(context.EiaChairPerson);
+                EiaCoChair1 = Convert(context.EiaCoChair1);
+                EiaCoChair2 = Convert(context.EiaCoChair2);
                 HrPeople = Convert(context.HrPeople);
                 LuncheonPlannerPeople = Convert(context.LuncheonPlannerPeople);
                 CertificatePrinterPerson = Convert(context.CertificatePrinterPerson);
@@ -92,7 +93,9 @@ namespace StarFisher.Console.Context
 
             public int AwardsPeriod { get; set; }
 
-            public Person EiaChairPerson { get; set; }
+            public Person EiaCoChair1 { get; set; }
+
+            public Person EiaCoChair2 { get; set; }
 
             public List<Person> HrPeople { get; set; }
 
@@ -105,7 +108,8 @@ namespace StarFisher.Console.Context
                 StarFisherContext.Instance.Initialize(
                     DirectoryPath.Create(StarAwardsDirectoryPath),
                     Domain.NominationListAggregate.ValueObjects.AwardsPeriod.CreateFromValue(AwardsPeriod),
-                    Convert(EiaChairPerson),
+                    Convert(EiaCoChair1),
+                    Convert(EiaCoChair2),
                     Convert(HrPeople),
                     Convert(LuncheonPlannerPeople),
                     Convert(CertificatePrinterPerson));

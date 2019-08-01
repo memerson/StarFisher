@@ -29,7 +29,7 @@ namespace StarFisher.Office.Outlook
             var awardsName = nominationList.AwardsPeriod.AwardsName;
 
             mailItem.To = certificatePrinter.EmailAddress.Value;
-            mailItem.CC = emailConfiguration.EiaChairPerson.EmailAddress.Value;
+            mailItem.CC = string.Join(";", emailConfiguration.EiaCoChair1.EmailAddress, emailConfiguration.EiaCoChair2.EmailAddress);
             mailItem.Subject = $@"EIA: {awardsName} winner certificates";
 
             var content = CreateContentNode();
