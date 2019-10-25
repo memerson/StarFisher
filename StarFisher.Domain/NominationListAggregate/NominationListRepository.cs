@@ -188,18 +188,18 @@ namespace StarFisher.Domain.NominationListAggregate
 
         private static Nomination LoadSuperStarAwardsNominationFromSurveyExport(Row row, int rowNumber)
         {
-            var isAnonymousNominator = row[11] != @"Display My Name (Recommended)";
-            var nominatorName = PersonName.CreateForNominator(row[10], isAnonymousNominator);
-            var nomineeName = PersonName.Create(row[13]);
+            var isAnonymousNominator = row[10] != @"Display My Name (Recommended)";
+            var nominatorName = PersonName.CreateForNominator(row[9], isAnonymousNominator);
+            var nomineeName = PersonName.Create(row[12]);
             var awardType = AwardType.SuperStar;
-            var nomineeOfficeLocation = OfficeLocation.FindByName(row[15]);
-            var hasContinuouslyImproving = !string.IsNullOrWhiteSpace(row[16]);
-            var hasDrivingInnovation = !string.IsNullOrWhiteSpace(row[17]);
-            var hasDelightingCustomers = !string.IsNullOrWhiteSpace(row[18]);
-            var hasBehavingWithIntegrity = !string.IsNullOrWhiteSpace(row[19]);
-            var hasDeliveringMeaningfulOutcomes = !string.IsNullOrWhiteSpace(row[20]);
-            var hasStreamingGood = !string.IsNullOrWhiteSpace(row[21]);
-            var writeUp = NominationWriteUp.Create(nomineeName, row[22]);
+            var nomineeOfficeLocation = OfficeLocation.FindByName(row[14]);
+            var hasContinuouslyImproving = !string.IsNullOrWhiteSpace(row[15]);
+            var hasDrivingInnovation = !string.IsNullOrWhiteSpace(row[16]);
+            var hasDelightingCustomers = !string.IsNullOrWhiteSpace(row[17]);
+            var hasBehavingWithIntegrity = !string.IsNullOrWhiteSpace(row[18]);
+            var hasDeliveringMeaningfulOutcomes = !string.IsNullOrWhiteSpace(row[19]);
+            var hasStreamingGood = !string.IsNullOrWhiteSpace(row[20]);
+            var writeUp = NominationWriteUp.Create(nomineeName, row[21]);
             var writeUpSummary = NominationWriteUpSummary.NotApplicable;
 
             var companyValues = GetCompanyValues(hasContinuouslyImproving, hasDrivingInnovation, hasDelightingCustomers,
