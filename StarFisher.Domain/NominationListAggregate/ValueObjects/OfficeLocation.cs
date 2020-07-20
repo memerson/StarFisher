@@ -6,10 +6,10 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
 {
     public class OfficeLocation : ValueObject<OfficeLocation>
     {
-        public static readonly OfficeLocation Boulder = new OfficeLocation(@"Boulder", @"Verity - Boulder CO");
+        public static readonly OfficeLocation Boulder = new OfficeLocation(@"Boulder", @"VerityStream - Boulder", @"VerityStream - Boulder CO");
 
         public static readonly OfficeLocation SanDiego =
-            new OfficeLocation(@"San Diego", @"Verity - San Diego", @"Verity - San Diego CA");
+            new OfficeLocation(@"San Diego", @"VerityStream - San Diego", @"VerityStream - San Diego CA");
 
         public static readonly OfficeLocation Jericho = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
 
@@ -18,12 +18,12 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
             new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Training Center only)");
 
         public static readonly OfficeLocation Chicago =
-            new OfficeLocation(@"Chicago", @"Verity - Chicago", @"Verity - Chicago IL");
+            new OfficeLocation(@"Chicago", @"VerityStream - Chicago", @"VerityStream - Chicago IL");
 
         public static readonly OfficeLocation NashvilleCorporate =
             new OfficeLocation(@"Nashville Downtown", @"Nashville - Capitol View");
 
-        public static readonly OfficeLocation Providigm = new OfficeLocation(@"Providigm", @"Providigm - Denver CO ");
+        public static readonly OfficeLocation Providigm = new OfficeLocation(@"Providigm", @"Providigm - Denver CO");
 
         public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office");
 
