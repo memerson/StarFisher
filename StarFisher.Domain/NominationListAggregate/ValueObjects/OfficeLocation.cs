@@ -11,32 +11,49 @@ namespace StarFisher.Domain.NominationListAggregate.ValueObjects
         public static readonly OfficeLocation SanDiego =
             new OfficeLocation(@"San Diego", @"VerityStream - San Diego", @"VerityStream - San Diego CA");
 
-        public static readonly OfficeLocation Jericho = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
-
-        // TODO: Remove next quarter since this is no longer a HSTM office location.
-        public static readonly OfficeLocation HighlandRidge =
-            new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Training Center only)");
-
         public static readonly OfficeLocation Chicago =
             new OfficeLocation(@"Chicago", @"VerityStream - Chicago", @"VerityStream - Chicago IL");
 
         public static readonly OfficeLocation NashvilleCorporate =
             new OfficeLocation(@"Nashville Downtown", @"Nashville - Capitol View");
 
+        public static readonly OfficeLocation HighlandRidge =
+            new OfficeLocation(@"Highland Ridge", @"Nashville - Highland Ridge (Training Center only)");
+
+        public static readonly OfficeLocation Jericho = new OfficeLocation(@"Jericho", @"HCCS - Jericho NY");
+
         public static readonly OfficeLocation Providigm = new OfficeLocation(@"Providigm", @"Providigm - Denver CO");
 
         public static readonly OfficeLocation Remote = new OfficeLocation(@"Remote", @"Remote - Home Office");
+
+        public static readonly OfficeLocation Savannah = new OfficeLocation(@"Savannah", @"VerityStream - Savannah GA");
+
+        public static readonly OfficeLocation Portland = new OfficeLocation(@"Portland", @"NurseGrid - Portland OR");
+
+        public static readonly OfficeLocation Raleigh = new OfficeLocation(@"Raleigh", @"ShiftWizard - Raleigh NC");
+
+        public static readonly OfficeLocation Ansos = new OfficeLocation(@"ANSOS", @"ANSOS - Nashville TN");
+
+        public static readonly OfficeLocation ComplyALIGN = new OfficeLocation(@"ComplyALIGN", @"ComplyALIGN - Chicago IL");
+
+        public static readonly OfficeLocation MyClinicalExchange = new OfficeLocation(@"myClinicalExchange", @"myClinicalExchange - Denver CO");
 
         public static readonly IReadOnlyList<OfficeLocation> ValidEmployeeOfficeLocations = new List<OfficeLocation>
         {
             Boulder,
             SanDiego,
-            Jericho,
-            HighlandRidge,
             Chicago,
             NashvilleCorporate,
+            HighlandRidge,
+            Jericho,
             Providigm,
-            Remote
+            Remote,
+            Savannah,
+            Portland,
+            Raleigh,
+            Ansos,
+            ComplyALIGN,
+            MyClinicalExchange
         };
 
         public static readonly OfficeLocation Invalid = new OfficeLocation(@"INVALID", @"INVALID");

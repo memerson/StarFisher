@@ -122,7 +122,7 @@ namespace StarFisher.Console.Menu.Common
 
         protected void WriteCallToAction(string text)
         {
-            _console.WriteLineYellow(text);
+            _console.WriteLineGreen(text);
         }
 
         protected void WriteInputPrompt()

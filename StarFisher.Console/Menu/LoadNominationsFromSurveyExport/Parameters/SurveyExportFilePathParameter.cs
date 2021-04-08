@@ -16,7 +16,7 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters
         {
             WriteLine();
             WriteCallToAction(
-                @"Enter the path to the .xlsx file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
+                @"Enter the path to the .xls file for the nomination survey export, or enter 'stop' to stop loading the survey export.");
             WriteInputPrompt();
 
             var argument = GetArgumentFromInputIfValid();
@@ -31,14 +31,14 @@ namespace StarFisher.Console.Menu.LoadNominationsFromSurveyExport.Parameters
 
         public override void PrintInvalidArgumentMessage()
         {
-            PrintInvalidArgumentMessage(@"That's not a valid file path to a .xlsx file.");
+            PrintInvalidArgumentMessage(@"That's not a valid file path to a .xls file.");
         }
 
         protected override bool TryParseArgumentValueFromInput(string input, out FilePath argumentValue)
         {
-            var isXlsx = string.Equals(Path.GetExtension(input), @".xlsx", StringComparison.InvariantCultureIgnoreCase);
+            var isXls = string.Equals(Path.GetExtension(input), @".xls", StringComparison.InvariantCultureIgnoreCase);
 
-            if (isXlsx && FilePath.IsValid(input, true))
+            if (isXls && FilePath.IsValid(input, true))
             {
                 argumentValue = FilePath.Create(input, true);
                 return true;

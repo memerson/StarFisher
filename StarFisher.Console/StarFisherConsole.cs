@@ -19,7 +19,7 @@ namespace StarFisher.Console
         void WriteLine();
         void WriteLineRed(string text);
         void WriteLineBlue(string text, params string[] redTokens);
-        void WriteLineYellow(string text);
+        void WriteLineGreen(string text);
         void WriteInputPrompt();
         void WaitForKeyPress();
         string ReadLine();
@@ -191,9 +191,9 @@ namespace StarFisher.Console
             }
         }
 
-        public void WriteLineYellow(string text)
+        public void WriteLineGreen(string text)
         {
-            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkYellow))
+            using (ConsoleColorSelector.SetConsoleForegroundColor(ConsoleColor.DarkGreen))
             {
                 WriteLine(text);
             }
